@@ -1,0 +1,18 @@
+nav#navbar-example2.navbar.bg-body-tertiary.px-3.mb-3
+  .container
+    a.navbar-brand(href="#")= appName
+    ul.nav.nav-pills
+      li.nav-item
+        a.nav-link(href="#")= "Home"
+      li.nav-item.dropdown
+        a.nav-link.dropdown-toggle(data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false")
+          | User
+        ul.dropdown-menu
+          li
+            a.dropdown-item(href="#")= "Profile"
+          li
+            a.dropdown-item(href="#")= "Settings"
+          li
+            hr.dropdown-divider
+          li
+            a.dropdown-item(href="#")= "Logout"
