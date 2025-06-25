@@ -24,18 +24,18 @@ if ("production" === config.nodeEnv) {
 }
 
 const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, '..', 'logs', 'boilerplate.log'), 
+  path.join(__dirname, '..', 'logs', 'grocery-system.log'), 
   { flags: 'a' },
 );
 morgan.token('date', (req, res, tz) => {
   return moment().tz(tz).format('YYYY-MM-DD HH:mm:ss');
 });
 morgan.format(
-  'boilerplate-request-log-format',
+  'grocery-system-request-log-format',
   `:remote-addr - :remote-user [:date[${config.appTimezone}]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"`,
 );
 app.use(morgan(
-  'boilerplate-request-log-format',  
+  'grocery-system-request-log-format',  
   { stream: accessLogStream, },
 ));
 
