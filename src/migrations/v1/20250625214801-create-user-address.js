@@ -4,52 +4,41 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable('users', {
+      await queryInterface.createTable('userAddresses', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        firstName: {
-          type: Sequelize.STRING,
+        addressLine1: {
+          type: Sequelize.STRING
         },
-        lastName: {
-          type: Sequelize.STRING,
+        addressLine2: {
+          type: Sequelize.STRING
         },
-        email: {
-          type: Sequelize.STRING,
+        zipCode: {
+          type: Sequelize.STRING
         },
-        password: {
-          type: Sequelize.STRING,
+        city: {
+          type: Sequelize.STRING
         },
-        passwordSalt: {
-          type: Sequelize.STRING,
-        },
-        role: {
-          type: Sequelize.STRING,
-          defaultValue: null,
-          allowNull: true,
+        state: {
+          type: Sequelize.STRING
         },
         createdAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
+          allowNull: false,
+          type: Sequelize.DATE
         },
         updatedAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
+          allowNull: false,
+          type: Sequelize.DATE
         },
         deletedAt: {
           type: Sequelize.DATE,
           allowNull: true,
         },
       }, { transaction, });
-      await queryInterface.addIndex('users', ['email'], {
-        name: "usersEmail",
-        fields: 'email',
-        unique: true,
-        transaction,
-      });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
@@ -59,8 +48,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeIndex('users', 'usersEmail', { transaction });
-      await queryInterface.dropTable('users', { transaction, });
+      await queryInterface.dropTable('userAddresses', { transaction, });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

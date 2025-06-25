@@ -4,52 +4,38 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable('users', {
+      await queryInterface.createTable('productOrders', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        firstName: {
-          type: Sequelize.STRING,
+        productId: {
+          type: Sequelize.INTEGER
         },
-        lastName: {
-          type: Sequelize.STRING,
+        orderId: {
+          type: Sequelize.INTEGER
         },
-        email: {
-          type: Sequelize.STRING,
+        quantity: {
+          type: Sequelize.INTEGER
         },
-        password: {
-          type: Sequelize.STRING,
-        },
-        passwordSalt: {
-          type: Sequelize.STRING,
-        },
-        role: {
-          type: Sequelize.STRING,
-          defaultValue: null,
-          allowNull: true,
+        price: {
+          type: Sequelize.FLOAT
         },
         createdAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
+          allowNull: false,
+          type: Sequelize.DATE
         },
         updatedAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
+          allowNull: false,
+          type: Sequelize.DATE
         },
         deletedAt: {
           type: Sequelize.DATE,
           allowNull: true,
         },
       }, { transaction, });
-      await queryInterface.addIndex('users', ['email'], {
-        name: "usersEmail",
-        fields: 'email',
-        unique: true,
-        transaction,
-      });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
@@ -59,8 +45,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeIndex('users', 'usersEmail', { transaction });
-      await queryInterface.dropTable('users', { transaction, });
+      await queryInterface.dropTable('productOrders', { transaction, });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

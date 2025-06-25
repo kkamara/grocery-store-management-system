@@ -666,6 +666,11 @@ module.exports = (sequelize, DataTypes) => {
     passwordSalt: {
       type: DataTypes.STRING,
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: null,
+      allowNull: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
