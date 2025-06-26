@@ -3,7 +3,6 @@ const { status, } = require("http-status");
 const moment = require("moment-timezone");
 const { message401, } = require("../../utils/httpResponses");
 const db = require("../../models/v1/index");
-const { appTimezone, } = require("../../config");
 
 module.exports = async (req, res, next) => {
   if (!req.headers.authorization) {
