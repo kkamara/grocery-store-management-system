@@ -7,39 +7,35 @@ const { encrypt, } = require("../../utils/tokens");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    const fakeUsers = [];
-    let pwd;
+  up: async (queryInterface, Sequelize) => {
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      let pwd = encrypt("secret");
 
-    for(let i=0; i < 31; i++) {
-      pwd = encrypt("secret");
-      fakeUsers.push({
+      await queryInterface.bulkInsert('users', [{
         email: faker.internet.email(),
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(),
         password: pwd.hash,
         passwordSalt: pwd.salt,
-        createdAt: moment().tz(appTimezone).format(mysqlTimeFormat),
-        updatedAt: moment().tz(appTimezone).format(mysqlTimeFormat),
-      })
+        role: "admin",
+        createdAt: moment().utc().format(mysqlTimeFormat),
+        updatedAt: moment().utc().format(mysqlTimeFormat),
+      }], { transaction, });
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
     }
-    
-    pwd = encrypt("secret");
-    fakeUsers.push({
-      email: "jane@doe.com",
-      firstName: "Jane",
-      lastName: "Doe",
-      password: pwd.hash,
-      passwordSalt: pwd.salt,
-      createdAt: moment().tz(appTimezone).format(mysqlTimeFormat),
-      updatedAt: moment().tz(appTimezone).format(mysqlTimeFormat),
-    })
-
-    return queryInterface.bulkInsert('users', [
-      ...fakeUsers,
-    ]);
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('users', null, {});
+  down: async (queryInterface, Sequelize) => {
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      await queryInterface.bulkDelete('users', null, { transaction, });
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
   }
 };
