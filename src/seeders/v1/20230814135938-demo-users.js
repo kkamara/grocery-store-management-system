@@ -10,7 +10,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      let pwd = encrypt("secret");
+      const pwd = encrypt("secret");
 
       await queryInterface.bulkInsert('users', [{
         email: faker.internet.email(),
