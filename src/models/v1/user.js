@@ -42,7 +42,10 @@ module.exports = (sequelize, DataTypes) => {
             type: sequelize.QueryTypes.UPDATE,
           },
         );
-        
+        const id = result[0];
+        if (undefined === id) {
+          return false;
+        }
         return true;
       } catch(err) {
         if ("production" !== nodeEnv) {
