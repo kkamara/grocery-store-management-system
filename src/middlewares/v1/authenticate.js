@@ -25,9 +25,7 @@ module.exports = async (req, res, next) => {
     });
   }
   const tokenIsExpired = moment(authTokenResult.expiredAt)
-    .add(1, "hour")
-    .tz(appTimezone)
-    .unix() < moment().tz(appTimezone).unix();
+    .unix() < moment().utc().unix();
   if (true === tokenIsExpired) {
     res.status(status.UNAUTHORIZED);
     return res.json({
