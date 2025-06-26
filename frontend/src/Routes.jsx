@@ -10,23 +10,28 @@ import Logout from "./components/pages/auth/LogoutComponent"
 import Register from "./components/pages/auth/RegisterComponent"
 import NotFound from "./components/pages/http/NotFoundComponent"
 
+import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
+
 import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
+import AdminDashboardRoute from "./AdminDashboardRoute"
+import MainSiteRoute from "./MainSiteRoute"
 
 export default () => {
   return (
-    <>
-      <Header/>
-      <Routes>
+    <Routes>
+      <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
           <Route path={url("/")} element={<Home />}/>
-        </Route>|
+        </Route>
         <Route path={url("/user/login")} element={<Login />}/>
         <Route path={url("/user/logout")} element={<Logout />}/>
         <Route path={url("/user/register")} element={<Register />}/>
-        <Route path={url("*")} element={<NotFound />}/>
-      </Routes>
-      <Footer/>
-    </>
+      </Route>
+      <Route path={url("/admin")} element={<AdminDashboardRoute/>}>
+        <Route path={url("/admin")} element={<DashboardHome/>}/>
+      </Route>
+      <Route path={url("*")} element={<NotFound />}/>
+    </Routes>
   )
 }
