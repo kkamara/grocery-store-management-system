@@ -89,12 +89,6 @@ export default function LoginComponent() {
           />
         </div>
         <div className="login-buttons-container mt-3 text-end">
-          <a 
-            href="/user/register" 
-            className="btn btn-primary"
-          >
-            Register
-          </a>
           <input 
             type="submit" 
             className="btn btn-success login-submit-button ms-4" 
