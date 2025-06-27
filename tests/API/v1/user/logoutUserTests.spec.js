@@ -20,7 +20,7 @@ const payload = {
   dob: "2004-01-01",
   password: "secret",
   passwordConfirmation: "secret",
-  isAdmin: false,
+  role: "guest",
 };
 
 describe('Logout User API Tests', function() {

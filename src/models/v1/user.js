@@ -411,8 +411,8 @@ module.exports = (sequelize, DataTypes) => {
 
         const result = await sequelize.query(
           `INSERT INTO ${this.getTableName()}
-              (firstName, lastName, email, password, passwordSalt, createdAt, updatedAt)
-            VALUES(:firstName, :lastName, :email, :password, :passwordSalt, :createdAt, :updatedAt)`,
+              (firstName, lastName, email, password, passwordSalt, role, createdAt, updatedAt)
+            VALUES(:firstName, :lastName, :email, :password, :passwordSalt, :role, :createdAt, :updatedAt)`,
           {
             replacements: {
               createdAt: moment()
@@ -426,6 +426,7 @@ module.exports = (sequelize, DataTypes) => {
               email: data.email,
               password: hash,
               passwordSalt: salt,
+              role: "guest",
             },
             type: sequelize.QueryTypes.INSERT,
           },
@@ -623,8 +624,8 @@ module.exports = (sequelize, DataTypes) => {
 
         const result = await sequelize.query(
           `INSERT INTO ${this.getTableName()}
-              (email, firstName, lastName, password, passwordSalt, createdAt, updatedAt)
-            VALUES(:email, :firstName, :lastName, :password, :passwordSalt, :createdAt, :updatedAt)`,
+              (email, firstName, lastName, password, passwordSalt, role, createdAt, updatedAt)
+            VALUES(:email, :firstName, :lastName, :password, :passwordSalt, role, :createdAt, :updatedAt)`,
           {
             replacements: {
               createdAt: moment().utc().format(mysqlTimeFormat),
@@ -634,6 +635,7 @@ module.exports = (sequelize, DataTypes) => {
               lastName: payload.lastName,
               password: hash,
               passwordSalt: salt,
+              role: payload.role || "guest",
             },
             type: sequelize.QueryTypes.INSERT,
           },

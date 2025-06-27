@@ -18,7 +18,7 @@ const payload = {
   dob: "2004-01-01",
   password: "secret",
   passwordConfirmation: "secret",
-  isAdmin: false,
+  role: "guest",
 };
 
 describe('Login User Web API Tests', function() {

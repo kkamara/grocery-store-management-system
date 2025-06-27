@@ -17,6 +17,7 @@ describe('Create User API Tests', function() {
       lastName: "Account",
       password: "secret",
       passwordConfirmation: "secret",
+      role: "guest",
     };
     chai.request(app)
       .post('/user/register')
