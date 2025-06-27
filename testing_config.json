@@ -1,7 +1,7 @@
 {
   "test": {
     "port": 3306,
-    "username": "root",
+    "username": "user",
     "password": "secret",
     "database": "grocery_system",
     "host": "127.0.0.1",
