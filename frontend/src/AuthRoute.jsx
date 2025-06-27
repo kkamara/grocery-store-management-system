@@ -13,7 +13,7 @@ const AuthRoute = ({ redirectPath, }) => {
       if (redirectPath) {
         window.location.href = redirectPath
       } else {
-        window.location.href = "/user/login"
+        window.location.href = "/user/signin"
       }
     }
   }, [state.auth])

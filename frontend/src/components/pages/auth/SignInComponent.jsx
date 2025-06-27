@@ -4,7 +4,7 @@ import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
 import { login, authorize, } from "../../../redux/actions/authActions"
 
-import "./LoginComponent.scss"
+import "./SignInComponent.scss"
 import Error from "../../layouts/Error"
 
 export default function LoginComponent() {

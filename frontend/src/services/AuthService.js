@@ -40,7 +40,7 @@ export const LogoutUserService = () => {
       if (null !== localStorage.getItem(tokenId)) {
         localStorage.removeItem(tokenId)
       }
-      window.location = "/user/login"
+      window.location = "/user/signin"
       return response.data
     })
     .catch(err => { throw err })

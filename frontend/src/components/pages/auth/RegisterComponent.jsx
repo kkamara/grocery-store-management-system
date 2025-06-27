@@ -118,7 +118,7 @@ export default function RegisterComponent() {
         </div>
         <div className="register-buttons-container mt-4 text-end">
           <a 
-            href="/user/login" 
+            href="/user/signin" 
             className="btn btn-primary"
           >
             Sign In

@@ -37,7 +37,7 @@ export default function Header(props) {
           <Link
             className="nav-link active" 
             aria-current="page" 
-            to="/user/login"
+            to="/user/signin"
           >
             Sign In
           </Link>
