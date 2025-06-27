@@ -625,7 +625,7 @@ module.exports = (sequelize, DataTypes) => {
         const result = await sequelize.query(
           `INSERT INTO ${this.getTableName()}
               (email, firstName, lastName, password, passwordSalt, role, createdAt, updatedAt)
-            VALUES(:email, :firstName, :lastName, :password, :passwordSalt, role, :createdAt, :updatedAt)`,
+            VALUES(:email, :firstName, :lastName, :password, :passwordSalt, :role, :createdAt, :updatedAt)`,
           {
             replacements: {
               createdAt: moment().utc().format(mysqlTimeFormat),
