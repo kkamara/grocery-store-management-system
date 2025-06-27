@@ -46,7 +46,7 @@ export default function LoginComponent() {
   }
 
   if (state.auth.loading) {
-    return <div className="container login-container text-center">
+    return <div className="container signin-container text-center">
       <Helmet>
         <title>Sign In - {process.env.REACT_APP_NAME}</title>
       </Helmet>
@@ -54,7 +54,7 @@ export default function LoginComponent() {
     </div>
   }
 
-  return <div className="container login-container">
+  return <div className="container signin-container">
     <Helmet>
       <title>Sign In - {process.env.REACT_APP_NAME}</title>
     </Helmet>
