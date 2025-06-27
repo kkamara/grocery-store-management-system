@@ -10,8 +10,6 @@ chai.use(chaiHttp);
 const app = `http://localhost:${config.appPort}/api/v1/web/admin`;
 
 let createdAccountID = null;
-let bearerToken = null;
-let authTokenID = null;
 
 const payload = {
   email: "testadminaccount@example.com",
@@ -23,43 +21,37 @@ const payload = {
   role: "admin",
 };
 
-describe('Authenticate User Web API Tests', function() {
+describe('Login Admin User Web API Tests', function() {
   before(async function() {
     const createdAccount = await db.sequelize.models
       .user
       .testCreateUser(payload, true);
     createdAccountID = createdAccount.userId;
-    
-    const createdUserToken = await db.sequelize.models
-      .userToken
-      .createAuthToken(createdAccountID);
-    authTokenID = createdUserToken.authTokenId;
-    
-    const userToken = await db.sequelize.models
-      .userToken
-      .getAuthToken(authTokenID);
-    bearerToken = "Bearer "+userToken.token;
   });
-  it('Tests Authenticate User Success', function(done) {
+  it('Tests Login User Success', function(done) {
     chai.request(app)
-      .get('/user/authorize')
-      .set("authorization", bearerToken)
+      .post('/user')
+      .send({
+        email: payload.email,
+        password: payload.password,
+      })
       .end((err, res) => {
         if (err) {
           console.log(err);
         }
         chai.expect(err).to.be.null;
         chai.expect(res).to.have.status(200);
-        chai.expect(res.body).to.have.property('user');
+        chai.expect(res.body).to.have.property('data');
+        chai.expect(res.body.data).to.have.property('user');
+        chai.expect(res.body.data.user).to.have.property('id');
+        chai.expect(res.body.data.user.id).to.equal(createdAccountID);
         done();
       });
   });
   after(async function() {
     await db.sequelize.models
       .userToken
-      .testDeleteUserToken(
-        authTokenID,
-      );
+      .testDeleteAllUsersAuthTokens(createdAccountID);
     await db.sequelize.models
       .user
       .testDeleteUser(createdAccountID);

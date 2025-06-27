@@ -23,7 +23,7 @@ const payload = {
   role: "admin",
 };
 
-describe('Logout User Web API Tests', function() {
+describe('Logout Admin User Web API Tests', function() {
   before(async function() {
     const createdAccount = await db.sequelize.models
       .user
