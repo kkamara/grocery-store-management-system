@@ -28,7 +28,7 @@ export default () => {
         <Route path={url("/user/logout")} element={<Logout />}/>
         <Route path={url("/user/register")} element={<Register />}/>
       </Route>
-      <Route path={url("/admin")} element={<AdminDashboardRoute/>}>
+      <Route element={<AdminDashboardRoute/>}>
         <Route path={url("/admin")} element={<DashboardHome/>}/>
       </Route>
       <Route path={url("*")} element={<NotFound />}/>
