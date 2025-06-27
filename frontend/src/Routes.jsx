@@ -11,6 +11,7 @@ import Register from "./components/pages/auth/RegisterComponent"
 import NotFound from "./components/pages/http/NotFoundComponent"
 
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
+import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
 
 import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
@@ -31,6 +32,7 @@ export default () => {
       <Route element={<AdminDashboardRoute/>}>
         <Route path={url("/admin")} element={<DashboardHome/>}/>
       </Route>
+      <Route path={url("/admin/signin")} element={<DashboardSignIn/>}/>
       <Route path={url("*")} element={<NotFound />}/>
     </Routes>
   )

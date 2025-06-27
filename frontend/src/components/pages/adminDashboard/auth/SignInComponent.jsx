@@ -2,15 +2,17 @@ import React, { useEffect, useState, } from "react"
 import { useNavigate, } from "react-router-dom"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
-import { login, authorize, } from "../../../redux/actions/authActions"
-import Error from "../../layouts/Error"
+import { login, authorize, } from "../../../../redux/actions/authActions"
+import Error from "../../../layouts/Error"
+
+import SignInLogo from "../../../../assets/adminDashboard/images/signin-logo.webp"
 
 import "./SignInComponent.scss"
 
-export default function SignInComponent() {
+export default function LoginComponent() {
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState("admin@example.com")
+  const [email, setEmail] = useState("jane@doe.com")
   const [password, setPassword] = useState("secret")
 
   const dispatch = useDispatch()
@@ -46,7 +48,7 @@ export default function SignInComponent() {
   }
 
   if (state.auth.loading) {
-    return <div className="container signin-container text-center">
+    return <div className="container dashboard-signin-container text-center">
       <Helmet>
         <title>Sign In - {process.env.REACT_APP_NAME}</title>
       </Helmet>
@@ -54,11 +56,16 @@ export default function SignInComponent() {
     </div>
   }
 
-  return <div className="container signin-container">
+  return <div className="container dashboard-signin-container">
     <Helmet>
       <title>Sign In - {process.env.REACT_APP_NAME}</title>
     </Helmet>
     <div className="col-md-4 offset-md-4">
+      <img
+        alt="Sign In Logo"
+        src={SignInLogo}
+        className="dashboard-signin-logo"
+      />
       <h1 className="login-lead fw-bold">Sign In</h1>
       <form method="post" onSubmit={onFormSubmit}>
         <Error error={state.auth.error} />
