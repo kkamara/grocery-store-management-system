@@ -1,6 +1,6 @@
-![nodejs-reactjs-boilerplate.png](https://github.com/kkamara/useful/blob/main/nodejs-reactjs-boilerplate.png?raw=true)
+![grocery-store-management-system.png](https://github.com/kkamara/useful/blob/main/grocery-store-management-system.png?raw=true)
 
-![nodejs-reactjs-boilerplate2.png](https://github.com/kkamara/useful/blob/main/nodejs-reactjs-boilerplate2.png?raw=true)
+![grocery-store-management-system2.png](https://github.com/kkamara/useful/blob/main/grocery-store-management-system2.png?raw=true)
 
 # grocery-store-management-system
 
