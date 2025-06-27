@@ -21,7 +21,7 @@ const payload = {
   isAdmin: false,
 };
 
-describe('Login User API Tests', function() {
+describe('Login User Web API Tests', function() {
   before(async function() {
     const createdAccount = await db.sequelize.models
       .user
