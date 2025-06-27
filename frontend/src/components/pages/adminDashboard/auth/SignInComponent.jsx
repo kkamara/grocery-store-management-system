@@ -4,6 +4,7 @@ import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
 import { login, authorize, } from "../../../../redux/actions/authActions"
 import Error from "../../../layouts/Error"
+import { adminDashboardTitle } from "../../../../constants"
 
 import SignInLogo from "../../../../assets/adminDashboard/images/signin-logo.webp"
 
@@ -50,7 +51,7 @@ export default function LoginComponent() {
   if (state.auth.loading) {
     return <div className="container dashboard-signin-container text-center">
       <Helmet>
-        <title>Sign In - {process.env.REACT_APP_NAME}</title>
+        <title>Sign In - {adminDashboardTitle}</title>
       </Helmet>
       <p>Loading...</p>
     </div>
@@ -58,7 +59,7 @@ export default function LoginComponent() {
 
   return <div className="container dashboard-signin-container">
     <Helmet>
-      <title>Sign In - {process.env.REACT_APP_NAME}</title>
+      <title>Sign In - {adminDashboardTitle}</title>
     </Helmet>
     <div className="col-md-4 offset-md-4">
       <img

@@ -1,0 +1,1 @@
+export const adminDashboardTitle = "Admin Dashboard - " + process.env.REACT_APP_NAME
