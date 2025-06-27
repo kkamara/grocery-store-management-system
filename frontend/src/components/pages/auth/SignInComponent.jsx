@@ -10,7 +10,7 @@ import "./SignInComponent.scss"
 export default function SignInComponent() {
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState("admin@example.com")
+  const [email, setEmail] = useState("guest@example.com")
   const [password, setPassword] = useState("secret")
 
   const dispatch = useDispatch()
