@@ -14,13 +14,13 @@ let bearerToken = null;
 let authTokenID = null;
 
 const payload = {
-  email: "testaccount@example.com",
+  email: "testadminaccount@example.com",
   firstName: "Test",
   lastName: "Account",
   dob: "2004-01-01",
   password: "secret",
   passwordConfirmation: "secret",
-  role: "guest",
+  role: "admin",
 };
 
 describe('Logout User Web API Tests', function() {

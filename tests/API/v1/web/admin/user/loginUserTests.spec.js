@@ -12,13 +12,13 @@ const app = `http://localhost:${config.appPort}/api/v1/web/admin`;
 let createdAccountID = null;
 
 const payload = {
-  email: "testaccount@example.com",
+  email: "testadminaccount@example.com",
   firstName: "Test",
   lastName: "Account",
   dob: "2004-01-01",
   password: "secret",
   passwordConfirmation: "secret",
-  role: "guest",
+  role: "admin",
 };
 
 describe('Login User Web API Tests', function() {
