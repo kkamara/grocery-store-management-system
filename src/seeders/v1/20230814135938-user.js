@@ -18,7 +18,7 @@ module.exports = {
         lastName: faker.person.lastName(),
         password: pwd.hash,
         passwordSalt: pwd.salt,
-        role: "admin",
+        role: "guest",
         createdAt: moment().utc().format(mysqlTimeFormat),
         updatedAt: moment().utc().format(mysqlTimeFormat),
       }], { transaction, });
