@@ -11,6 +11,9 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER
         },
+        usersId: {
+          type: Sequelize.INTEGER
+        },
         addressLine1: {
           type: Sequelize.STRING
         },
