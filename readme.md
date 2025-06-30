@@ -136,6 +136,8 @@ I made this app with full-stack JavaScript. Particularly, NodeJS, ExpressJS, and
 
 This app is entirely created with [NodeJS ReactJS Boilerplate](https://github.com/kkamara/nodejs-reactjs-boilerplate), which I also created.
 
+The admin dashboard uses the SB Admin 2 theme from https://startbootstrap.com/theme/sb-admin-2 .
+
 [See NodeJS ReactJS Boilerplate](https://github.com/kkamara/nodejs-reactjs-boilerplate).
 
 [See ReactJS Native Mobile App Boilerplate](https://github.com/kkamara/ReactJSNativeMobileAppBoilerplate).
