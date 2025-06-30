@@ -1,14 +1,18 @@
 import React from "react"
 import { Outlet } from "react-router"
+import Sidebar from "./components/layouts/adminDashboard/Sidebar"
 import Header from "./components/layouts/adminDashboard/Header"
 import Footer from "./components/layouts/adminDashboard/Footer"
 
 const AdminDashboardRoute = () => (
   <>
     <div id="wrapper">
-      <Header />
+      <Sidebar />
       <div id="content-wrapper" className="d-flex flex-column">
-        <Outlet />
+        <div id="content">
+          <Header/>
+          <Outlet />
+        </div>
         <Footer />
       </div>
     </div>
