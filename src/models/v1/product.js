@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { nodeEnv, } = require('../../config');
 module.exports = (sequelize, DataTypes) => {
   class product extends Model {
     /**
@@ -11,6 +12,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+
+    /**
+     * @returns {object|false}
+     */
+    static async getAdminProductCountStat() {
+      try {
+        const result = await sequelize.query(
+          `SELECT count(id) as count
+            FROM ${this.getTableName()}`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        
+        return { count: result[0].count };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   product.init({
