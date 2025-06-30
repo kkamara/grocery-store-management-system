@@ -1,5 +1,9 @@
 import React from "react"
 
+import SignInLogo from "../../../assets/adminDashboard/images/signin-logo.webp"
+
+import "./Sidebar.scss"
+
 function Sidebar() {
   return (
     <ul
@@ -10,8 +14,12 @@ function Sidebar() {
         className="sidebar-brand d-flex align-items-center justify-content-center"
         href="/admin"
       >
-        <div className="sidebar-brand-icon rotate-n-15">
-          <i className="fas fa-laugh-wink"></i>
+        <div className="sidebar-brand-icon">
+          <img
+            alt="Sign In Logo"
+            src={SignInLogo}
+            className="dashboard-home-logo"
+          />
         </div>
         <div className="sidebar-brand-text mx-3">
           Admin
