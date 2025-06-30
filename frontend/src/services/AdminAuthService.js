@@ -31,7 +31,7 @@ export const LogoutUserService = () => {
       if (null !== localStorage.getItem(tokenId)) {
         localStorage.removeItem(tokenId)
       }
-      window.location = "/user/signin"
+      window.location = "/admin/signin"
       return response.data
     })
     .catch(err => { throw err })

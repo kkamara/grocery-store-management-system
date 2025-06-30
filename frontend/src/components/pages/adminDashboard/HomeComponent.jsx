@@ -24,6 +24,10 @@ export default function HomeComponent() {
     }
   }, [state.adminAuth])
 
+  const logoutDashboard = () => {
+    window.location = "/admin/user/logout"
+  }
+
   if (state.adminAuth.loading) {
     return <div className="container dashboard-home-container text-center">
       <Helmet>
@@ -39,6 +43,7 @@ export default function HomeComponent() {
     </Helmet>
     <div className="col-md-4 offset-md-4">
       <h3>DashboardHomeComponent</h3>
+      <button onClick={logoutDashboard} className="btn btn-primary">Logout</button>
     </div>
   </div>
 }
