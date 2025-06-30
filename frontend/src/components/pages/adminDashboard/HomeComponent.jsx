@@ -24,10 +24,6 @@ export default function HomeComponent() {
     }
   }, [state.adminAuth])
 
-  const logoutDashboard = () => {
-    window.location = "/admin/user/logout"
-  }
-
   if (state.adminAuth.loading) {
     return <div className="container dashboard-home-container text-center">
       <Helmet>
