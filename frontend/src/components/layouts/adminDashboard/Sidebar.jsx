@@ -1,6 +1,6 @@
 import React from "react"
 
-import SignInLogo from "../../../assets/adminDashboard/images/signin-logo.webp"
+import AdminDashboardLogo from "../../../assets/adminDashboard/images/admin-dashboard-logo.webp"
 
 import "./Sidebar.scss"
 
@@ -16,8 +16,8 @@ function Sidebar() {
       >
         <div className="sidebar-brand-icon">
           <img
-            alt="Sign In Logo"
-            src={SignInLogo}
+            alt="Admin Dashboard Logo"
+            src={AdminDashboardLogo}
             className="dashboard-home-logo"
           />
         </div>

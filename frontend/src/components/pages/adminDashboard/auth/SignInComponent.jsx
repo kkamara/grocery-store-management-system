@@ -6,7 +6,7 @@ import { login, authorize, } from "../../../../redux/actions/adminAuthActions"
 import Error from "../../../layouts/Error"
 import { adminDashboardTitle, } from "../../../../constants"
 
-import SignInLogo from "../../../../assets/adminDashboard/images/signin-logo.webp"
+import AdminDashboardLogo from "../../../../assets/adminDashboard/images/admin-dashboard-logo.webp"
 
 import "./SignInComponent.scss"
 
@@ -63,8 +63,8 @@ export default function LoginComponent() {
     </Helmet>
     <div className="col-md-4 offset-md-4">
       <img
-        alt="Sign In Logo"
-        src={SignInLogo}
+        alt="Admin Dashboard Logo"
+        src={AdminDashboardLogo}
         className="dashboard-signin-logo"
       />
       <h1 className="login-lead fw-bold">Sign In</h1>
