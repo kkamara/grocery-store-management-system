@@ -2,7 +2,7 @@ import React, { useEffect, useState, } from "react"
 import { useNavigate, } from "react-router-dom"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
-import { login, authorize, } from "../../../../redux/actions/authActions"
+import { login, authorize, } from "../../../../redux/actions/adminAuthActions"
 import Error from "../../../layouts/Error"
 import { adminDashboardTitle, } from "../../../../constants"
 
@@ -18,7 +18,7 @@ export default function LoginComponent() {
 
   const dispatch = useDispatch()
   const state = useSelector(state => ({
-    auth: state.auth,
+    adminAuth: state.adminAuth,
   }))
 
   useEffect(() => {
@@ -26,10 +26,10 @@ export default function LoginComponent() {
   }, [])
 
   useEffect(() => {
-    if (state.auth.data) {
+    if (state.adminAuth.data) {
       window.location.href = "/"
     }
-  }, [state.auth])
+  }, [state.adminAuth])
 
   const onFormSubmit = (e) => {
     e.preventDefault()
@@ -48,7 +48,7 @@ export default function LoginComponent() {
     setPassword(e.target.value)
   }
 
-  if (state.auth.loading) {
+  if (state.adminAuth.loading) {
     return <div className="container dashboard-signin-container text-center">
       <Helmet>
         <title>Sign In - {adminDashboardTitle}</title>
@@ -69,7 +69,7 @@ export default function LoginComponent() {
       />
       <h1 className="login-lead fw-bold">Sign In</h1>
       <form method="post" onSubmit={onFormSubmit}>
-        <Error error={state.auth.error} />
+        <Error error={state.adminAuth.error} />
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input 
