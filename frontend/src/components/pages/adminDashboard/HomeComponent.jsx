@@ -1,30 +1,32 @@
-import React, { useEffect, } from "react";
-import { useNavigate, } from "react-router-dom";
-import { useDispatch, useSelector, } from "react-redux";
-import { Helmet } from "react-helmet";
-import { authorize, } from "../../../redux/actions/adminAuthActions";
-import Error from "../../layouts/Error";
-import { adminDashboardTitle, } from "../../../constants";
+import React, { useEffect, } from "react"
+import { useDispatch, useSelector, } from "react-redux"
+import { Helmet } from "react-helmet"
+import { authorize, } from "../../../redux/actions/adminAuthActions"
+import Error from "../../layouts/Error"
+import { adminDashboardTitle, } from "../../../constants"
+import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
 
 export default function HomeComponent() {
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const state = useSelector((state) => ({
     adminAuth: state.adminAuth,
-  }));
+    adminProductsCountStat: state.adminProductsCountStat,
+  }))
 
   useEffect(() => {
-    dispatch(authorize());
-  }, []);
+    dispatch(authorize())
+  }, [])
 
   useEffect(() => {
     if (false === state.adminAuth.loading && !state.adminAuth.data) {
-      window.location.href = "/admin/signin";
+      window.location.href = "/admin/signin"
     }
-  }, [state.adminAuth]);
+    if (false === state.adminAuth.loading && state.adminAuth.data) {
+      dispatch(getAdminProductsCountStat())
+    }
+  }, [state.adminAuth])
 
-  if (state.adminAuth.loading) {
+  if (state.adminAuth.loading || state.adminProductsCountStat.loading) {
     return (
       <div className="container dashboard-home-container text-center">
         <Helmet>
@@ -32,7 +34,7 @@ export default function HomeComponent() {
         </Helmet>
         <p>Loading...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -58,7 +60,7 @@ export default function HomeComponent() {
                     Products
                   </div>
                   <div className="h5 mb-0 font-weight-bold text-gray-800">
-                    PRODUCTS_COUNT
+                    {state.adminProductsCountStat.data}
                   </div>
                 </div>
                 <div className="col-auto">
@@ -146,5 +148,5 @@ export default function HomeComponent() {
         </div>
       </div>
     </div>
-  );
+  )
 }
