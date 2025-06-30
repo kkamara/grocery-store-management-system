@@ -101,7 +101,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jane@doe.com\",\r\n    \"password\": \"secret\",\r\n    \"passwordConfirmation\": \"secret\"\r\n}",
+									"raw": "{\r\n    \"firstName\": \"Guest\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\",\r\n    \"passwordConfirmation\": \"secret\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -128,7 +128,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"jane@doe.com\",\r\n    \"password\": \"secret\"\r\n}",
+									"raw": "{\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -251,7 +251,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jane@doe.com\",\r\n    \"password\": \"secret\",\r\n    \"passwordConfirmation\": \"secret\"\r\n}",
+									"raw": "{\r\n    \"firstName\": \"Guest\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\",\r\n    \"passwordConfirmation\": \"secret\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -278,7 +278,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"jane@doe.com\",\r\n    \"password\": \"secret\"\r\n}",
+									"raw": "{\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -296,6 +296,105 @@
 								}
 							},
 							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "User",
+							"item": [
+								{
+									"name": "Bearer Token Restricted",
+									"item": [
+										{
+											"name": "Authorize User",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/user/authorize",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"user",
+														"authorize"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Logout User",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/user",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"user"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Login User",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"secret\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{web}}/admin/user",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"admin",
+												"user"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
