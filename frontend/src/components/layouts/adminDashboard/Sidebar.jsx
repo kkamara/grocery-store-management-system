@@ -37,7 +37,7 @@ function Sidebar() {
 
       <hr className="sidebar-divider" />
 
-      <div className="sidebar-heading">Addons</div>
+      <div className="sidebar-heading">Resources</div>
 
       <li className="nav-item">
         <a
@@ -49,7 +49,7 @@ function Sidebar() {
           aria-controls="collapsePages"
         >
           <i className="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
+          <span>Products</span>
         </a>
         <div
           id="collapsePages"
@@ -58,9 +58,12 @@ function Sidebar() {
           data-parent="#accordionSidebar"
         >
           <div className="bg-white py-2 collapse-inner rounded">
-            <h6 className="collapse-header">Example Header:</h6>
+            <h6 className="collapse-header">Products:</h6>
             <a className="collapse-item" href="/admin">
-              Example Screen
+              View Products
+            </a>
+            <a className="collapse-item" href="/admin">
+              Add Products
             </a>
           </div>
         </div>
