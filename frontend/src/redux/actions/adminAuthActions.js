@@ -9,11 +9,11 @@ import { adminAuth, } from "../types"
 export const login = creds => {
   return dispatch => {
 
-    dispatch({ type: auth.AUTH_LOGIN_PENDING, })
+    dispatch({ type: adminAuth.ADMIN_AUTH_LOGIN_PENDING, })
 
     LoginUserService(creds).then(res => {
       dispatch({
-        type: auth.AUTH_LOGIN_SUCCESS,
+        type: adminAuth.ADMIN_AUTH_LOGIN_SUCCESS,
         payload: res,
       })
 
@@ -31,7 +31,7 @@ export const login = creds => {
         message = "Something went wrong. Please come back later."
       }
       dispatch({
-        type: auth.AUTH_LOGIN_ERROR,
+        type: adminAuth.ADMIN_AUTH_LOGIN_ERROR,
         payload: message,
       })
     })
@@ -41,18 +41,18 @@ export const login = creds => {
 export const authorize = () => {
   return dispatch => {
 
-    dispatch({ type: auth.AUTH_AUTHORIZE_PENDING, })
+    dispatch({ type: adminAuth.ADMIN_AUTH_AUTHORIZE_PENDING, })
     const tokenId = "user-token"
     if (localStorage.getItem(tokenId) === null) {
       return dispatch({
-        type: auth.AUTH_AUTHORIZE_ERROR,
+        type: adminAuth.ADMIN_AUTH_AUTHORIZE_ERROR,
         payload: "Token not set.",
       })
     }
 
     AuthorizeUserService().then(res => {
       dispatch({
-        type: auth.AUTH_AUTHORIZE_SUCCESS,
+        type: adminAuth.ADMIN_AUTH_AUTHORIZE_SUCCESS,
         payload: res,
       })
 
@@ -74,7 +74,7 @@ export const authorize = () => {
         message = "Something went wrong. Please come back later."
       }
       dispatch({
-        type: auth.AUTH_AUTHORIZE_ERROR,
+        type: adminAuth.ADMIN_AUTH_AUTHORIZE_ERROR,
         payload: message,
       })
     })
@@ -83,11 +83,11 @@ export const authorize = () => {
 
 export const logout = () => {
   return dispatch => {
-    dispatch({ type: auth.AUTH_LOGOUT_PENDING, })
+    dispatch({ type: adminAuth.ADMIN_AUTH_LOGOUT_PENDING, })
 
     LogoutUserService().then(res => {
       dispatch({
-        type: auth.AUTH_LOGOUT_SUCCESS,
+        type: adminAuth.ADMIN_AUTH_LOGOUT_SUCCESS,
         payload: null,
       })
 
@@ -105,7 +105,7 @@ export const logout = () => {
         message = "Something went wrong. Please come back later."
       }
       dispatch({
-        type: auth.AUTH_LOGOUT_ERROR,
+        type: adminAuth.ADMIN_AUTH_LOGOUT_ERROR,
         payload: message,
       })
     })
