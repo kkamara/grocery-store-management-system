@@ -20,13 +20,13 @@ module.exports = {
         amount: {
           type: Sequelize.FLOAT
         },
-        shippingId: {
+        shippingsId: {
           type: Sequelize.INTEGER
         },
-        userAddressId: {
+        userAddressesId: {
           type: Sequelize.INTEGER
         },
-        userId: {
+        usersId: {
           type: Sequelize.INTEGER
         },
         createdAt: {

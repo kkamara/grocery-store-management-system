@@ -29,13 +29,13 @@ module.exports = (sequelize, DataTypes) => {
     amount: {
       type: DataTypes.FLOAT
     },
-    shippingId: {
+    shippingsId: {
       type: DataTypes.INTEGER
     },
-    userAddressId: {
+    userAddressesId: {
       type: DataTypes.INTEGER
     },
-    userId: {
+    usersId: {
       type: DataTypes.INTEGER
     },
     createdAt: {

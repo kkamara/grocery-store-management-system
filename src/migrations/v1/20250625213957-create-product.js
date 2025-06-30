@@ -20,7 +20,7 @@ module.exports = {
         weight: {
           type: Sequelize.STRING
         },
-        categoryId: {
+        categoriesId: {
           type: Sequelize.INTEGER
         },
         price: {
@@ -29,7 +29,7 @@ module.exports = {
         description: {
           type: Sequelize.STRING
         },
-        manufacturerId: {
+        manufacturersId: {
           type: Sequelize.INTEGER
         },
         createdAt: {

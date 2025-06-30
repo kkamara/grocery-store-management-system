@@ -11,10 +11,10 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        userId: {
+        usersId: {
           type: Sequelize.INTEGER
         },
-        productId: {
+        productsId: {
           type: Sequelize.INTEGER
         },
         quantity: {

@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     weight: {
       type: DataTypes.STRING
     },
-    categoryId: {
+    categoriesId: {
       type: DataTypes.INTEGER
     },
     price: {
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING
     },
-    manufacturerId: {
+    manufacturersId: {
       type: DataTypes.INTEGER
     },
     createdAt: {
