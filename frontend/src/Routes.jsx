@@ -22,6 +22,10 @@ import MainSiteRoute from "./MainSiteRoute"
 export default () => {
   return (
     <Routes>
+      <Route element={<AdminDashboardRoute/>}>
+        <Route path={url("/admin")} element={<DashboardHome/>}/>
+        <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
+      </Route>
       <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
           <Route path={url("/")} element={<Home />}/>
@@ -29,10 +33,6 @@ export default () => {
         <Route path={url("/user/signin")} element={<SignIn />}/>
         <Route path={url("/user/logout")} element={<Logout />}/>
         <Route path={url("/user/register")} element={<Register />}/>
-      </Route>
-      <Route element={<AdminDashboardRoute/>}>
-        <Route path={url("/admin")} element={<DashboardHome/>}/>
-        <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
       </Route>
       <Route path={url("/admin/signin")} element={<DashboardSignIn/>}/>
       <Route path={url("*")} element={<NotFound />}/>
