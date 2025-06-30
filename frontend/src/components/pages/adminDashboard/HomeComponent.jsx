@@ -1,15 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState, } from "react"
+import { useNavigate, } from "react-router-dom"
+import { useDispatch, useSelector, } from "react-redux"
+import { Helmet, } from "react-helmet"
+import { authorize, } from "../../../redux/actions/authActions"
+import Error from "../../layouts/Error"
+import { adminDashboardTitle, } from "../../../constants"
 
-function HomeComponent() {
-  return (
-    <div className="container dashboard-home-container">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <div>DashboardHomeComponent</div>
-        </div>
-      </div>
+export default function HomeComponent() {
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+  const state = useSelector(state => ({
+    auth: state.auth,
+  }))
+
+  useEffect(() => {
+    dispatch(authorize())
+  }, [])
+
+  useEffect(() => {
+    if (!state.auth.data) {
+      window.location.href = "/admin/signin"
+    }
+  }, [state.auth])
+
+  if (state.auth.loading) {
+    return <div className="container dashboard-home-container text-center">
+      <Helmet>
+        <title>Dashboard Home - {adminDashboardTitle}</title>
+      </Helmet>
+      <p>Loading...</p>
     </div>
-  )
-}
+  }
 
-export default HomeComponent
+  return <div className="container dashboard-home-container">
+    <Helmet>
+      <title>Dashboard Home - {adminDashboardTitle}</title>
+    </Helmet>
+    <div className="col-md-4 offset-md-4">
+      <h3>DashboardHomeComponent</h3>
+    </div>
+  </div>
+}
