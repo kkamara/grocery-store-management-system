@@ -19,7 +19,7 @@ export default function HomeComponent() {
   }, [])
 
   useEffect(() => {
-    if (!state.adminAuth.data) {
+    if (false === state.adminAuth.loading && !state.adminAuth.data) {
       window.location.href = "/admin/signin"
     }
   }, [state.adminAuth])
