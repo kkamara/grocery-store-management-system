@@ -42,7 +42,7 @@ export const authorize = () => {
   return dispatch => {
 
     dispatch({ type: adminAuth.ADMIN_AUTH_AUTHORIZE_PENDING, })
-    const tokenId = "user-token"
+    const tokenId = "admin-user-token"
     if (localStorage.getItem(tokenId) === null) {
       return dispatch({
         type: adminAuth.ADMIN_AUTH_AUTHORIZE_ERROR,

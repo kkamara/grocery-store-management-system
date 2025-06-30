@@ -2,7 +2,7 @@ import HttpService from "./HttpService"
 
 export const LoginUserService = (credentials) => {
   const http = new HttpService()
-  const tokenId = "user-token"
+  const tokenId = "admin-user-token"
   
   return http.postData("/admin/user", credentials)
     .then(response => {
@@ -14,7 +14,7 @@ export const LoginUserService = (credentials) => {
 
 export const AuthorizeUserService = () => {
   const http = new HttpService()
-  const tokenId = "user-token"
+  const tokenId = "admin-user-token"
   
   return http.getData("/admin/user/authorize", tokenId)
     .then(response => {
@@ -25,7 +25,7 @@ export const AuthorizeUserService = () => {
 
 export const LogoutUserService = () => {
   const http = new HttpService()
-  const tokenId = "user-token"
+  const tokenId = "admin-user-token"
   return http.getData("/admin/users/logout", tokenId)
     .then((response) => {
       if (null !== localStorage.getItem(tokenId)) {
