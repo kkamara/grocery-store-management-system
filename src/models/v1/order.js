@@ -12,6 +12,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    /**
+     * @returns {object|false}
+     */
+    static async getAdminLastMonthOrdersCountStat() {
+      try {
+        const result = await sequelize.query(
+          `SELECT count(id) as count
+            FROM ${this.getTableName()}
+            WHERE createdAt > DATE_SUB(curdate(), INTERVAL 1 MONTH)`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        
+        return { count: result[0].count };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   order.init({
     id: {
