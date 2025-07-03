@@ -5,12 +5,14 @@ import { authorize, } from "../../../redux/actions/adminAuthActions"
 import Error from "../../layouts/Error"
 import { adminDashboardTitle, } from "../../../constants"
 import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
+import { getAdminPastMonthOrdersCountStat, } from "../../../redux/actions/adminPastMonthOrdersCountStatActions"
 
 export default function HomeComponent() {
   const dispatch = useDispatch()
   const state = useSelector((state) => ({
     adminAuth: state.adminAuth,
     adminProductsCountStat: state.adminProductsCountStat,
+    adminPastMonthOrdersCountStat: state.adminPastMonthOrdersCountStat,
   }))
 
   useEffect(() => {
@@ -23,10 +25,15 @@ export default function HomeComponent() {
     }
     if (false === state.adminAuth.loading && state.adminAuth.data) {
       dispatch(getAdminProductsCountStat())
+      dispatch(getAdminPastMonthOrdersCountStat())
     }
   }, [state.adminAuth])
 
-  if (state.adminAuth.loading || state.adminProductsCountStat.loading) {
+  if (
+    state.adminAuth.loading ||
+    state.adminProductsCountStat.loading ||
+    state.adminPastMonthOrdersCountStat.loading
+  ) {
     return (
       <div className="container dashboard-home-container text-center">
         <Helmet>
@@ -77,10 +84,10 @@ export default function HomeComponent() {
               <div className="row no-gutters align-items-center">
                 <div className="col mr-2">
                   <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
-                    Orders (Past Month)
+                    Past Month Orders
                   </div>
                   <div className="h5 mb-0 font-weight-bold text-gray-800">
-                    MONTH_ORDERS_COUNT
+                    {state.adminPastMonthOrdersCountStat.data}
                   </div>
                 </div>
                 <div className="col-auto">
