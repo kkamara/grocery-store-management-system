@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @returns {object|false}
+     * @returns {string|false}
      */
     static async getAdminOngoingShipmentsPercentageStat() {
       try {
@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
         );
 
         if (0 === whole[0].count) {
-          return { percentage: 0, };
+          return { percentage: "0%", };
         }
         
         const result = (part[0].count / whole[0].count) * 100;
-        return { percentage: result };
+        return { percentage: result + "%" };
       } catch(err) {
         if ("production" !== nodeEnv) {
           console.log(err);
