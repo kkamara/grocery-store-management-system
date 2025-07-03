@@ -12,6 +12,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    /**
+     * @returns {object|false}
+     */
+    static async getAdminOngoingShipmentsCountStat() {
+      try {
+        const result = await sequelize.query(
+          `SELECT count(id) as count
+            FROM ${this.getTableName()}
+            WHERE status IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        
+        return { count: result[0].count };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   shipping.init({
     id: {
