@@ -649,6 +649,29 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @returns {object|false}
+     */
+    static async getAdminGuestUsersCountStat() {
+      try {
+        const result = await sequelize.query(
+          `SELECT count(id) as count
+            FROM ${this.getTableName()}
+            WHERE role = "guest"`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+
+        return { count: result[0].count };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   
   User.init({

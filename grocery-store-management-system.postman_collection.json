@@ -495,6 +495,37 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Guest Users Count",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api}}/web/stats/admin/shipments/ongoing",
+											"host": [
+												"{{api}}"
+											],
+											"path": [
+												"web",
+												"stats",
+												"admin",
+												"shipments",
+												"ongoing"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
