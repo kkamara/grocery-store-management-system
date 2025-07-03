@@ -7,6 +7,7 @@ import { adminDashboardTitle, } from "../../../constants"
 import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
 import { getAdminPastMonthOrdersCountStat, } from "../../../redux/actions/adminPastMonthOrdersCountStatActions"
 import { getAdminOngoingShipmentsPercentageStat, } from "../../../redux/actions/adminOngoingShipmentsPercentageStatActions"
+import { getAdminGuestUsersCountStat, } from "../../../redux/actions/adminGuestUsersCountStatActions"
 
 export default function HomeComponent() {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ export default function HomeComponent() {
     adminProductsCountStat: state.adminProductsCountStat,
     adminPastMonthOrdersCountStat: state.adminPastMonthOrdersCountStat,
     adminOngoingShipmentsPercentageStat: state.adminOngoingShipmentsPercentageStat,
+    adminGuestUsersCountStat: state.adminGuestUsersCountStat,
   }))
 
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function HomeComponent() {
       dispatch(getAdminProductsCountStat())
       dispatch(getAdminPastMonthOrdersCountStat())
       dispatch(getAdminOngoingShipmentsPercentageStat())
+      dispatch(getAdminGuestUsersCountStat())
     }
   }, [state.adminAuth])
 
@@ -36,7 +39,8 @@ export default function HomeComponent() {
     state.adminAuth.loading ||
     state.adminProductsCountStat.loading ||
     state.adminPastMonthOrdersCountStat.loading ||
-    state.adminOngoingShipmentsPercentageStat.loading
+    state.adminOngoingShipmentsPercentageStat.loading ||
+    state.adminGuestUsersCountStat.loading
   ) {
     return (
       <div className="container dashboard-home-container text-center">
@@ -147,7 +151,7 @@ export default function HomeComponent() {
                     Guest Users
                   </div>
                   <div className="h5 mb-0 font-weight-bold text-gray-800">
-                    USERS_COUNT
+                    {state.adminGuestUsersCountStat.data}
                   </div>
                 </div>
                 <div className="col-auto">

@@ -5,6 +5,7 @@ import adminAuthReducer from "./adminAuthReducer"
 import adminProductsCountStatReducer from "./adminProductsCountStatReducer"
 import adminPastMonthOrdersCountStatReducer from "./adminPastMonthOrdersCountStatReducer"
 import adminOngoingShipmentsPercentageStatReducer from "./adminOngoingShipmentsPercentageStatReducer"
+import adminGuestUsersCountStatReducer from "./adminGuestUsersCountStatReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   adminProductsCountStat: adminProductsCountStatReducer,
   adminPastMonthOrdersCountStat: adminPastMonthOrdersCountStatReducer,
   adminOngoingShipmentsPercentageStat: adminOngoingShipmentsPercentageStatReducer,
+  adminGuestUsersCountStat: adminGuestUsersCountStatReducer,
 })
