@@ -466,7 +466,7 @@
 									"response": []
 								},
 								{
-									"name": "Ongoing Shipments Count",
+									"name": "Ongoing Shipments Percentage",
 									"request": {
 										"auth": {
 											"type": "bearer",

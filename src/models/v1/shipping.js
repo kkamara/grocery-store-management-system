@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * @returns {object|false}
      */
-    static async getAdminOngoingShipmentsCountStat() {
+    static async getAdminOngoingShipmentsPercentageStat() {
       try {
-        const result = await sequelize.query(
+        const part = await sequelize.query(
           `SELECT count(id) as count
             FROM ${this.getTableName()}
             WHERE status IS NULL`,
@@ -27,7 +27,20 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         
-        return { count: result[0].count };
+        const whole = await sequelize.query(
+          `SELECT count(id) as count
+            FROM ${this.getTableName()}`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+
+        if (0 === whole[0].count) {
+          return { percentage: 0, };
+        }
+        
+        const result = (part[0].count / whole[0].count) * 100;
+        return { percentage: result };
       } catch(err) {
         if ("production" !== nodeEnv) {
           console.log(err);

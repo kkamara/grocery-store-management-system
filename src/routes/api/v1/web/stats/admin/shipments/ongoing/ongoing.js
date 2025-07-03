@@ -7,14 +7,14 @@ const { message500 } = require("../../../../../../../../utils/httpResponses");
 const router = express.Router();
 
 router.get("/", adminAuthenticate, async (req, res) => {
-  const result = await db.sequelize.models.shipping.getAdminOngoingShipmentsCountStat();
+  const result = await db.sequelize.models.shipping.getAdminOngoingShipmentsPercentageStat();
   if (false === result) {
     res.status(status.UNAUTHORIZED);
     return res.json(message500);
   }
   
   res.status(status.OK);
-  return res.json({ data: result.count });
+  return res.json({ data: result.percentage });
 });
 
 module.exports = router;
