@@ -6,6 +6,7 @@ import Error from "../../layouts/Error"
 import { adminDashboardTitle, } from "../../../constants"
 import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
 import { getAdminPastMonthOrdersCountStat, } from "../../../redux/actions/adminPastMonthOrdersCountStatActions"
+import { getAdminOngoingShipmentsPercentageStat, } from "../../../redux/actions/adminOngoingShipmentsPercentageStatActions"
 
 export default function HomeComponent() {
   const dispatch = useDispatch()
@@ -13,6 +14,7 @@ export default function HomeComponent() {
     adminAuth: state.adminAuth,
     adminProductsCountStat: state.adminProductsCountStat,
     adminPastMonthOrdersCountStat: state.adminPastMonthOrdersCountStat,
+    adminOngoingShipmentsPercentageStat: state.adminOngoingShipmentsPercentageStat,
   }))
 
   useEffect(() => {
@@ -26,13 +28,15 @@ export default function HomeComponent() {
     if (false === state.adminAuth.loading && state.adminAuth.data) {
       dispatch(getAdminProductsCountStat())
       dispatch(getAdminPastMonthOrdersCountStat())
+      dispatch(getAdminOngoingShipmentsPercentageStat())
     }
   }, [state.adminAuth])
 
   if (
     state.adminAuth.loading ||
     state.adminProductsCountStat.loading ||
-    state.adminPastMonthOrdersCountStat.loading
+    state.adminPastMonthOrdersCountStat.loading ||
+    state.adminOngoingShipmentsPercentageStat.loading
   ) {
     return (
       <div className="container dashboard-home-container text-center">
@@ -109,7 +113,7 @@ export default function HomeComponent() {
                   <div className="row no-gutters align-items-center">
                     <div className="col-auto">
                       <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                        50%
+                        {state.adminOngoingShipmentsPercentageStat.data}
                       </div>
                     </div>
                     <div className="col">
@@ -117,7 +121,7 @@ export default function HomeComponent() {
                         <div
                           className="progress-bar bg-info"
                           role="progressbar"
-                          style={{ width: "50%" }}
+                          style={{ width: state.adminOngoingShipmentsPercentageStat.data }}
                           aria-valuenow="50"
                           aria-valuemin="0"
                           aria-valuemax="100"
