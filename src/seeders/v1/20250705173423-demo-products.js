@@ -11,7 +11,7 @@ module.exports = {
       for (let i = 0; i < 30; i++) {
         const category = await queryInterface.sequelize.query(
           "SELECT id FROM categories ORDER BY rand() LIMIT 1",
-          { type: Sequelize.QueryTypes.SELECT },
+          { type: Sequelize.QueryTypes.SELECT, transaction },
         );
 
         if (0 === category.length) {
@@ -20,7 +20,7 @@ module.exports = {
 
         const manufacturer = await queryInterface.sequelize.query(
           "SELECT id FROM manufacturers ORDER BY rand() LIMIT 1",
-          { type: Sequelize.QueryTypes.SELECT },
+          { type: Sequelize.QueryTypes.SELECT, transaction },
         );
 
         if (0 === manufacturer.length) {
