@@ -17,8 +17,8 @@ module.exports = {
         name: {
           type: Sequelize.STRING
         },
-        photo: {
-          type: Sequelize.STRING
+        dataURI: {
+          type: Sequelize.TEXT
         },
         type: {
           type: Sequelize.STRING
