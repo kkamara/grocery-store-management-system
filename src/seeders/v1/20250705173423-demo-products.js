@@ -52,12 +52,12 @@ module.exports = {
         for (let k = 0; k < faker.number.int({ min: 1, max: 5, }); k++) {
           const photo = "image string";
           await queryInterface.sequelize.query(
-            `INSERT INTO productPhotos(productsId, name, photo, type, createdAt, updatedAt)
-              VALUES (:productsId, :name, :photo, :type, :createdAt, :updatedAt)`,
+            `INSERT INTO productPhotos(productsId, name, dataURI, type, createdAt, updatedAt)
+              VALUES (:productsId, :name, :dataURI, :type, :createdAt, :updatedAt)`,
             {
               replacements: {
                 name: faker.commerce.productName(),
-                photo: photo,
+                dataURI: photo,
                 type: "image/png",
                 createdAt: moment().utc().format(mysqlTimeFormat),
                 updatedAt: moment().utc().format(mysqlTimeFormat),
