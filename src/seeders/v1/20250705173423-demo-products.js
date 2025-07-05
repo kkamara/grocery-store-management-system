@@ -8,7 +8,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      const insertArray = [];
       for (let i = 0; i < 30; i++) {
         const category = await queryInterface.sequelize.query(
           "SELECT id FROM categories ORDER BY rand() LIMIT 1",
