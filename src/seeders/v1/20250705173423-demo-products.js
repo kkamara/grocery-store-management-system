@@ -45,6 +45,7 @@ module.exports = {
               updatedAt: moment().utc().format(mysqlTimeFormat),
             },
             type: Sequelize.QueryTypes.INSERT,
+            transaction,
           }
         );
         const productsId = productInsertResult[0];
@@ -63,6 +64,7 @@ module.exports = {
                 productsId,
               },
               type: Sequelize.QueryTypes.INSERT,
+              transaction,
             }
           );
         }
