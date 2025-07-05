@@ -59,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT
     },
     description: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     manufacturersId: {
       type: DataTypes.INTEGER
