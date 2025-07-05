@@ -1,6 +1,5 @@
 'use strict';
 const moment = require("moment-timezone");
-const config = require('../../config/index');
 const { mysqlTimeFormat, } = require("../../utils/time");
 const { generateToken, } = require("../../utils/tokens");
 

@@ -1,5 +1,6 @@
 'use strict';
 const moment = require("moment-timezone");
+const { faker, } = require('@faker-js/faker');
 const { mysqlTimeFormat, } = require("../../utils/time");
 const { encrypt, } = require("../../utils/tokens");
 
@@ -8,18 +9,26 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      const pwd = encrypt("secret");
-
-      await queryInterface.bulkInsert('users', [{
-        email: "admin@example.com",
-        firstName: "Admin",
-        lastName: "User",
-        password: pwd.hash,
-        passwordSalt: pwd.salt,
-        role: "admin",
-        createdAt: moment().utc().format(mysqlTimeFormat),
-        updatedAt: moment().utc().format(mysqlTimeFormat),
-      }], { transaction, });
+      const insertArray = [];
+      let pwd = null;
+      for (let i = 0; i < 30; i++) {
+        pwd = encrypt("secret");
+        insertArray.push({
+          email: faker.internet.email(),
+          firstName: faker.person.firstName(),
+          lastName: faker.person.lastName(),
+          password: pwd.hash,
+          passwordSalt: pwd.salt,
+          role: "guest",
+          createdAt: moment().utc().format(mysqlTimeFormat),
+          updatedAt: moment().utc().format(mysqlTimeFormat),
+        });
+      }
+      await queryInterface.bulkInsert(
+        'users',
+        insertArray,
+        { transaction },
+      );
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
