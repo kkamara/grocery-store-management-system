@@ -27,7 +27,7 @@ module.exports = {
           type: Sequelize.FLOAT
         },
         description: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         manufacturersId: {
