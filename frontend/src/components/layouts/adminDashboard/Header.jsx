@@ -1,6 +1,23 @@
-import React from 'react'
+import React from "react"
+import { useSelector, } from "react-redux"
+import { Navigate, } from "react-router-dom"
 
 export default function Header() {
+  const state = useSelector((state) => ({
+    adminAuth: state.adminAuth,
+  }))
+
+  if (state.adminAuth.loading) {
+    return null
+  }
+
+  if (
+    false === state.adminAuth.loading &&
+    null === state.adminAuth.data
+  ) {
+    return <Navigate to="/admin/signin"/>
+  }
+  
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <button
@@ -237,7 +254,7 @@ export default function Header() {
             aria-expanded="false"
           >
             <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-              Douglas McGee
+              {state.adminAuth.data.user.firstName} {state.adminAuth.data.user.lastName}
             </span>
             <img
               className="img-profile rounded-circle"
