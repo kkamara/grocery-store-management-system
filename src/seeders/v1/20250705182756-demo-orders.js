@@ -52,7 +52,9 @@ module.exports = {
             VALUES (:status, :createdAt, :updatedAt)`,
           {
             replacements: {
-              status: null,
+              status: 0 === faker.number.int({ min: 0, max: 1 }) ?
+                "shipped" :
+                null,
               createdAt: createdAt,
               updatedAt: createdAt,
             },
