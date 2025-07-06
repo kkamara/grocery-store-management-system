@@ -566,6 +566,36 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Orders Chart",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api}}/web/charts/admin/orders",
+											"host": [
+												"{{api}}"
+											],
+											"path": [
+												"web",
+												"charts",
+												"admin",
+												"orders"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}

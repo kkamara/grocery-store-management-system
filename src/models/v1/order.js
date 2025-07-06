@@ -53,11 +53,12 @@ module.exports = (sequelize, DataTypes) => {
           id: 1,
           label: "Dataset 1",
           data: [],
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
         }],
       };
       try {
         const threeMonthAgoResults = await sequelize.query(
-          `SELECT sum(amount) as amountCount
+          `SELECT sum(amount) as amountSum
             FROM orders
             WHERE createdAt > :from
               AND createdAt < :to`,
@@ -74,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         );
         const twoMonthAgoResults = await sequelize.query(
-          `SELECT sum(amount) as amountCount
+          `SELECT sum(amount) as amountSum
             FROM orders
             WHERE createdAt > :from
               AND createdAt < :to`,
@@ -91,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         );
         const lastMonthResults = await sequelize.query(
-          `SELECT sum(amount) as amountCount
+          `SELECT sum(amount) as amountSum
             FROM orders
             WHERE createdAt > :from
               AND createdAt < :to`,
@@ -106,13 +107,98 @@ module.exports = (sequelize, DataTypes) => {
           }
         );
         result.datasets[0].data.push(
-          Math.round((threeMonthAgoResults[0].amountCount + Number.EPSILON) * 100) / 100
+          Math.round((threeMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100
         );
         result.datasets[0].data.push(
-          Math.round((twoMonthAgoResults[0].amountCount + Number.EPSILON) * 100) / 100
+          Math.round((twoMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100
         );
         result.datasets[0].data.push(
-          Math.round((lastMonthResults[0].amountCount + Number.EPSILON) * 100) / 100
+          Math.round((lastMonthResults[0].amountSum + Number.EPSILON) * 100) / 100
+        );
+        return result;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @returns {object}
+     */
+    static async getPast3MonthOrders() {
+      let result = {
+        labels: [
+          moment().subtract(2, "months").format("MMM"),
+          moment().subtract(1, "months").format("MMM"),
+          moment().format("MMM"),
+        ],
+        datasets: [{
+          id: 1,
+          label: "Dataset 1",
+          data: [],
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        }],
+      };
+      try {
+        const threeMonthAgoResults = await sequelize.query(
+          `SELECT count(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(3, "months")
+                .format(mysqlTimeFormat),
+              to: moment()
+                .subtract(2, "months")
+                .format(mysqlTimeFormat),
+            }
+          }
+        );
+        const twoMonthAgoResults = await sequelize.query(
+          `SELECT count(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(2, "months")
+                .format(mysqlTimeFormat),
+              to: moment()
+                .subtract(1, "months")
+                .format(mysqlTimeFormat),
+            }
+          }
+        );
+        const lastMonthResults = await sequelize.query(
+          `SELECT count(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(1, "months")
+                .format(mysqlTimeFormat),
+              to: moment().format(mysqlTimeFormat),
+            }
+          }
+        );
+        result.datasets[0].data.push(
+          threeMonthAgoResults[0].amountCount
+        );
+        result.datasets[0].data.push(
+          twoMonthAgoResults[0].amountCount
+        );
+        result.datasets[0].data.push(
+          lastMonthResults[0].amountCount
         );
         return result;
       } catch(err) {

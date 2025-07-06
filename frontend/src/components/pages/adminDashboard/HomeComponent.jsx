@@ -2,19 +2,40 @@ import React, { useEffect, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, } from "chart.js"
-import { Line, } from 'react-chartjs-2'
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+} from "chart.js"
+import { Line, Bar, } from 'react-chartjs-2'
 
 import { authorize, } from "../../../redux/actions/adminAuthActions"
-import Error from "../../layouts/Error"
 import { adminDashboardTitle, } from "../../../constants"
 import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
 import { getAdminPastMonthOrdersCountStat, } from "../../../redux/actions/adminPastMonthOrdersCountStatActions"
 import { getAdminOngoingShipmentsPercentageStat, } from "../../../redux/actions/adminOngoingShipmentsPercentageStatActions"
 import { getAdminGuestUsersCountStat, } from "../../../redux/actions/adminGuestUsersCountStatActions"
 import { getAdminEarningsLineChart, } from "../../../redux/actions/adminEarningsLineChartActions"
+import { getAdminOrdersBarChart, } from "../../../redux/actions/adminOrdersBarChartActions"
 
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement)
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+)
 
 export default function HomeComponent() {
   const dispatch = useDispatch()
@@ -25,6 +46,7 @@ export default function HomeComponent() {
     adminOngoingShipmentsPercentageStat: state.adminOngoingShipmentsPercentageStat,
     adminGuestUsersCountStat: state.adminGuestUsersCountStat,
     adminEarningsLineChart: state.adminEarningsLineChart,
+    adminOrdersBarChart: state.adminOrdersBarChart,
   }))
 
   useEffect(() => {
@@ -41,6 +63,7 @@ export default function HomeComponent() {
       dispatch(getAdminOngoingShipmentsPercentageStat())
       dispatch(getAdminGuestUsersCountStat())
       dispatch(getAdminEarningsLineChart())
+      dispatch(getAdminOrdersBarChart())
     }
   }, [state.adminAuth])
 
@@ -50,7 +73,8 @@ export default function HomeComponent() {
     state.adminPastMonthOrdersCountStat.loading ||
     state.adminOngoingShipmentsPercentageStat.loading ||
     state.adminGuestUsersCountStat.loading ||
-    state.adminEarningsLineChart.loading
+    state.adminEarningsLineChart.loading ||
+    state.adminOrdersBarChart.loading
   ) {
     return (
       <div className="container dashboard-home-container text-center">
@@ -207,6 +231,43 @@ export default function HomeComponent() {
                       .datasets,
                   }}
                 />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-xl-5 col-lg-6">
+          <div className="card shadow mb-4">
+              <div
+                  className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 className="m-0 font-weight-bold text-primary">Past 3 Months Orders</h6>
+                  <div className="dropdown no-arrow">
+                      <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                      </a>
+                      <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <div className="dropdown-header">Dropdown Header:</div>
+                          <a className="dropdown-item" href="#">Action</a>
+                          <a className="dropdown-item" href="#">Another action</a>
+                          <div className="dropdown-divider"></div>
+                          <a className="dropdown-item" href="#">Something else here</a>
+                      </div>
+                  </div>
+              </div>
+              <div className="card-body">
+                <div className="chart-pie pt-4 pb-2">
+                  <Bar
+                    data={{
+                      labels: state.adminOrdersBarChart
+                        .data
+                        .labels,
+                      datasets: state.adminOrdersBarChart
+                        .data
+                        .datasets,
+                    }}
+                  />;
               </div>
             </div>
           </div>

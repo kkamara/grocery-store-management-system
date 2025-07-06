@@ -6,11 +6,11 @@ const adminAuthenticate = require("../../../../../../../middlewares/v1/adminAuth
 const router = express.Router();
 
 router.get("/", adminAuthenticate, async (req, res) => {
-  const past3MonthEarnings = await db.sequelize
+  const past3MonthOrders = await db.sequelize
     .models
     .order
-    .getPast3MonthEarnings();
-  return res.json({ data: past3MonthEarnings });
+    .getPast3MonthOrders();
+  return res.json({ data: past3MonthOrders });
 });
 
 module.exports = router;
