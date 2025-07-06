@@ -27,6 +27,19 @@ module.exports = {
           throw new Error("No manufacturers are available to select.");
         }
 
+        let productCreatedAt = null;
+        if (0 === faker.number.int({ min: 0, max: 1, })) {
+          productCreatedAt = moment().utc().subtract(
+            faker.number.int({ min: 1, max: 5, }),
+            "weeks",
+          ).format(mysqlTimeFormat);
+        } else {
+          productCreatedAt = moment().utc().subtract(
+            faker.number.int({ min: 1, max: 5, }),
+            "months",
+          ).format(mysqlTimeFormat);
+        }
+
         const productInsertResult = await queryInterface.sequelize.query(
           `INSERT INTO products(name, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
             VALUES (:name, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
@@ -41,8 +54,8 @@ module.exports = {
                 faker.lorem.paragraphs({ min: 1, max: 1, }, "\n") :
                 null,
               manufacturersId: manufacturer[0].id,
-              createdAt: moment().utc().format(mysqlTimeFormat),
-              updatedAt: moment().utc().format(mysqlTimeFormat),
+              createdAt: productCreatedAt,
+              updatedAt: productCreatedAt,
             },
             type: Sequelize.QueryTypes.INSERT,
             transaction,
