@@ -34,14 +34,27 @@ module.exports = {
           throw new Error("No user addresses are available to select.");
         }
 
+        let createdAt = null;
+        if (0 === faker.number.int({ min: 0, max: 1, })) {
+          createdAt = moment().utc().subtract(
+            faker.number.int({ min: 1, max: 5, }),
+            "weeks",
+          ).format(mysqlTimeFormat);
+        } else {
+          createdAt = moment().utc().subtract(
+            faker.number.int({ min: 1, max: 5, }),
+            "months",
+          ).format(mysqlTimeFormat);
+        }
+
         const shippingsInsertResult = await queryInterface.sequelize.query(
           `INSERT INTO shippings(status, createdAt, updatedAt)
             VALUES (:status, :createdAt, :updatedAt)`,
           {
             replacements: {
               status: null,
-              createdAt: moment().utc().format(mysqlTimeFormat),
-              updatedAt: moment().utc().format(mysqlTimeFormat),
+              createdAt: createdAt,
+              updatedAt: createdAt,
             },
             type: Sequelize.QueryTypes.INSERT,
             transaction,
@@ -60,8 +73,8 @@ module.exports = {
               shippingsId: shippingsInsertResult[0],
               userAddressesId: userAddressesResult[0].id,
               usersId: userResult[0].id,
-              createdAt: moment().utc().format(mysqlTimeFormat),
-              updatedAt: moment().utc().format(mysqlTimeFormat),
+              createdAt: createdAt,
+              updatedAt: createdAt,
             },
             type: Sequelize.QueryTypes.INSERT,
             transaction,
