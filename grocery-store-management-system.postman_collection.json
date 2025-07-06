@@ -532,6 +532,46 @@
 					]
 				},
 				{
+					"name": "Charts",
+					"item": [
+						{
+							"name": "Bearer Token Restricted",
+							"item": [
+								{
+									"name": "Earnings Chart",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api}}/web/charts/admin/earnings",
+											"host": [
+												"{{api}}"
+											],
+											"path": [
+												"web",
+												"charts",
+												"admin",
+												"earnings"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "Get Users",
 					"request": {
 						"method": "GET",

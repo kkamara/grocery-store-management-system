@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
+const { mysqlTimeFormat, } = require("../../utils/time");
+const { nodeEnv, } = require("../../config");
 module.exports = (sequelize, DataTypes) => {
   class order extends Model {
     /**
@@ -28,6 +31,90 @@ module.exports = (sequelize, DataTypes) => {
         );
         
         return { count: result[0].count };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @returns {object}
+     */
+    static async getPast3MonthEarnings() {
+      let result = {
+        labels: [
+          moment().subtract(2, "months").format("MMM"),
+          moment().subtract(1, "months").format("MMM"),
+          moment().format("MMM"),
+        ],
+        datasets: [{
+          id: 1,
+          label: "Dataset 1",
+          data: [],
+        }],
+      };
+      try {
+        const threeMonthAgoResults = await sequelize.query(
+          `SELECT sum(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(3, "months")
+                .format(mysqlTimeFormat),
+              to: moment()
+                .subtract(2, "months")
+                .format(mysqlTimeFormat),
+            }
+          }
+        );
+        const twoMonthAgoResults = await sequelize.query(
+          `SELECT sum(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(2, "months")
+                .format(mysqlTimeFormat),
+              to: moment()
+                .subtract(1, "months")
+                .format(mysqlTimeFormat),
+            }
+          }
+        );
+        const lastMonthResults = await sequelize.query(
+          `SELECT sum(amount) as amountCount
+            FROM orders
+            WHERE createdAt > :from
+              AND createdAt < :to`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: {
+              from: moment()
+                .subtract(1, "months")
+                .format(mysqlTimeFormat),
+              to: moment().format(mysqlTimeFormat),
+            }
+          }
+        );
+        result.datasets[0].data.push(
+          Math.round((threeMonthAgoResults[0].amountCount + Number.EPSILON) * 100) / 100
+        );
+        result.datasets[0].data.push(
+          Math.round((twoMonthAgoResults[0].amountCount + Number.EPSILON) * 100) / 100
+        );
+        result.datasets[0].data.push(
+          Math.round((lastMonthResults[0].amountCount + Number.EPSILON) * 100) / 100
+        );
+        return result;
       } catch(err) {
         if ("production" !== nodeEnv) {
           console.log(err);
