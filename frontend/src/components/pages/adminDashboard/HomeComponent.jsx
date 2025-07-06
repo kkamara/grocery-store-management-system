@@ -175,7 +175,7 @@ export default function HomeComponent() {
 
       <div className="row">
 
-        <div className="col-xl-8 col-lg-7">
+        <div className="col-xl-7 col-lg-6">
             <div className="card shadow mb-4">
                 <div
                     className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
