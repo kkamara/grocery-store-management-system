@@ -39,7 +39,10 @@ module.exports = (sequelize, DataTypes) => {
           return { percentage: "0%", };
         }
         
-        const result = (part[0].count / whole[0].count) * 100;
+        let result = (part[0].count / whole[0].count) * 100;
+        if (0 < result) {
+          result = Math.round(result * 100) / 100;
+        }
         return { percentage: result + "%" };
       } catch(err) {
         if ("production" !== nodeEnv) {
