@@ -1,6 +1,7 @@
 'use strict';
 const moment = require("moment-timezone");
 const { faker, } = require('@faker-js/faker');
+const slugify = require("slugify");
 const { mysqlTimeFormat, } = require("../../utils/time");
 
 /** @type {import('sequelize-cli').Migration} */
@@ -40,12 +41,15 @@ module.exports = {
           ).format(mysqlTimeFormat);
         }
 
+        const productName = faker.commerce.productName();
+        const productSlug = slugify(productName);
         const productInsertResult = await queryInterface.sequelize.query(
-          `INSERT INTO products(name, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
-            VALUES (:name, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
+          `INSERT INTO products(name, slug, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
+            VALUES (:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
           {
             replacements: {
-              name: faker.commerce.productName(),
+              name: productName,
+              slug: productSlug,
               units: faker.number.int({ min: 0, max: 1000, }),
               weight: faker.number.int({ min: 0, max: 100, }) + " kg",
               categoriesId: category[0].id,
