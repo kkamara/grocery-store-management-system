@@ -4,9 +4,11 @@ import { authorize, } from "../../../../redux/actions/adminAuthActions"
 
 export default function ViewProductsComponent() {
   const dispatch = useDispatch()
-  // const state = useSelector(state => ({
-  //   auth: state.auth,
-  // }))
+  const state = useSelector(state => ({
+    adminAuth: state.adminAuth,
+  }))
+
+  
 
   return (
     <div className="container-fluid">
