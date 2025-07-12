@@ -6,7 +6,7 @@ const {
   message500,
   message200,
 } = require("../../../../../../utils/httpResponses");
-const authenticate = require("../../../../../../middlewares/v1/authenticate");
+const authenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 
 const router = express.Router();
 
