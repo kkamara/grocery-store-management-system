@@ -15,8 +15,9 @@ router.get("/", adminAuthenticate, async (req, res) => {
       error: "The page query parameter, if provided, must be type integer.",
     });
   }
-
-  const products = await db.sequelize.models.product.getAdminProducts(
+  
+  const products = await db.sequelize.models.product.searchAdminProducts(
+    req.queryString("query"),
     page || 1,
   );
   if (false === products) {

@@ -403,7 +403,7 @@
 									"name": "Bearer Token Restricted",
 									"item": [
 										{
-											"name": "Get Products",
+											"name": "Search Products",
 											"request": {
 												"auth": {
 													"type": "bearer",
@@ -418,7 +418,7 @@
 												"method": "GET",
 												"header": [],
 												"url": {
-													"raw": "{{web}}/admin/products",
+													"raw": "{{web}}/admin/products?query=hat",
 													"host": [
 														"{{web}}"
 													],
@@ -431,6 +431,10 @@
 															"key": "page",
 															"value": "5",
 															"disabled": true
+														},
+														{
+															"key": "query",
+															"value": "hat"
 														}
 													]
 												}

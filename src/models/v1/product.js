@@ -37,17 +37,22 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {Number} page 
-     * @param {Number} perPage 
+     * @param {string} query
+     * @param {number} page
+     * @param {number} perPage
      * @returns {object|false}
      */
-    static async getAdminProducts(
+    static async searchAdminProducts(
+      query = null,
       page = 1,
       perPage = 7,
     ) {
+      if (null !== query) {
+        return this.queryAdminProducts(query, page, perPage)
+      }
       page -= 1;
       const offset = page * perPage;
-      try {        
+      try {
         const countResult = await sequelize.query(
           `SELECT count(id) as total
             FROM ${this.getTableName()}
@@ -79,6 +84,90 @@ module.exports = (sequelize, DataTypes) => {
           `,
           {
             replacements: { offset, perPage, },
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        page += 1;
+        return {
+          data: coreResults,
+          meta: {
+            currentPage: page,
+            items: countResult[0].total,
+            pages: Math.ceil(countResult[0].total / perPage),
+            perPage,
+          },
+        }
+      } catch (err) {
+        if ('production' !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {string} query
+     * @param {number} page
+     * @param {number} perPage
+     * @returns {object|false}
+     */
+    static async queryAdminProducts(
+      query = null,
+      page = 1,
+      perPage = 7,
+    ) {
+      page -= 1;
+      const offset = page * perPage;
+      try {
+        const countResult = await sequelize.query(
+          `SELECT count(id) as total
+            FROM ${this.getTableName()}
+            WHERE name LIKE :query OR
+              units LIKE :query OR
+              weight LIKE :query OR
+              price LIKE :query OR
+              createdAt LIKE :query OR
+              updatedAt LIKE :query
+          `,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { query: `%${query}%` },
+          }
+        );
+        
+        if (0 === countResult[0].total) {
+          page += 1;
+          return {
+            data: [],
+            meta: {
+              currentPage: page,
+              items: countResult[0].total,
+              pages: 0,
+              perPage,
+            },
+          }
+        }
+
+        const coreResults = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE name LIKE :query OR
+              units LIKE :query OR
+              weight LIKE :query OR
+              price LIKE :query OR
+              createdAt LIKE :query OR
+              updatedAt LIKE :query
+            ORDER BY id DESC
+            LIMIT :perPage
+            OFFSET :offset
+          `,
+          {
+            replacements: {
+              query: `%${query}%`,
+              offset,
+              perPage,
+            },
             type: sequelize.QueryTypes.SELECT,
           }
         );
