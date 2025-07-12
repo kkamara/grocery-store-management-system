@@ -17,14 +17,14 @@ import DashboardViewProductsComponent from "./components/pages/adminDashboard/pr
 
 import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
-import AdminDashboardRoute from "./AdminDashboardRoute"
+import AdminDashboardTemplateRoute from "./AdminDashboardTemplateRoute"
 import MainSiteRoute from "./MainSiteRoute"
 import AdminAuthRoute from "./AdminAuthRoute"
 
 export default () => {
   return (
     <Routes>
-      <Route element={<AdminDashboardRoute/>}>
+      <Route element={<AdminDashboardTemplateRoute/>}>
         <Route element={<AdminAuthRoute/>}>
           <Route path={url("/admin")} element={<DashboardHome/>}/>
           <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>

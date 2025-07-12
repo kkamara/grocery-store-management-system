@@ -4,7 +4,7 @@ import Sidebar from "./components/layouts/adminDashboard/Sidebar"
 import Header from "./components/layouts/adminDashboard/Header"
 import Footer from "./components/layouts/adminDashboard/Footer"
 
-const AdminDashboardRoute = () => (
+const AdminDashboardTemplateRoute = () => (
   <>
     <div id="wrapper">
       <Sidebar />
@@ -63,4 +63,4 @@ const AdminDashboardRoute = () => (
   </>
 )
 
-export default AdminDashboardRoute
+export default AdminDashboardTemplateRoute
