@@ -35,6 +35,71 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @param {Number} page 
+     * @param {Number} perPage 
+     * @returns {object|false}
+     */
+    static async getAdminProducts(
+      page = 1,
+      perPage = 7,
+    ) {
+      page -= 1;
+      const offset = page * perPage;
+      try {        
+        const countResult = await sequelize.query(
+          `SELECT count(id) as total
+            FROM ${this.getTableName()}
+          `,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        if (0 === countResult[0].total) {
+          page += 1;
+          return {
+            data: [],
+            meta: {
+              currentPage: page,
+              items: countResult[0].total,
+              pages: 0,
+              perPage,
+            },
+          }
+        }
+
+        const coreResults = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            ORDER BY id DESC
+            LIMIT :perPage
+            OFFSET :offset
+          `,
+          {
+            replacements: { offset, perPage, },
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        page += 1;
+        return {
+          data: coreResults,
+          meta: {
+            currentPage: page,
+            items: countResult[0].total,
+            pages: Math.ceil(countResult[0].total / perPage),
+            perPage,
+          },
+        }
+      } catch (err) {
+        if ('production' !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   product.init({
     id: {
