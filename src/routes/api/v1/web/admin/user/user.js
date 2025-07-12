@@ -6,7 +6,7 @@ const {
   message500,
   message200,
 } = require("../../../../../../utils/httpResponses");
-const authenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
+const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 
 const router = express.Router();
 
@@ -95,7 +95,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get("/authorize", authenticate, async (req, res) => {
+router.get("/authorize", adminAuthenticate, async (req, res) => {
   const userFromAuthToken = await db.sequelize.models.user.getUserByAuthToken(
     req.session.extractedToken,
   );
@@ -122,7 +122,7 @@ router.get("/authorize", authenticate, async (req, res) => {
   });
 });
 
-router.delete('/', authenticate, async (req, res) => {
+router.delete('/', adminAuthenticate, async (req, res) => {
   const user = await db.sequelize.models.user
     .getUserByAuthToken(
       req.session.extractedToken,
