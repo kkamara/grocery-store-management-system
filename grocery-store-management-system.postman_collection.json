@@ -395,6 +395,51 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Products",
+							"item": [
+								{
+									"name": "Bearer Token Restricted",
+									"item": [
+										{
+											"name": "Get Products",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/products",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "5",
+															"disabled": true
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
 						}
 					]
 				},
