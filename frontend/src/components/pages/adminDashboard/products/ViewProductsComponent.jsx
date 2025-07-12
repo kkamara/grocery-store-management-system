@@ -7,10 +7,6 @@ export default function ViewProductsComponent() {
   // const state = useSelector(state => ({
   //   auth: state.auth,
   // }))
-  
-  useEffect(() => {
-    dispatch(authorize())
-  }, [])
 
   return (
     <div className="container-fluid">

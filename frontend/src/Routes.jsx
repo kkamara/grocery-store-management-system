@@ -19,14 +19,17 @@ import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
 import AdminDashboardRoute from "./AdminDashboardRoute"
 import MainSiteRoute from "./MainSiteRoute"
+import AdminAuthRoute from "./AdminAuthRoute"
 
 export default () => {
   return (
     <Routes>
       <Route element={<AdminDashboardRoute/>}>
-        <Route path={url("/admin")} element={<DashboardHome/>}/>
-        <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
-        <Route path={url("/admin/products")} element={<DashboardViewProductsComponent/>}/>
+        <Route element={<AdminAuthRoute/>}>
+          <Route path={url("/admin")} element={<DashboardHome/>}/>
+          <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
+          <Route path={url("/admin/products")} element={<DashboardViewProductsComponent/>}/>
+        </Route>
       </Route>
       <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
