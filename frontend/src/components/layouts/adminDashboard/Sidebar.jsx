@@ -59,7 +59,7 @@ function Sidebar() {
         >
           <div className="bg-white py-2 collapse-inner rounded">
             <h6 className="collapse-header">Products:</h6>
-            <a className="collapse-item" href="/admin">
+            <a className="collapse-item" href="/admin/products">
               View Products
             </a>
             <a className="collapse-item" href="/admin">

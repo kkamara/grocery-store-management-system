@@ -6,7 +6,7 @@ export default function Header() {
   const state = useSelector((state) => ({
     adminAuth: state.adminAuth,
   }))
-
+  
   if (state.adminAuth.loading) {
     return null
   }
@@ -17,7 +17,7 @@ export default function Header() {
   ) {
     return <Navigate to="/admin/signin"/>
   }
-  
+
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <button

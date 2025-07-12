@@ -13,6 +13,7 @@ import NotFound from "./components/pages/http/NotFoundComponent"
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
 import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
 import DashboardLogout from "./components/pages/adminDashboard/auth/LogoutComponent"
+import DashboardViewProductsComponent from "./components/pages/adminDashboard/products/ViewProductsComponent"
 
 import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
@@ -25,6 +26,7 @@ export default () => {
       <Route element={<AdminDashboardRoute/>}>
         <Route path={url("/admin")} element={<DashboardHome/>}/>
         <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
+        <Route path={url("/admin/products")} element={<DashboardViewProductsComponent/>}/>
       </Route>
       <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
