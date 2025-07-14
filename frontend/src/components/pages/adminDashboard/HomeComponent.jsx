@@ -16,7 +16,6 @@ import {
 } from "chart.js"
 import { Line, Bar, } from 'react-chartjs-2'
 
-import { authorize, } from "../../../redux/actions/adminAuthActions"
 import { adminDashboardTitle, } from "../../../constants"
 import { getAdminProductsCountStat, } from "../../../redux/actions/adminProductsCountStatActions"
 import { getAdminPastMonthOrdersCountStat, } from "../../../redux/actions/adminPastMonthOrdersCountStatActions"
