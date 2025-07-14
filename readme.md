@@ -4,6 +4,10 @@
 
 ![grocery-store-management-system3.png](https://github.com/kkamara/useful/blob/main/grocery-store-management-system3.png?raw=true)
 
+![grocery-store-management-system4.png](https://github.com/kkamara/useful/blob/main/grocery-store-management-system4.png?raw=true)
+
+![grocery-store-management-system5.png](https://github.com/kkamara/useful/blob/main/grocery-store-management-system5.png?raw=true)
+
 # grocery-store-management-system
 
 (25-Jun-2025) Made with https://github.com/kkamara/nodejs-reactjs-boilerplate . See [Misc](#misc) for more details.
