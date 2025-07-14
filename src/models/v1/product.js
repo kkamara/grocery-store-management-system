@@ -199,7 +199,17 @@ module.exports = (sequelize, DataTypes) => {
      * @returns array
      */
     static getFormattedProductsData(products) {
-      return products.map(product => ({
+      return products.map(product =>
+        this.getFormattedProductData(product)
+      );
+    }
+
+    /**
+     * @param {object} product
+     * @returns array
+     */
+    static getFormattedProductData(product) {
+      return {
         id: product.id,
         name: product.name,
         slug: product.slug,
@@ -212,8 +222,36 @@ module.exports = (sequelize, DataTypes) => {
         manufacturersId: product.manufacturersId,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
-        deletedAt: product.deletedAt,
-      }));
+      };
+    }
+
+    /**
+     * @param {string} slug
+     * @returns {object|false}
+     */
+    static async getProductBySlug(slug) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE slug = :slug`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { slug },
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedProductData(result[0]);
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   product.init({

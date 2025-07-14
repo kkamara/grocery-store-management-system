@@ -440,6 +440,35 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "Get Product",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/products/Bespoke-Bamboo-Hat",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products",
+														"Bespoke-Bamboo-Hat"
+													]
+												}
+											},
+											"response": []
 										}
 									]
 								}
