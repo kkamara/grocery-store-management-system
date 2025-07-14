@@ -8,6 +8,7 @@ import adminOngoingShipmentsPercentageStatReducer from "./adminOngoingShipmentsP
 import adminGuestUsersCountStatReducer from "./adminGuestUsersCountStatReducer"
 import adminEarningsLineChartReducer from "./adminEarningsLineChartReducer"
 import adminOrdersBarChartReducer from "./adminOrdersBarChartReducer"
+import adminSearchProductsReducer from "./adminSearchProductsReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   adminGuestUsersCountStat: adminGuestUsersCountStatReducer,
   adminEarningsLineChart: adminEarningsLineChartReducer,
   adminOrdersBarChart: adminOrdersBarChartReducer,
+  adminSearchProducts: adminSearchProductsReducer,
 })
