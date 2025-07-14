@@ -41,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
         
         let result = (part[0].count / whole[0].count) * 100;
         if (0 < result) {
-          result = Math.round((result + Number.EPSILON) * 100) / 100;
+          result = (Math.round((result + Number.EPSILON) * 100) / 100)
+            .toFixed(2);
         }
         return { percentage: result + "%" };
       } catch(err) {

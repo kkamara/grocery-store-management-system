@@ -107,13 +107,16 @@ module.exports = (sequelize, DataTypes) => {
           }
         );
         result.datasets[0].data.push(
-          Math.round((threeMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100
+          (Math.round((threeMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100)
+            .toFixed(2)
         );
         result.datasets[0].data.push(
-          Math.round((twoMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100
+          (Math.round((twoMonthAgoResults[0].amountSum + Number.EPSILON) * 100) / 100)
+            .toFixed(2)
         );
         result.datasets[0].data.push(
-          Math.round((lastMonthResults[0].amountSum + Number.EPSILON) * 100) / 100
+          (Math.round((lastMonthResults[0].amountSum + Number.EPSILON) * 100) / 100)
+            .toFixed(2)
         );
         return result;
       } catch(err) {

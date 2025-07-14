@@ -90,7 +90,9 @@ module.exports = (sequelize, DataTypes) => {
         
         page += 1;
         return {
-          data: coreResults,
+          data: this.getFormattedProductsData(
+            coreResults
+          ),
           meta: {
             currentPage: page,
             items: countResult[0].total,
@@ -174,7 +176,9 @@ module.exports = (sequelize, DataTypes) => {
         
         page += 1;
         return {
-          data: coreResults,
+          data: this.getFormattedProductsData(
+            coreResults
+          ),
           meta: {
             currentPage: page,
             items: countResult[0].total,
@@ -188,6 +192,28 @@ module.exports = (sequelize, DataTypes) => {
         }
         return false;
       }
+    }
+
+    /**
+     * @param {array} products
+     * @returns array
+     */
+    static getFormattedProductsData(products) {
+      return products.map(product => ({
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        units: product.units,
+        weight: product.weight,
+        categoriesId: product.categoriesId,
+        price: (Math.round((product.price + Number.EPSILON) * 100) / 100)
+          .toFixed(2),
+        description: product.description,
+        manufacturersId: product.manufacturersId,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        deletedAt: product.deletedAt,
+      }));
     }
   }
   product.init({

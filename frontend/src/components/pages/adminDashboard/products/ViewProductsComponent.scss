@@ -1,0 +1,19 @@
+.dashboard-products-container {
+  .query-form-container {
+    width: 387px;
+
+    .query-input {
+      width: 150px;
+    }
+  }
+  .query-form-container * {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .reset-query-form-icon {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+  }
+}

@@ -2,9 +2,12 @@ import React, { useEffect, useState, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
 import ReactPaginate from "react-paginate"
+import { FaWindowClose, } from "react-icons/fa";
 import { searchAdminProducts, } from "../../../../redux/actions/adminSearchProductsActions"
 import { adminDashboardTitle, } from "../../../../constants"
 import { parseDate, } from "../../../../utils/date"
+
+import "./ViewProductsComponent.scss"
 
 export default function ViewProductsComponent() {
   const dispatch = useDispatch()
@@ -13,10 +16,11 @@ export default function ViewProductsComponent() {
     adminSearchProducts: state.adminSearchProducts,
   }))
   const [query, setQuery] = useState("")
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     if (false === state.adminAuth.loading && state.adminAuth.data) {
-      dispatch(searchAdminProducts())
+      dispatch(searchAdminProducts(query, page))
     }
   }, [state.adminAuth])
 
@@ -25,7 +29,24 @@ export default function ViewProductsComponent() {
     if (newPage > state.adminSearchProducts.data.meta.pages) {
       return
     }
+    setPage(newPage)
     dispatch(searchAdminProducts(query, newPage))
+  }
+
+  const handleQueryChange = e => {
+    setQuery(e.target.value)
+  }
+
+  const onQueryFormSubmit = e => {
+    e.preventDefault()
+    dispatch(searchAdminProducts(
+      query,
+      page,
+    ))
+  }
+
+  const resetQueryForm = () => {
+    setQuery("")
   }
 
   const pagination = () => {
@@ -112,7 +133,37 @@ export default function ViewProductsComponent() {
 
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header">{pagination()}</div>
+            <div className="card-header">
+              <div className="float-start">
+                {pagination()}
+              </div>
+              <div className="row float-end query-form-container">
+                <form
+                  className="float-end"
+                  onSubmit={onQueryFormSubmit}
+                >
+                  <label htmlFor="query">
+                    <strong>Search:</strong>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control query-input"
+                    name="query"
+                    value={query}
+                    onChange={handleQueryChange}
+                  />
+                  <input
+                    type="submit"
+                    className="btn btn-primary"
+                    value="Submit"
+                  />
+                  <FaWindowClose
+                    className="reset-query-form-icon"
+                    onClick={resetQueryForm}
+                  />
+                </form>
+              </div>
+            </div>
             <div className="card-body">
               {renderList()}
             </div>
