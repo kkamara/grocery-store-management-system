@@ -1,10 +1,10 @@
 import React, { useEffect, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import ReactPaginate from "react-paginate"
-import moment from "moment"
 import { Helmet, } from "react-helmet"
 import { getUsers, } from "../../redux/actions/usersActions"
 import Error from "../layouts/Error"
+import { parseDate, } from "../../utils/date"
 
 import "./HomeComponent.scss"
 
@@ -62,8 +62,6 @@ export default function HomeComponent() {
       <strong>Items</strong> ({state.users.data.meta.items})
     </div>
   }
-
-  const parseDate = date => moment(date).format("YYYY-MM-DD hh:mm")
 
   const renderList = () => {
     if (!state.users.data) {

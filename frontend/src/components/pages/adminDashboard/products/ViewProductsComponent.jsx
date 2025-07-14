@@ -1,8 +1,10 @@
-import React, { useEffect, } from "react"
+import React, { useEffect, useState, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
+import ReactPaginate from "react-paginate"
 import { searchAdminProducts, } from "../../../../redux/actions/adminSearchProductsActions"
 import { adminDashboardTitle, } from "../../../../constants"
+import { parseDate, } from "../../../../utils/date"
 
 export default function ViewProductsComponent() {
   const dispatch = useDispatch()
@@ -10,12 +12,81 @@ export default function ViewProductsComponent() {
     adminAuth: state.adminAuth,
     adminSearchProducts: state.adminSearchProducts,
   }))
+  const [query, setQuery] = useState("")
 
   useEffect(() => {
     if (false === state.adminAuth.loading && state.adminAuth.data) {
       dispatch(searchAdminProducts())
     }
   }, [state.adminAuth])
+
+  const handlePageChange = ({ selected, }) => {
+    const newPage = selected + 1
+    if (newPage > state.adminSearchProducts.data.meta.pages) {
+      return
+    }
+    dispatch(searchAdminProducts(query, newPage))
+  }
+
+  const pagination = () => {
+    if (!state.adminSearchProducts.data) {
+        return null
+    }
+
+    return <ReactPaginate
+      onPageChange={handlePageChange}
+      previousLabel="Previous"
+      nextLabel="Next"
+      pageClassName="page-item"
+      pageLinkClassName="page-link"
+      previousClassName="page-item"
+      previousLinkClassName="page-link"
+      nextClassName="page-item"
+      nextLinkClassName="page-link"
+      breakLabel="..."
+      breakClassName="page-item"
+      breakLinkClassName="page-link"
+      pageCount={state.adminSearchProducts.data.meta.pages}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={5}
+      containerClassName="pagination"
+      activeClassName="active"
+      forcePage={state.adminSearchProducts.data.meta.currentPage - 1}
+    />
+  }
+
+  const paginationDetail = () => {
+    return <div className="text-center">
+      <strong>Page</strong> ({state.adminSearchProducts.data.meta.currentPage}),&nbsp;
+      <strong>Page Count</strong> ({state.adminSearchProducts.data.meta.pages}),&nbsp;
+      <strong>Displayed Items</strong> ({state.adminSearchProducts.data.data.length}),&nbsp;
+      <strong>Items</strong> ({state.adminSearchProducts.data.meta.items})
+    </div>
+  }
+
+  const renderList = () => {
+    if (!state.adminSearchProducts.data) {
+      return null
+    }
+    return (
+      <>
+        {paginationDetail()}
+        <ul className="list-group">
+          {state.adminSearchProducts.data.data.map((product, index) => (
+            <li key={index} className="list-group-item home-item">
+              <strong>Name:</strong> ({product.name}),&nbsp;
+              <strong>Price:</strong> ({product.price}),&nbsp;
+              <strong>Units:</strong> ({product.units}),&nbsp;
+              <strong>Weight:</strong> ({product.weight}),&nbsp;
+              <strong>Created At:</strong> ({parseDate(product.createdAt)}),&nbsp;
+              <strong>Updated At:</strong> ({parseDate(product.updatedAt)})
+            </li>
+          ))}
+        </ul>
+        {paginationDetail()}
+      </>
+    )
+  }
 
   if (state.adminAuth.loading || state.adminSearchProducts.loading) {
     return (
@@ -41,9 +112,11 @@ export default function ViewProductsComponent() {
 
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
+            <div className="card-header">{pagination()}</div>
             <div className="card-body">
-              <p>Show Products Table</p>
+              {renderList()}
             </div>
+            <div className="card-footer">{pagination()}</div>
           </div>
         </div>
       </div>
