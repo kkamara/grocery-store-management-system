@@ -206,7 +206,7 @@ module.exports = (sequelize, DataTypes) => {
         units: product.units,
         weight: product.weight,
         categoriesId: product.categoriesId,
-        price: (Math.round((product.price + Number.EPSILON) * 100) / 100)
+        price: "£"+(Math.round((product.price + Number.EPSILON) * 100) / 100)
           .toFixed(2),
         description: product.description,
         manufacturersId: product.manufacturersId,
