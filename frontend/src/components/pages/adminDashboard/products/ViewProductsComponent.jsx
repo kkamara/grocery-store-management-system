@@ -95,12 +95,17 @@ export default function ViewProductsComponent() {
         <ul className="list-group">
           {state.adminSearchProducts.data.data.map((product, index) => (
             <li key={index} className="list-group-item home-item">
-              <strong>Name:</strong> ({product.name}),&nbsp;
-              <strong>Price:</strong> ({product.price}),&nbsp;
-              <strong>Units:</strong> ({product.units}),&nbsp;
-              <strong>Weight:</strong> ({product.weight}),&nbsp;
-              <strong>Created At:</strong> ({parseDate(product.createdAt)}),&nbsp;
-              <strong>Updated At:</strong> ({parseDate(product.updatedAt)})
+              <a
+                href={`/admin/products/${product.slug}`}
+                className="product-page-link"
+              >
+                <strong>Name:</strong> ({product.name}),&nbsp;
+                <strong>Price:</strong> ({product.price}),&nbsp;
+                <strong>Units:</strong> ({product.units}),&nbsp;
+                <strong>Weight:</strong> ({product.weight}),&nbsp;
+                <strong>Created At:</strong> ({parseDate(product.createdAt)}),&nbsp;
+                <strong>Updated At:</strong> ({parseDate(product.updatedAt)})
+              </a>
             </li>
           ))}
         </ul>
