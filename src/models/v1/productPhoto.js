@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} photo
+     * @param {Object} photo
      * @returns {array}
      */
     static getFormattedProductPhotoData(photo) {

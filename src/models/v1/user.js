@@ -310,7 +310,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} bodyInput
+     * @param {Object} bodyInput
      * @returns {object|false}
      */
     static getCreateUserData(bodyInput) {
@@ -402,7 +402,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} data
+     * @param {Object} data
      * @returns {number|false}
      */
     static async createUser(data) {
@@ -442,7 +442,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} data
+     * @param {Object} data
      * @returns {object}
      */
     static getFormattedUserData(data) {
@@ -492,7 +492,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} BodyInput
+     * @param {Object} BodyInput
      * @returns {false|string}
      */
     static getLoginError(bodyInput) {
@@ -611,7 +611,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} userId
+     * @param {Object} userId
      * @returns {boolean}
      * @throws Error when environment is not set to test
      */
