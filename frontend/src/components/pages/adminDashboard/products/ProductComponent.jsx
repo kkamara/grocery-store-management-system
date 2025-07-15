@@ -3,8 +3,8 @@ import { Helmet, } from "react-helmet"
 import { Slide, } from "react-slideshow-image"
 import { adminDashboardTitle, } from "../../../../constants"
 
-import "./ProductComponent.scss"
 import "react-slideshow-image/dist/styles.css"
+import "./ProductComponent.scss"
 
 const indicators = (index) => (<div className="indicator">{index + 1}</div>);
 
