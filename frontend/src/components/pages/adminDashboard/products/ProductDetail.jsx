@@ -6,10 +6,10 @@ export default function ProductDetail({ data, }) {
     name,
     units,
     weight,
-    categories,
+    category,
     price,
     description,
-    manufacturers,
+    manufacturer,
     createdAt,
     updatedAt,
   } = data
@@ -24,6 +24,10 @@ export default function ProductDetail({ data, }) {
       <strong>Price:</strong> {price}
       <br />
       <strong>Description:</strong> {description}
+      <br />
+      <strong>Category:</strong> {category ? category.name : null}
+      <br />
+      <strong>Manufacturer:</strong> {manufacturer ? manufacturer.name : null}
       <br />
       <strong>Created At:</strong> {parseDate(createdAt)}
       <br />
