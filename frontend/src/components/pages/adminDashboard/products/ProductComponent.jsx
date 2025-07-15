@@ -5,6 +5,7 @@ import { Fade, } from "react-slideshow-image"
 import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
 import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
+import ProductDetail from "./ProductDetail"
 
 import "react-slideshow-image/dist/styles.css"
 import "./ProductComponent.scss"
@@ -44,7 +45,7 @@ export default function ProductComponent() {
 
   if (state.adminAuth.loading || state.adminGetProduct.loading) {
     return (
-      <div className="container dashboard-products-container text-center">
+      <div className="container dashboard-product-container text-center">
         <Helmet>
           <title>Product Screen - {adminDashboardTitle}</title>
         </Helmet>
@@ -61,9 +62,12 @@ export default function ProductComponent() {
   }
 
   return (
-    <div className="container-fluid dashboard-products-container">
+    <div className="container-fluid dashboard-product-container">
       <Helmet>
-        <title>Product Screen - {adminDashboardTitle}</title>
+        <title>
+          {state.adminGetProduct.data.name}&nbsp;
+          Product Screen - {adminDashboardTitle}
+        </title>
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
@@ -87,7 +91,7 @@ export default function ProductComponent() {
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
             <div className="card-body">
-              Product details go here.
+              <ProductDetail data={state.adminGetProduct.data} />              
             </div>
           </div>
         </div>
