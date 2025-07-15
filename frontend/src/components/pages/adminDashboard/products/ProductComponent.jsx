@@ -1,5 +1,6 @@
 import React from "react"
 import { Helmet, } from "react-helmet"
+import { useParams, } from "react-router"
 import { Fade, } from "react-slideshow-image"
 import { adminDashboardTitle, } from "../../../../constants"
 
@@ -9,6 +10,7 @@ import "./ProductComponent.scss"
 const indicators = (index) => (<div className="indicator">{index + 1}</div>);
 
 export default function ProductComponent() {
+  let { productSlug, } = useParams()
 
   const renderProductPhotos = () => {
     return <Fade indicators={indicators}>
@@ -23,6 +25,8 @@ export default function ProductComponent() {
         </div>
     </Fade>
   }
+
+  console.log("productSlug", productSlug)
 
   return (
     <div className="container-fluid dashboard-products-container">
