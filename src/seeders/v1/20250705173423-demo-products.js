@@ -55,7 +55,7 @@ module.exports = {
               categoriesId: category[0].id,
               price: faker.number.float({ min: 0.1, max: 200, }),
               description: faker.number.int({ min: 0, max: 1, }) == 1 ?
-                faker.lorem.paragraphs({ min: 1, max: 1, }, "\n") :
+                faker.lorem.paragraphs({ min: 1, max: 3, }, "\n") :
                 null,
               manufacturersId: manufacturer[0].id,
               createdAt: productCreatedAt,
