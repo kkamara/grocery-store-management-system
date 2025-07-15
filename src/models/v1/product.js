@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
         
         page += 1;
         return {
-          data: this.getFormattedProductsData(
+          data: await this.getFormattedProductsData(
             coreResults
           ),
           meta: {
@@ -176,7 +176,7 @@ module.exports = (sequelize, DataTypes) => {
         
         page += 1;
         return {
-          data: this.getFormattedProductsData(
+          data: await this.getFormattedProductsData(
             coreResults
           ),
           meta: {
@@ -198,10 +198,14 @@ module.exports = (sequelize, DataTypes) => {
      * @param {array} products
      * @returns {array}
      */
-    static getFormattedProductsData(products) {
-      return products.map(product => 
-        this.getFormattedProductData(product)
-      );
+    static async getFormattedProductsData(products) {
+      const result = [];
+      for (const product of products) {
+        result.push(
+          await this.getFormattedProductData(product)
+        );
+      }
+      return result;
     }
 
     /**
@@ -213,7 +217,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static async getFormattedProductData(
       product,
-      { getCategory, getManufacturer, }
+      options,
     ) {
       const result = {
         id: product.id,
@@ -221,29 +225,27 @@ module.exports = (sequelize, DataTypes) => {
         slug: product.slug,
         units: product.units,
         weight: product.weight,
+        category: null,
         price: "£"+(Math.round((product.price + Number.EPSILON) * 100) / 100)
           .toFixed(2),
         description: product.description,
+        manufacturer: null,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       };
-      if (true === getCategory) {
+      if (options && true === options.getCategory) {
         const category = await this.sequelize.models
           .category
           .getProductCategory(product.categoriesId);
-        if (false === category) {
-          result.category = null;
-        } else {
+        if (false !== category) {
           result.category = category;
         }
       }
-      if (true === getManufacturer) {
+      if (options && true === options.getManufacturer) {
         const manufacturer = await this.sequelize.models
           .manufacturer
           .getProductManufacturer(product.manufacturersId);
-        if (false === manufacturer) {
-          result.manufacturer = null;
-        } else {
+        if (false !== manufacturer) {
           result.manufacturer = manufacturer;
         }
       }

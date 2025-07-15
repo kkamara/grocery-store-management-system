@@ -1,5 +1,5 @@
 import React from 'react'
-import { parseDate } from '../../../../utils/date'
+import { parseDate, } from '../../../../utils/date'
 
 export default function ProductDetail({ data, }) {
   const {
