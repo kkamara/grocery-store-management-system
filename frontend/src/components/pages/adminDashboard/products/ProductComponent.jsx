@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useEffect, } from "react"
 import { Helmet, } from "react-helmet"
-import { useParams, } from "react-router"
+import { useParams, Navigate, } from "react-router"
 import { Fade, } from "react-slideshow-image"
+import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
+import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
 
 import "react-slideshow-image/dist/styles.css"
 import "./ProductComponent.scss"
@@ -11,6 +13,20 @@ const indicators = (index) => (<div className="indicator">{index + 1}</div>);
 
 export default function ProductComponent() {
   let { productSlug, } = useParams()
+  const dispatch = useDispatch()
+  const state = useSelector(state => ({
+    adminAuth: state.adminAuth,
+    adminGetProduct: state.adminGetProduct,
+  }))
+
+  useEffect(() => {
+    if (
+      false === state.adminAuth.loading &&
+      false !== state.adminAuth.data
+    ) {
+      dispatch(getAdminProduct(productSlug))
+    }
+  }, [state.adminAuth])
 
   const renderProductPhotos = () => {
     return <Fade indicators={indicators}>
@@ -26,12 +42,28 @@ export default function ProductComponent() {
     </Fade>
   }
 
-  console.log("productSlug", productSlug)
+  if (state.adminAuth.loading || state.adminGetProduct.loading) {
+    return (
+      <div className="container dashboard-products-container text-center">
+        <Helmet>
+          <title>Product Screen - {adminDashboardTitle}</title>
+        </Helmet>
+        <p>Loading...</p>
+      </div>
+    )
+  }
+
+  if (
+    false === state.adminGetProduct.loading &&
+    null !== state.adminGetProduct.error
+  ) {
+    return <Navigate to="/admin/404-not-found"/>
+  }
 
   return (
     <div className="container-fluid dashboard-products-container">
       <Helmet>
-        <title>Product Page - {adminDashboardTitle}</title>
+        <title>Product Screen - {adminDashboardTitle}</title>
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
