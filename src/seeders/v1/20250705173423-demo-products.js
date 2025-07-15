@@ -72,11 +72,11 @@ module.exports = {
             type: "image/webp",
           },
           {
-            path: "pngtree-realistic-low-sodium-chips-product-sample-png-image_1754366.jpg",
+            path: "apples-2243734_1280.jpg",
             type: "image/jpg",
           },
           {
-            path: "151184490_10484345.png",
+            path: "dairy-5621769_1280.webp",
             type: "image/png",
           },
         ];
