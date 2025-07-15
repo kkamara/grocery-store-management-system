@@ -199,7 +199,7 @@ module.exports = (sequelize, DataTypes) => {
      * @returns {array}
      */
     static getFormattedProductsData(products) {
-      return products.map(product =>
+      return products.map(product => 
         this.getFormattedProductData(product)
       );
     }
@@ -207,13 +207,13 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * @param {Object} product
      * @param {Object} options
-     * @param {boolean} [options.getCategories=false] options.getCategories
-     * @param {boolean} [options.getManufacturers=false] options.getManufacturers
+     * @param {boolean} [options.getCategory=false] options.getCategory
+     * @param {boolean} [options.getManufacturer=false] options.getManufacturer
      * @returns {array}
      */
-    static getFormattedProductData(
+    static async getFormattedProductData(
       product,
-      { getCategories, getManufacturers, }
+      { getCategory, getManufacturer, }
     ) {
       const result = {
         id: product.id,
@@ -227,6 +227,19 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       };
+      if (true === getCategory) {
+        const category = await this.sequelize.models
+          .category
+          .getProductCategory(product.categoriesId);
+        if (false === category) {
+          result.category = null;
+        } else {
+          result.category = category;
+        }
+      }
+      if (true === getManufacturer) {
+        
+      }
       return result;
     }
 
@@ -250,7 +263,13 @@ module.exports = (sequelize, DataTypes) => {
           return false;
         }
         
-        return this.getFormattedProductData(result[0]);
+        return this.getFormattedProductData(
+          result[0],
+          {
+            getCategory: true,
+            getManufacturer: true,
+          }
+        );
       } catch(err) {
         if ("production" !== nodeEnv) {
           console.log(err);

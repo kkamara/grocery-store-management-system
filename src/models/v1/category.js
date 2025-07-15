@@ -12,6 +12,47 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    /**
+     * @param {number} categoryId
+     */
+    static async getProductCategory(categoryId) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE id = :categoryId`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { categoryId },
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedCategoryData(
+          result[0],
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+    static getFormattedCategoryData(
+      category,
+    ) {
+      return {
+        id: category.id,
+        description: category.description,
+        name: category.name,
+        createdAt: category.createdAt,
+        updatedAt: category.updatedAt,
+      };
+    }
   }
   category.init({
     id: {
