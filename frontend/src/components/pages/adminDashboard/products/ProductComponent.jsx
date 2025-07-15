@@ -15,6 +15,25 @@ export default function ProductComponent() {
           View Products &#x2022; Product Page
         </h1>
       </div>
+
+      <div className="row">
+
+        <div className="col-xl-6 col-lg-6">
+          <div className="card shadow mb-4">
+            <div className="card-body">
+              Product photo slideshow goes here.
+            </div>
+          </div>
+        </div>
+        
+        <div className="col-xl-6 col-lg-6">
+          <div className="card shadow mb-4">
+            <div className="card-body">
+              Product details go here.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
