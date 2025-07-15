@@ -65,17 +65,32 @@ module.exports = {
             transaction,
           }
         );
+
+        const photos = [
+          {
+            path: "pizza-6948995_1280.webp",
+            type: "image/webp",
+          },
+          {
+            path: "pngtree-realistic-low-sodium-chips-product-sample-png-image_1754366.jpg",
+            type: "image/jpg",
+          },
+          {
+            path: "151184490_10484345.png",
+            type: "image/png",
+          },
+        ];
+
         const productsId = productInsertResult[0];
-        for (let k = 0; k < faker.number.int({ min: 1, max: 5, }); k++) {
-          const photo = "image string";
+        for (const photo of photos) {
           await queryInterface.sequelize.query(
-            `INSERT INTO productPhotos(productsId, name, dataURI, type, createdAt, updatedAt)
-              VALUES (:productsId, :name, :dataURI, :type, :createdAt, :updatedAt)`,
+            `INSERT INTO productPhotos(productsId, name, path, type, createdAt, updatedAt)
+              VALUES (:productsId, :name, :path, :type, :createdAt, :updatedAt)`,
             {
               replacements: {
                 name: faker.commerce.productName(),
-                dataURI: photo,
-                type: "image/png",
+                path: photo.path,
+                type: photo.type,
                 createdAt: moment().utc().format(mysqlTimeFormat),
                 updatedAt: moment().utc().format(mysqlTimeFormat),
                 productsId,

@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
         id: photo.id,
         productsId: photo.productsId,
         name: photo.name,
-        dataURI: photo.dataURI,
+        path: "/productPhotos/"+photo.path,
         type: photo.type,
         createdAt: photo.createdAt,
         updatedAt: photo.updatedAt,
@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING
     },
-    dataURI: {
+    path: {
       type: DataTypes.TEXT
     },
     type: {

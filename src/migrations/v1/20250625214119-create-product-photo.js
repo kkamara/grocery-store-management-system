@@ -17,7 +17,7 @@ module.exports = {
         name: {
           type: Sequelize.STRING
         },
-        dataURI: {
+        path: {
           type: Sequelize.TEXT
         },
         type: {
