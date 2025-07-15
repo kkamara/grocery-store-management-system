@@ -238,7 +238,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
       if (true === getManufacturer) {
-        
+        const manufacturer = await this.sequelize.models
+          .manufacturer
+          .getProductManufacturer(product.manufacturersId);
+        if (false === manufacturer) {
+          result.manufacturer = null;
+        } else {
+          result.manufacturer = manufacturer;
+        }
       }
       return result;
     }
