@@ -37,7 +37,10 @@ export default function ProductComponent() {
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
-          View Products &#x2022; Product Page
+          <a href="/admin/products" className="breadcrumb-link">
+            View Products
+          </a>&nbsp;
+          &#x2022; Product Page
         </h1>
       </div>
 
