@@ -77,7 +77,7 @@ module.exports = {
           },
           {
             path: "dairy-5621769_1280.webp",
-            type: "image/png",
+            type: "image/webp",
           },
         ];
 
