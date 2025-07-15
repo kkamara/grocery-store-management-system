@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { appURL, } = require("../../config/index");
 module.exports = (sequelize, DataTypes) => {
   class productPhoto extends Model {
     /**
@@ -61,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         id: photo.id,
         productsId: photo.productsId,
         name: photo.name,
-        path: "/productPhotos/"+photo.path,
+        path: appURL+"/productPhotos/"+photo.path,
         type: photo.type,
         createdAt: photo.createdAt,
         updatedAt: photo.updatedAt,
