@@ -205,24 +205,29 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     * @param {object} product
+     * @param {Object} product
+     * @param {Object} options
+     * @param {boolean} [options.getCategories=false] options.getCategories
+     * @param {boolean} [options.getManufacturers=false] options.getManufacturers
      * @returns {array}
      */
-    static getFormattedProductData(product) {
-      return {
+    static getFormattedProductData(
+      product,
+      { getCategories, getManufacturers, }
+    ) {
+      const result = {
         id: product.id,
         name: product.name,
         slug: product.slug,
         units: product.units,
         weight: product.weight,
-        categoriesId: product.categoriesId,
         price: "£"+(Math.round((product.price + Number.EPSILON) * 100) / 100)
           .toFixed(2),
         description: product.description,
-        manufacturersId: product.manufacturersId,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       };
+      return result;
     }
 
     /**
