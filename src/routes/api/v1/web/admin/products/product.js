@@ -18,6 +18,14 @@ router.get("/", adminAuthenticate, async (req, res) => {
     res.status(status.NOT_FOUND);
     return res.json({ message: message404, });
   }
+  const photos = await db.sequelize.models
+    .productPhoto
+    .getProductPhotos(product.id);
+  if (false === photos) {
+    product.photos = null;
+  } else {
+    product.photos = photos;
+  }
   return res.json({ data: product, });
 });
 
