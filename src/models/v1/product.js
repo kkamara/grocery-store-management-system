@@ -196,7 +196,7 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {array} products
-     * @returns array
+     * @returns {array}
      */
     static getFormattedProductsData(products) {
       return products.map(product =>
@@ -206,7 +206,7 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {object} product
-     * @returns array
+     * @returns {array}
      */
     static getFormattedProductData(product) {
       return {
