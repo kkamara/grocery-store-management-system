@@ -74,7 +74,7 @@ export default function ProductComponent() {
           <a href="/admin/products" className="breadcrumb-link">
             View Products
           </a>&nbsp;
-          &#x2022; Product Page
+          &#x2022; {state.adminGetProduct.data.name}
         </h1>
       </div>
 
