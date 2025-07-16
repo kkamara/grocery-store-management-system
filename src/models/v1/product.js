@@ -2,7 +2,9 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
 const { nodeEnv, } = require('../../config');
+const { mysqlTimeFormat, } = require('../../utils/time');
 module.exports = (sequelize, DataTypes) => {
   class product extends Model {
     /**
@@ -279,6 +281,72 @@ module.exports = (sequelize, DataTypes) => {
             getManufacturer: true,
           }
         );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} productId
+     * @returns {boolean}
+     */
+    static async updateProductTimestamp(productId) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET updatedAt = :updatedAt
+            WHERE id = :productId AND deletedAt IS NULL`,
+          {
+            replacements: {
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              productId,
+            },
+            type: sequelize.QueryTypes.UPDATE,
+          },
+        );
+        const rowsUpdated = result[1];
+        if (0 === rowsUpdated) {
+          return false;
+        }
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} productId
+     * @returns {boolean}
+     */
+    static async deleteProduct(productId) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET deletedAt = :deletedAt
+            WHERE id = :productId AND deletedAt IS NULL`,
+          {
+            replacements: {
+              deletedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              productId,
+            },
+            type: sequelize.QueryTypes.UPDATE,
+          },
+        );
+        const rowsUpdated = result[1];
+        if (0 === rowsUpdated) {
+          return false;
+        }
+        return true;
       } catch(err) {
         if ("production" !== nodeEnv) {
           console.log(err);
