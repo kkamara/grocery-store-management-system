@@ -90,6 +90,16 @@ export default function ProductComponent() {
         
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
+            <div className="card-header">
+              <div className="float-end">
+                <button className="btn btn-info">
+                  Edit
+                </button>
+                <button className="btn btn-danger">
+                  Delete
+                </button>
+              </div>
+            </div>
             <div className="card-body">
               <ProductDetail data={state.adminGetProduct.data} />              
             </div>
