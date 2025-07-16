@@ -1,11 +1,12 @@
 import React, { useEffect, } from "react"
 import { Helmet, } from "react-helmet"
 import { useParams, Navigate, } from "react-router"
-import { Fade, } from "react-slideshow-image"
+import { Slide, } from "react-slideshow-image"
 import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
 import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
 import ProductDetail from "./ProductDetail"
+import DeleteProductModal from "./DeleteProductModal"
 
 import "react-slideshow-image/dist/styles.css"
 import "./ProductComponent.scss"
@@ -30,17 +31,23 @@ export default function ProductComponent() {
   }, [state.adminAuth])
 
   const renderProductPhotos = () => {
-    return <Fade indicators={indicators}>
+    return <Slide indicators={indicators}>
         <div className="each-slide-effect">
-            <div style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/pizza-6948995_1280.webp)` }}></div>
+            <div
+              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/pizza-6948995_1280.webp)` }}
+              ></div>
         </div>
         <div className="each-slide-effect">
-            <div style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/apples-2243734_1280.jpg)` }}></div>
+            <div
+              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/apples-2243734_1280.jpg)` }}
+              ></div>
         </div>
         <div className="each-slide-effect">
-            <div style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/dairy-5621769_1280.webp)` }}></div>
+            <div
+              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/dairy-5621769_1280.webp)` }}
+              ></div>
         </div>
-    </Fade>
+    </Slide>
   }
 
   if (state.adminAuth.loading || state.adminGetProduct.loading) {
@@ -91,13 +98,13 @@ export default function ProductComponent() {
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
             <div className="card-header">
-              <div className="float-end">
-                <button className="btn btn-info">
-                  Edit
-                </button>
-                <button className="btn btn-danger">
-                  Delete
-                </button>
+              <div className="float-end product-action-buttons-container">
+                <div className="edit-product-modal-container">
+                  <button className="btn btn-info">
+                    Edit
+                  </button>
+                </div>
+                <DeleteProductModal/>
               </div>
             </div>
             <div className="card-body">

@@ -1,0 +1,20 @@
+.admin-delete-product-option-select-input {
+  width: 8% !important;
+  line-height: 1 !important;
+}
+
+.admin-delete-product-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-delete-product-form * {
+  display: inline-block !important;
+}
+
+.admin-delete-product-form > input[type="submit"],
+.admin-delete-product-form > button {
+  margin-bottom: 1.5px;
+  margin-left: 10px;
+}
