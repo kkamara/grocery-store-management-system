@@ -16,13 +16,15 @@ const customStyles = {
   },
 }
 
+const defaultChoiceValue = "0"
+
 export default function DeleteProductModal() {
   const [modalIsOpen, setIsOpen] = React.useState(false)
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminGetProduct: state.adminGetProduct,
   }))
-  const [choice, setChoice] = useState("0")
+  const [choice, setChoice] = useState(defaultChoiceValue)
   const navigate = useNavigate()
 
   function openModal() {
@@ -30,11 +32,13 @@ export default function DeleteProductModal() {
   }
 
   function closeModal() {
+    setChoice(defaultChoiceValue)
     setIsOpen(false)
   }
 
   function handleSubmit(e) {
     e.preventDefault()
+    setChoice(defaultChoiceValue)
     if ("0" === choice) {
       setIsOpen(false)
     } else {
