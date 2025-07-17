@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `SELECT count(id) as count
-            FROM ${this.getTableName()}`,
+            FROM ${this.getTableName()}
+            WHERE deletedAt IS NULL`,
           {
             type: sequelize.QueryTypes.SELECT,
           },
@@ -58,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         const countResult = await sequelize.query(
           `SELECT count(id) as total
             FROM ${this.getTableName()}
+            WHERE deletedAt IS NULL
           `,
           {
             type: sequelize.QueryTypes.SELECT,
@@ -80,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
         const coreResults = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
+            WHERE deletedAt IS NULL
             ORDER BY id DESC
             LIMIT :perPage
             OFFSET :offset
@@ -127,12 +130,13 @@ module.exports = (sequelize, DataTypes) => {
         const countResult = await sequelize.query(
           `SELECT count(id) as total
             FROM ${this.getTableName()}
-            WHERE name LIKE :query OR
+            WHERE (name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
               createdAt LIKE :query OR
-              updatedAt LIKE :query
+              updatedAt LIKE :query) AND
+              deletedAt IS NULL;
           `,
           {
             type: sequelize.QueryTypes.SELECT,
@@ -156,12 +160,13 @@ module.exports = (sequelize, DataTypes) => {
         const coreResults = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
-            WHERE name LIKE :query OR
+            WHERE (name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
               createdAt LIKE :query OR
-              updatedAt LIKE :query
+              updatedAt LIKE :query) AND
+              deletedAt IS NULL
             ORDER BY id DESC
             LIMIT :perPage
             OFFSET :offset
@@ -263,7 +268,7 @@ module.exports = (sequelize, DataTypes) => {
         const result = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
-            WHERE slug = :slug`,
+            WHERE slug = :slug AND deletedAt IS NULL`,
           {
             type: sequelize.QueryTypes.SELECT,
             replacements: { slug },

@@ -19,6 +19,7 @@ export default function ProductComponent() {
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
     adminGetProduct: state.adminGetProduct,
+    adminDeleteProduct: state.adminDeleteProduct,
   }))
 
   useEffect(() => {
@@ -50,7 +51,11 @@ export default function ProductComponent() {
     </Slide>
   }
 
-  if (state.adminAuth.loading || state.adminGetProduct.loading) {
+  if (
+    state.adminAuth.loading ||
+    state.adminGetProduct.loading ||
+    state.adminDeleteProduct.loading
+  ) {
     return (
       <div className="container dashboard-product-container text-center">
         <Helmet>

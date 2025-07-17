@@ -1,7 +1,8 @@
-import React, { useState, } from "react"
+import React, { useEffect, useState, } from "react"
 import Modal from "react-modal"
 import { useDispatch, useSelector, } from "react-redux"
 import { useNavigate, } from "react-router"
+import { deleteAdminProduct, } from "../../../../redux/actions/adminDeleteProductActions"
 
 import "./DeleteProductModal.scss"
 
@@ -23,9 +24,20 @@ export default function DeleteProductModal() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminGetProduct: state.adminGetProduct,
+    adminDeleteProduct: state.adminDeleteProduct,
   }))
   const [choice, setChoice] = useState(defaultChoiceValue)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (
+      false === state.adminDeleteProduct.loading &&
+      true === state.adminDeleteProduct.data
+    ) {
+      setIsOpen(false)
+      navigate("/admin/products")
+    }
+  }, [state.adminDeleteProduct])
 
   function openModal() {
     setIsOpen(true)
@@ -42,9 +54,9 @@ export default function DeleteProductModal() {
     if ("0" === choice) {
       setIsOpen(false)
     } else {
-      console.log("should delete")
-      setIsOpen(false)
-      navigate("/admin/products")
+      dispatch(deleteAdminProduct(
+        state.adminGetProduct.data.slug,
+      ))
     }
   }
 
