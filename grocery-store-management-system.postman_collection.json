@@ -471,6 +471,43 @@
 											"response": []
 										},
 										{
+											"name": "New Product",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{web}}/admin/products",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products"
+													]
+												}
+											},
+											"response": []
+										},
+										{
 											"name": "Delete Product",
 											"request": {
 												"auth": {

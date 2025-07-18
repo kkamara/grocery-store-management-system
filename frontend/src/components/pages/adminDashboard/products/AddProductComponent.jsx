@@ -24,6 +24,10 @@ export default function ProductComponent() {
 
   const resetFileInput = () => {}
 
+  const handleFormSubmit = e => {
+    e.preventDefault()
+  }
+
   if (
     state.adminAuth.loading
   ) {
@@ -38,7 +42,10 @@ export default function ProductComponent() {
   }
 
   return (
-    <form className="container-fluid dashboard-new-product-container">
+    <form
+      className="container-fluid dashboard-new-product-container"
+      onSubmit={handleFormSubmit}
+    >
       <Helmet>
         <title>
           Add a New Product - {adminDashboardTitle}

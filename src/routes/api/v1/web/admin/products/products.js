@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../../../../../../models/v1");
 const { status, } = require("http-status");
-const { message500, } = require("../../../../../../utils/httpResponses");
+const { message500, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
 
@@ -28,6 +28,11 @@ router.get("/", adminAuthenticate, async (req, res) => {
   }
 
   return res.json(products);
+});
+
+router.post("/", adminAuthenticate, async (req, res) => {
+  console.log(req.body);
+  return res.json({ message: message200 });
 });
 
 module.exports = router;
