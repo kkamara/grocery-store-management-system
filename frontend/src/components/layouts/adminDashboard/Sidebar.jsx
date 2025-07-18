@@ -63,7 +63,7 @@ function Sidebar() {
               View Products
             </a>
             <a className="collapse-item" href="/admin">
-              Add Products
+              Add a New Product
             </a>
           </div>
         </div>
