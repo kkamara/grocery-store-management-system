@@ -82,8 +82,10 @@ export default function NewProductComponent() {
   }
 
   const imageError = type => {
-    if (null === type.match(/(gif|jpg|jpeg|png|webp)$/i)) {
-      return setError("Invalid file extension.")
+    if (null === type.match(/(jpg|jpeg|png|webp)$/i)) {
+      return setError(
+        "Invalid file extension. We take JPG, JPEG, PNG and WEBP."
+      )
     }
     return null
   }
