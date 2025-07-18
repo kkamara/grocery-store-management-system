@@ -33,7 +33,7 @@ export default function ProductDetail({ data, }) {
       <br />
       <strong>Created At:</strong> {parseDate(createdAt)}
       <br />
-      <strong>Name:</strong> {parseDate(updatedAt)}
+      <strong>Updated At:</strong> {parseDate(updatedAt)}
     </div>
   )
 }
