@@ -1,17 +1,27 @@
-import React, { useEffect, } from "react"
+import React, { useEffect, useState, } from "react"
 import { Helmet, } from "react-helmet"
 import { Navigate, } from "react-router"
 import { useDispatch, useSelector, } from "react-redux"
 import { FaWindowClose, } from "react-icons/fa"
 import { adminDashboardTitle, } from "../../../../constants"
+import Error from "../../../layouts/Error"
 
-import "./AddProductComponent.scss"
+import "./NewProductComponent.scss"
 
-export default function ProductComponent() {
+export default function NewProductComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
   }))
+  const [image, setImage] = useState("")
+  const [image1, setImage1] = useState("")
+  const [image2, setImage2] = useState("")
+  const [image3, setImage3] = useState("")
+  const [image4, setImage4] = useState("")
+  const [image5, setImage5] = useState("")
+  const [image6, setImage6] = useState("")
+
+  const [error, setError] = useState("")
 
   useEffect(() => {
     if (
@@ -21,6 +31,62 @@ export default function ProductComponent() {
       // dispatch(getAdminProduct(productSlug))
     }
   }, [state.adminAuth])
+
+  const handleSetImage = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage(e.target.files[0])
+  }
+
+  const handleSetImage1 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage1(e.target.files[0])
+  }
+
+  const handleSetImage2 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage2(e.target.files[0])
+  }
+
+  const handleSetImage3 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage3(e.target.files[0])
+  }
+
+  const handleSetImage4 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage4(e.target.files[0])
+  }
+
+  const handleSetImage5 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage5(e.target.files[0])
+  }
+
+  const handleSetImage6 = e => {
+    if (false !== imageError(e.target.files[0].type)) {
+      return null
+    }
+    setImage6(e.target.files[0])
+  }
+
+  const imageError = type => {
+    if (null === type.match(/(gif|jpg|jpeg|png|webp)$/i)) {
+      return setError("Invalid file extension.")
+    }
+    return null
+  }
 
   const resetFileInput = () => {}
 
@@ -57,6 +123,8 @@ export default function ProductComponent() {
         </h1>
       </div>
 
+      <Error error={error} />
+
       <div className="row">
 
         <div className="col-xl-6 col-lg-6">
@@ -67,6 +135,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[0]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -78,6 +147,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[1]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage1}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -89,6 +159,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[2]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage2}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -100,6 +171,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[3]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage3}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -111,6 +183,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[4]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage4}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -122,6 +195,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[5]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage5}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
@@ -133,6 +207,7 @@ export default function ProductComponent() {
                   type="file"
                   name="image[6]"
                   className="form-control image-file-input"
+                  onChange={handleSetImage6}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
