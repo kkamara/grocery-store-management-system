@@ -62,7 +62,7 @@ function Sidebar() {
             <a className="collapse-item" href="/admin/products">
               View Products
             </a>
-            <a className="collapse-item" href="/admin">
+            <a className="collapse-item" href="/admin/products/new">
               Add a New Product
             </a>
           </div>

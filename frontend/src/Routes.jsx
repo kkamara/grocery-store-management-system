@@ -15,6 +15,7 @@ import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInCompon
 import DashboardLogout from "./components/pages/adminDashboard/auth/LogoutComponent"
 import DashboardViewProductsComponent from "./components/pages/adminDashboard/products/ViewProductsComponent"
 import DashboardProductComponent from "./components/pages/adminDashboard/products/ProductComponent"
+import DashboardAddProductComponent from "./components/pages/adminDashboard/products/AddProductComponent"
 
 import { url, } from "./utils/config"
 import AuthRoute from "./AuthRoute"
@@ -31,6 +32,7 @@ export default () => {
           <Route path={url("/admin/user/logout")} element={<DashboardLogout />}/>
           <Route path={url("/admin/products")} element={<DashboardViewProductsComponent/>}/>
           <Route path={url("/admin/products/:productSlug")} element={<DashboardProductComponent/>}/>
+          <Route path={url("/admin/products/new")} element={<DashboardAddProductComponent/>}/>
         </Route>
       </Route>
       <Route element={<MainSiteRoute/>}>
