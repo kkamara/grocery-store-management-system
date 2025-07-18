@@ -2,7 +2,7 @@ import React, { useEffect, useState, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
 import ReactPaginate from "react-paginate"
-import { FaWindowClose, } from "react-icons/fa";
+import { FaWindowClose, } from "react-icons/fa"
 import { searchAdminProducts, } from "../../../../redux/actions/adminSearchProductsActions"
 import { adminDashboardTitle, } from "../../../../constants"
 import { parseDate, } from "../../../../utils/date"
