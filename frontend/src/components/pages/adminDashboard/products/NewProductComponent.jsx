@@ -17,6 +17,7 @@ export default function NewProductComponent() {
     adminCategories: state.adminCategories,
     adminManufacturers: state.adminManufacturers,
   }))
+  // At least one image is required.
   const [image, setImage] = useState("")
   const [image1, setImage1] = useState("")
   const [image2, setImage2] = useState("")
@@ -24,11 +25,15 @@ export default function NewProductComponent() {
   const [image4, setImage4] = useState("")
   const [image5, setImage5] = useState("")
   const [image6, setImage6] = useState("")
-
+  // Request fields.
   const [name, setName] = useState("")
   const [units, setUnits] = useState(1)
   const [weight, setWeight] = useState("0.01")
   const [price, setPrice] = useState("0.01")
+  // Non-required fields.
+  const [description, setDescription] = useState("")
+  const [category, setCategory] = useState("0")
+  const [manufacturer, setManufacturer] = useState("0")
 
   const [error, setError] = useState("")
 
@@ -149,6 +154,18 @@ export default function NewProductComponent() {
     setPrice(e.target.value)
   }
 
+  const handleDescriptionChange = e => {
+    setDescription(e.target.value)
+  }
+
+  const handleCategoryChange = e => {
+    setCategory(e.target.value)
+  }
+
+  const handleManufacturerChange = e => {
+    setManufacturer(e.target.value)
+  }
+
   const formHasError = () => {
     if (
       !image &&
@@ -173,12 +190,44 @@ export default function NewProductComponent() {
     return false
   }
 
+  const getImages = () => {
+    const results = []
+    if (image) {
+      results.push(image)
+    }
+    if (image1) {
+      results.push(image1)
+    }
+    if (image2) {
+      results.push(image2)
+    }
+    if (image3) {
+      results.push(image3)
+    }
+    if (image4) {
+      results.push(image4)
+    }
+    if (image5) {
+      results.push(image5)
+    }
+    if (image6) {
+      results.push(image6)
+    }
+    return results
+  }
+
   const handleFormSubmit = e => {
     e.preventDefault()
     const err = formHasError()
     if (false !== err) {
       return setError(err)
     }
+    const payload = new FormData()
+    const images = getImages()
+    for (const image of images) {
+      payload.append("images[]", image)
+    }
+    console.log(payload)
   }
 
   if (
@@ -372,6 +421,8 @@ export default function NewProductComponent() {
                   name="description"
                   id="description"
                   className="form-control"
+                  value={description}
+                  onChange={handleDescriptionChange}
                 ></textarea>
               </div>
               <div className="form-group">
@@ -381,6 +432,8 @@ export default function NewProductComponent() {
                   name="category"
                   id="category"
                   className="form-control"
+                  value={category}
+                  onChange={handleCategoryChange}
                 >
                   <option value="0">Please select a category</option>
                   {state.adminCategories.data.map(({ id, name }) => (
@@ -395,6 +448,8 @@ export default function NewProductComponent() {
                   name="manufacturer"
                   id="manufacturer"
                   className="form-control"
+                  value={manufacturer}
+                  onChange={handleManufacturerChange}
                 >
                   <option value="0">Please select a manufacturer</option>
                   {state.adminManufacturers.data.map(({ id, name }) => (
