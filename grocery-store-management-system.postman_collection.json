@@ -539,6 +539,44 @@
 									]
 								}
 							]
+						},
+						{
+							"name": "Categories",
+							"item": [
+								{
+									"name": "Bearer Token Restricted",
+									"item": [
+										{
+											"name": "Get Categories",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/categories",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"categories"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
 						}
 					]
 				},

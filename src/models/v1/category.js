@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {number} categoryId
+     * @returns Object|false
      */
     static async getProductCategory(categoryId) {
       try {
@@ -42,16 +43,64 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @param {Object} category
+     * @param {boolean} [getDescription=false]
+     * @returns Object
+     */
     static getFormattedCategoryData(
       category,
+      getDescription = false,
     ) {
-      return {
+      const result = {
         id: category.id,
-        description: category.description,
         name: category.name,
         createdAt: category.createdAt,
         updatedAt: category.updatedAt,
       };
+      if (true === getDescription) {
+        result.description = category.description;
+      }
+      return result;
+    }
+
+    /**
+     * @param {array} categories
+     * @param {boolean} [getDescription=false]
+     * @returns Object
+     */
+    static getFormattedCategoriesData(
+      categories,
+      getDescription = false,
+    ) {
+      return categories.map(category => 
+        this.getFormattedCategoryData(category, false));
+    }
+
+    /**
+     * @returns array|false
+     */
+    static async getCategories() {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        
+        return this.getFormattedCategoriesData(
+          result,
+          false,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   category.init({
