@@ -2,21 +2,12 @@ const express = require("express");
 const db = require("../../../../../../models/v1");
 const { status, } = require("http-status");
 const multer = require("multer");
-const path = require("node:path");
 const { message500, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
 
 const upload = multer({
-  dest: path.join(
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "uploads/",
-  ),
+  dest: "./uploads/",
 });
 
 const router = express.Router();
@@ -49,7 +40,8 @@ router.post(
   adminAuthenticate,
   upload.array("images", 7),
   async (req, res) => {
-    console.log(req.body, req.files);
+    console.log(req.body);
+    console.log(req.files);
     return res.json({ message: message200 });
   },
 );
