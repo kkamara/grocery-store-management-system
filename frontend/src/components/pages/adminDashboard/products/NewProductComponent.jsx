@@ -228,7 +228,7 @@ export default function NewProductComponent() {
     const payload = new FormData()
     const images = getImages()
     for (const image of images) {
-      payload.append("images[]", image)
+      payload.append("images", image)
     }
     // console.log("payload", [...payload])
     dispatch(newProduct(payload))
