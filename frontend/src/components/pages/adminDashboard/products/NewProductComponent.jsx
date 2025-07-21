@@ -21,6 +21,7 @@ const defaultCategoryState = "0"
 const defaultManufacturerState = "0"
 
 export default function NewProductComponent() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
