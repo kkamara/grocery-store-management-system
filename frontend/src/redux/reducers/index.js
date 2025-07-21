@@ -11,6 +11,7 @@ import adminOrdersBarChartReducer from "./adminOrdersBarChartReducer"
 import adminSearchProductsReducer from "./adminSearchProductsReducer"
 import adminGetProductReducer from "./adminGetProductReducer"
 import adminDeleteProductReducer from "./adminDeleteProductReducer"
+import adminCategoriesReducer from "./adminCategoriesReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   adminSearchProducts: adminSearchProductsReducer,
   adminGetProduct: adminGetProductReducer,
   adminDeleteProduct: adminDeleteProductReducer,
+  adminCategories: adminCategoriesReducer,
 })
