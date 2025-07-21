@@ -133,8 +133,16 @@ export default function NewProductComponent() {
     setPrice(e.target.value)
   }
 
+  const formHasError = () => {
+    return "Some error"
+  }
+
   const handleFormSubmit = e => {
     e.preventDefault()
+    const err = formHasError()
+    if (false !== err) {
+      return setError(err)
+    }
   }
 
   if (
