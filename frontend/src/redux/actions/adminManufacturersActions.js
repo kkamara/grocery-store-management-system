@@ -2,7 +2,7 @@
 import HttpService from "../../services/HttpService"
 import { adminManufacturers, } from "../types"
 
-export const getAdminCategories = () => {
+export const getAdminManufacturers = () => {
   return async dispatch => {
     const http = new HttpService()
 
