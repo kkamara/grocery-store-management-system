@@ -25,6 +25,9 @@ export default function NewProductComponent() {
   const [image5, setImage5] = useState("")
   const [image6, setImage6] = useState("")
 
+  const [name, setName] = useState("")
+  const [units, setUnits] = useState(1)
+  const [weight, setWeight] = useState("0.01")
   const [price, setPrice] = useState("0.01")
 
   const [error, setError] = useState("")
@@ -129,12 +132,45 @@ export default function NewProductComponent() {
         break;
     }
   }
+
+  const handleNameChange = e => {
+    setName(e.target.value)
+  }
+
+  const handleUnitsChange = e => {
+    setUnits(e.target.value)
+  }
+
+  const handleWeightChange = e => {
+    setWeight(e.target.value)
+  }
+
   const handlePriceChange = e => {
     setPrice(e.target.value)
   }
 
   const formHasError = () => {
-    return "Some error"
+    if (
+      !image &&
+      !image1 &&
+      !image2 &&
+      !image3 &&
+      !image4 &&
+      !image5 &&
+      !image6
+    ) {
+      return "At least one image is required."
+    }
+    if (!name) {
+      return "The name field is required."
+    }
+    if (!units) {
+      return "The units field is required."
+    }
+    if (!weight) {
+      return "The weight field is required."
+    }
+    return false
   }
 
   const handleFormSubmit = e => {
@@ -288,6 +324,8 @@ export default function NewProductComponent() {
                   name="name"
                   id="name"
                   className="form-control"
+                  value={name}
+                  onChange={handleNameChange}
                 />
               </div>
               <div className="form-group">
@@ -298,16 +336,20 @@ export default function NewProductComponent() {
                   id="units"
                   className="form-control"
                   step="1"
+                  value={units}
+                  onChange={handleUnitsChange}
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="weight">Weight*:</label>
+                <label htmlFor="weight">Weight (kg)*:</label>
                 <input
                   type="number"
                   name="weight"
                   id="weight"
                   className="form-control"
-                  step="1"
+                  step="0.01"
+                  value={weight}
+                  onChange={handleWeightChange}
                 />
               </div>
               <div className="form-group">
