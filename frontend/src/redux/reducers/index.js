@@ -13,6 +13,7 @@ import adminGetProductReducer from "./adminGetProductReducer"
 import adminDeleteProductReducer from "./adminDeleteProductReducer"
 import adminCategoriesReducer from "./adminCategoriesReducer"
 import adminManufacturersReducer from "./adminManufacturersReducer"
+import createAdminProductReducer from "./createAdminProductReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   adminDeleteProduct: adminDeleteProductReducer,
   adminCategories: adminCategoriesReducer,
   adminManufacturers: adminManufacturersReducer,
+  createAdminProduct: createAdminProductReducer,
 })
