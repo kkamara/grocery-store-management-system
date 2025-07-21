@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from "react"
 import { Helmet, } from "react-helmet"
-import { Navigate, } from "react-router"
+import { useNavigate, } from "react-router"
 import { useDispatch, useSelector, } from "react-redux"
 import { FaWindowClose, } from "react-icons/fa"
 import { adminDashboardTitle, } from "../../../../constants"
@@ -77,6 +77,7 @@ export default function NewProductComponent() {
       setDescription(defaultDescriptionState)
       setCategory(defaultCategoryState)
       setManufacturer(defaultManufacturerState)
+      navigate("/admin/products")
     }
   }, [state.createAdminProduct])
 
