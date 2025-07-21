@@ -7,6 +7,7 @@ import { adminDashboardTitle, } from "../../../../constants"
 import Error from "../../../layouts/Error"
 import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesActions"
 import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
+import { newProduct, } from "../../../../redux/actions/createAdminProductActions"
 
 import "./NewProductComponent.scss"
 
@@ -16,6 +17,7 @@ export default function NewProductComponent() {
     adminAuth: state.adminAuth,
     adminCategories: state.adminCategories,
     adminManufacturers: state.adminManufacturers,
+    createAdminProduct: state.createAdminProduct,
   }))
   // At least one image is required.
   const [image, setImage] = useState("")
@@ -228,13 +230,14 @@ export default function NewProductComponent() {
     for (const image of images) {
       payload.append("images[]", image)
     }
-    console.log(payload)
+    dispatch(newProduct(payload))
   }
 
   if (
     state.adminAuth.loading ||
     state.adminCategories.loading ||
-    state.adminManufacturers.loading
+    state.adminManufacturers.loading ||
+    state.createAdminProduct.loading
   ) {
     return (
       <div className="container dashboard-new-product-container text-center">
