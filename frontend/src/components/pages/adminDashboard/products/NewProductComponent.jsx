@@ -102,7 +102,7 @@ export default function NewProductComponent() {
         "Invalid file extension. We take JPG, JPEG, PNG and WEBP."
       )
     }
-    return null
+    return false
   }
 
   const resetFileInput = imageIdToReset => {
