@@ -577,6 +577,44 @@
 									]
 								}
 							]
+						},
+						{
+							"name": "Manufacturers",
+							"item": [
+								{
+									"name": "Bearer Token Restricted",
+									"item": [
+										{
+											"name": "Get Manufacturers",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/manufacturers",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"manufacturers"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
 						}
 					]
 				},

@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @param {Object} manufacturer
+     * @returns Object
+     */
     static getFormattedManufacturerData(
       manufacturer,
     ) {
@@ -52,6 +57,41 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: manufacturer.createdAt,
         updatedAt: manufacturer.updatedAt,
       };
+    }
+
+    /**
+     * @param {array} manufacturers
+     * @returns Object
+     */
+    static getFormattedManufacturersData(
+      manufacturers,
+    ) {
+      return manufacturers.map(manufacturer => 
+        this.getFormattedManufacturerData(manufacturer));
+    }
+
+    /**
+     * @returns array|false
+     */
+    static async getManufacturers() {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        
+        return this.getFormattedManufacturersData(
+          result,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   manufacturer.init({
