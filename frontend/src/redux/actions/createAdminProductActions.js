@@ -9,7 +9,7 @@ export const newProduct = payload => {
     dispatch({ type: adminNewProduct.CREATE_ADMIN_PRODUCT_PENDING, })
 
     const tokenId = "admin-user-token"
-    await http.postData(
+    await http.postFormData(
       "/admin/products",
       payload,
       tokenId,

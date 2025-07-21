@@ -52,6 +52,24 @@ export default class HttpService
     )
   }
 
+  postFormData = (path, item, tokenId="") => {
+    let requestOptions = this.postRequestOptions({ item, })
+    let token
+    if (tokenId.length) {
+      token = localStorage.getItem(tokenId)
+      requestOptions = this.postRequestOptions({ token, item, })
+    }
+    let url = this.url+path
+    if (null !== path.match(/http/g)) {
+      url = path
+    }
+    return axios.postForm(
+      url, 
+      requestOptions.data, 
+      { headers: requestOptions.headers, timeout: this.timeout, },
+    )
+  }
+
   getData = (path, tokenId="") => {
     let requestOptions = this.getRequestOptions()
     let token

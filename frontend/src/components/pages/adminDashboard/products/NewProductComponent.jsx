@@ -230,6 +230,7 @@ export default function NewProductComponent() {
     for (const image of images) {
       payload.append("images[]", image)
     }
+    // console.log("payload", [...payload])
     dispatch(newProduct(payload))
   }
 
