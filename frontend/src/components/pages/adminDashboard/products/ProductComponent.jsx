@@ -25,7 +25,7 @@ export default function ProductComponent() {
   useEffect(() => {
     if (
       false === state.adminAuth.loading &&
-      false !== state.adminAuth.data
+      null !== state.adminAuth.data
     ) {
       dispatch(getAdminProduct(productSlug))
     }

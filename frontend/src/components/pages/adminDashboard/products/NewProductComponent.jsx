@@ -42,7 +42,7 @@ export default function NewProductComponent() {
   useEffect(() => {
     if (
       false === state.adminAuth.loading &&
-      false !== state.adminAuth.data
+      null !== state.adminAuth.data
     ) {
       dispatch(getAdminCategories())
       dispatch(getAdminManufacturers())
