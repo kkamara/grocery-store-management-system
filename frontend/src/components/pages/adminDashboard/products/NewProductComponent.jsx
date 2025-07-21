@@ -11,6 +11,15 @@ import { newProduct, } from "../../../../redux/actions/createAdminProductActions
 
 import "./NewProductComponent.scss"
 
+const defaultImageState = ""
+const defaultNameState = "A Unique Product Name"
+const defaultUnitsState = 1
+const defaultWeightState = "0.01"
+const defaultPriceState = "0.01"
+const defaultDescriptionState = ""
+const defaultCategoryState = "0"
+const defaultManufacturerState = "0"
+
 export default function NewProductComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
@@ -20,22 +29,22 @@ export default function NewProductComponent() {
     createAdminProduct: state.createAdminProduct,
   }))
   // At least one image is required.
-  const [image, setImage] = useState("")
-  const [image1, setImage1] = useState("")
-  const [image2, setImage2] = useState("")
-  const [image3, setImage3] = useState("")
-  const [image4, setImage4] = useState("")
-  const [image5, setImage5] = useState("")
-  const [image6, setImage6] = useState("")
+  const [image, setImage] = useState(defaultImageState)
+  const [image1, setImage1] = useState(defaultImageState)
+  const [image2, setImage2] = useState(defaultImageState)
+  const [image3, setImage3] = useState(defaultImageState)
+  const [image4, setImage4] = useState(defaultImageState)
+  const [image5, setImage5] = useState(defaultImageState)
+  const [image6, setImage6] = useState(defaultImageState)
   // Request fields.
-  const [name, setName] = useState("A Unique Product Name")
-  const [units, setUnits] = useState(1)
-  const [weight, setWeight] = useState("0.01")
-  const [price, setPrice] = useState("0.01")
+  const [name, setName] = useState(defaultNameState)
+  const [units, setUnits] = useState(defaultUnitsState)
+  const [weight, setWeight] = useState(defaultWeightState)
+  const [price, setPrice] = useState(defaultPriceState)
   // Non-required fields.
-  const [description, setDescription] = useState("")
-  const [category, setCategory] = useState("0")
-  const [manufacturer, setManufacturer] = useState("0")
+  const [description, setDescription] = useState(defaultDescriptionState)
+  const [category, setCategory] = useState(defaultCategoryState)
+  const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
 
   const [error, setError] = useState("")
 
@@ -48,6 +57,28 @@ export default function NewProductComponent() {
       dispatch(getAdminManufacturers())
     }
   }, [state.adminAuth])
+
+  useEffect(() => {
+    if (
+      false === state.createAdminProduct.loading &&
+      null !== state.createAdminProduct.data
+    ) {
+      setImage(defaultImageState)
+      setImage1(defaultImageState)
+      setImage2(defaultImageState)
+      setImage3(defaultImageState)
+      setImage4(defaultImageState)
+      setImage5(defaultImageState)
+      setImage6(defaultImageState)
+      setName(defaultNameState)
+      setUnits(defaultUnitsState)
+      setWeight(defaultWeightState)
+      setPrice(defaultPriceState)
+      setDescription(defaultDescriptionState)
+      setCategory(defaultCategoryState)
+      setManufacturer(defaultManufacturerState)
+    }
+  }, [state.createAdminProduct])
 
   const handleSetImage = e => {
     if (false !== imageError(e.target.files[0].type)) {
