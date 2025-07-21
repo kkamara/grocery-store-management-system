@@ -90,7 +90,38 @@ export default function NewProductComponent() {
     return null
   }
 
-  const resetFileInput = () => {}
+  const resetFileInput = imageIdToReset => {
+    switch(imageIdToReset) {
+      case 0:
+        document.getElementById("image-0").value = ""
+        setImage("")
+        break;
+      case 1:
+        document.getElementById("image-1").value = ""
+        setImage1("")
+        break;
+      case 2:
+        document.getElementById("image-2").value = ""
+        setImage2("")
+        break;
+      case 3:
+        document.getElementById("image-3").value = ""
+        setImage3("")
+        break;
+      case 4:
+        document.getElementById("image-4").value = ""
+        setImage4("")
+        break;
+      case 5:
+        document.getElementById("image-5").value = ""
+        setImage5("")
+        break;
+      case 6:
+        document.getElementById("image-6").value = ""
+        setImage6("")
+        break;
+    }
+  }
 
   const handleFormSubmit = e => {
     e.preventDefault()
@@ -136,84 +167,91 @@ export default function NewProductComponent() {
                 <input
                   type="file"
                   name="image[0]"
+                  id="image-0"
                   className="form-control image-file-input"
                   onChange={handleSetImage}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(0)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[1]"
+                  id="image-1"
                   className="form-control image-file-input"
                   onChange={handleSetImage1}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(1)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[2]"
+                  id="image-2"
                   className="form-control image-file-input"
                   onChange={handleSetImage2}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(2)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[3]"
+                  id="image-3"
                   className="form-control image-file-input"
                   onChange={handleSetImage3}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(3)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[4]"
+                  id="image-4"
                   className="form-control image-file-input"
                   onChange={handleSetImage4}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(4)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[5]"
+                  id="image-5"
                   className="form-control image-file-input"
                   onChange={handleSetImage5}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(5)}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="file"
                   name="image[6]"
+                  id="image-6"
                   className="form-control image-file-input"
                   onChange={handleSetImage6}
                 />
                 <FaWindowClose
                   className="reset-file-input-icon"
-                  onClick={resetFileInput}
+                  onClick={() => resetFileInput(6)}
                 />
               </div>
             </div>
