@@ -28,7 +28,7 @@ export default function NewProductComponent() {
   const [image5, setImage5] = useState("")
   const [image6, setImage6] = useState("")
   // Request fields.
-  const [name, setName] = useState("")
+  const [name, setName] = useState("A Unique Product Name")
   const [units, setUnits] = useState(1)
   const [weight, setWeight] = useState("0.01")
   const [price, setPrice] = useState("0.01")
