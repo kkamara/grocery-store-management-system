@@ -37,7 +37,7 @@ export default function NewProductComponent() {
   const [image4, setImage4] = useState(defaultImageState)
   const [image5, setImage5] = useState(defaultImageState)
   const [image6, setImage6] = useState(defaultImageState)
-  // Request fields.
+  // Required fields.
   const [name, setName] = useState(defaultNameState)
   const [units, setUnits] = useState(defaultUnitsState)
   const [weight, setWeight] = useState(defaultWeightState)
