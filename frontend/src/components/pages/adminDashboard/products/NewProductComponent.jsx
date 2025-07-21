@@ -5,6 +5,8 @@ import { useDispatch, useSelector, } from "react-redux"
 import { FaWindowClose, } from "react-icons/fa"
 import { adminDashboardTitle, } from "../../../../constants"
 import Error from "../../../layouts/Error"
+import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesActions"
+import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
 
 import "./NewProductComponent.scss"
 
@@ -12,6 +14,8 @@ export default function NewProductComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
+    adminCategories: state.adminCategories,
+    adminManufacturers: state.adminManufacturers,
   }))
   const [image, setImage] = useState("")
   const [image1, setImage1] = useState("")
@@ -30,7 +34,8 @@ export default function NewProductComponent() {
       false === state.adminAuth.loading &&
       false !== state.adminAuth.data
     ) {
-      // dispatch(getAdminProduct(productSlug))
+      dispatch(getAdminCategories())
+      dispatch(getAdminManufacturers())
     }
   }, [state.adminAuth])
 
@@ -133,7 +138,9 @@ export default function NewProductComponent() {
   }
 
   if (
-    state.adminAuth.loading
+    state.adminAuth.loading ||
+    state.adminCategories.loading ||
+    state.adminManufacturers.loading
   ) {
     return (
       <div className="container dashboard-new-product-container text-center">
@@ -267,7 +274,7 @@ export default function NewProductComponent() {
           <div className="card shadow mb-4">
             <div className="card-body">
               <div className="form-group">
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="name">Name*:</label>
                 <input
                   type="text"
                   name="name"
@@ -276,7 +283,7 @@ export default function NewProductComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="units">Units:</label>
+                <label htmlFor="units">Units*:</label>
                 <input
                   type="number"
                   name="units"
@@ -286,7 +293,7 @@ export default function NewProductComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="weight">Weight:</label>
+                <label htmlFor="weight">Weight*:</label>
                 <input
                   type="number"
                   name="weight"
@@ -296,7 +303,7 @@ export default function NewProductComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="price">Price (GBP):</label>
+                <label htmlFor="price">Price (GBP)*:</label>
                 <input
                   type="number"
                   name="price"
@@ -325,7 +332,10 @@ export default function NewProductComponent() {
                   id="category"
                   className="form-control"
                 >
-                  <option value="1">Example Category</option>
+                  <option value="0">Please select a category</option>
+                  {state.adminCategories.data.map(({ id, name }) => (
+                    <option key={id} value={id}>{name}</option>
+                  ))}
                 </select>
               </div>
               <div className="form-group">
@@ -336,7 +346,10 @@ export default function NewProductComponent() {
                   id="manufacturer"
                   className="form-control"
                 >
-                  <option value="1">Example Manufacturer</option>
+                  <option value="0">Please select a manufacturer</option>
+                  {state.adminManufacturers.data.map(({ id, name }) => (
+                    <option key={id} value={id}>{name}</option>
+                  ))}
                 </select>
               </div>
             </div>
