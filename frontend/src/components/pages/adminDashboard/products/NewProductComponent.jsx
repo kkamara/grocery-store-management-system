@@ -218,6 +218,7 @@ export default function NewProductComponent() {
 
   const handleFormSubmit = e => {
     e.preventDefault()
+    setError("")
     const err = formHasError()
     if (false !== err) {
       return setError(err)
