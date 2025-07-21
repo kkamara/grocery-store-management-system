@@ -1,18 +1,18 @@
 
 import HttpService from "../../services/HttpService"
-import { adminCategories, } from "../types"
+import { adminManufacturers, } from "../types"
 
 export const getAdminCategories = () => {
   return async dispatch => {
     const http = new HttpService()
 
-    dispatch({ type: adminCategories.GET_ADMIN_CATEGORIES_PENDING, })
+    dispatch({ type: adminManufacturers.GET_ADMIN_MANUFACTURERS_PENDING, })
 
     const tokenId = "admin-user-token"
-    await http.getData("/admin/categories", tokenId)
+    await http.getData("/admin/manufacturers", tokenId)
       .then(res => {
         dispatch({
-          type: adminCategories.GET_ADMIN_CATEGORIES_SUCCESS,
+          type: adminManufacturers.GET_ADMIN_MANUFACTURERS_SUCCESS,
           payload: res.data.data,
         })
       }).catch(error => {
@@ -29,7 +29,7 @@ export const getAdminCategories = () => {
           message = "Something went wrong. Please come back later."
         }
         dispatch({ 
-          type: adminCategories.GET_ADMIN_CATEGORIES_ERROR, 
+          type: adminManufacturers.GET_ADMIN_MANUFACTURERS_ERROR, 
           payload: message,
         })
       })
