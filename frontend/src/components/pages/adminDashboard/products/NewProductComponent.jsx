@@ -21,6 +21,8 @@ export default function NewProductComponent() {
   const [image5, setImage5] = useState("")
   const [image6, setImage6] = useState("")
 
+  const [price, setPrice] = useState("0.01")
+
   const [error, setError] = useState("")
 
   useEffect(() => {
@@ -121,6 +123,9 @@ export default function NewProductComponent() {
         setImage6("")
         break;
     }
+  }
+  const handlePriceChange = e => {
+    setPrice(e.target.value)
   }
 
   const handleFormSubmit = e => {
@@ -297,6 +302,10 @@ export default function NewProductComponent() {
                   name="price"
                   id="price"
                   className="form-control"
+                  value={price}
+                  onChange={handlePriceChange}
+                  step="0.01"
+                  min="0.01"
                 />
               </div>
               <div className="form-group">
