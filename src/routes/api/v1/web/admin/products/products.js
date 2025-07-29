@@ -5,10 +5,9 @@ const multer = require("multer");
 const { message500, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
+const { defaultConfig, } = require("../../../../../../utils/uploads");
 
-const upload = multer({
-  dest: "./uploads/",
-});
+const upload = multer(defaultConfig);
 
 const router = express.Router();
 
