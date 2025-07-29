@@ -7,7 +7,8 @@ const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthent
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
 const { defaultConfig, } = require("../../../../../../utils/uploads");
 
-const upload = multer(defaultConfig);
+const upload = multer(defaultConfig)
+  .array("images", 7);
 
 const router = express.Router();
 
@@ -37,11 +38,22 @@ router.get("/", adminAuthenticate, async (req, res) => {
 router.post(
   "/",
   adminAuthenticate,
-  upload.array("images", 7),
   async (req, res) => {
-    console.log(req.body);
-    console.log(req.files);
-    return res.json({ message: message200 });
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ message: err.message });
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ message: message500 });
+      }
+
+      console.log(req.body);
+      console.log(req.files);
+      return res.json({ message: message200 });
+    })
   },
 );
 
