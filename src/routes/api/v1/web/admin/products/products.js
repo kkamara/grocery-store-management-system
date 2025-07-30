@@ -40,24 +40,40 @@ router.post(
   "/",
   adminAuthenticate,
   async (req, res) => {
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
         res.status(status.INTERNAL_SERVER_ERROR);
-        return res.json({ message: err.message });
+        return res.json({ error: err.message });
       } else if (err) {
         // An unknown error occurred when uploading.
         res.status(status.INTERNAL_SERVER_ERROR);
-        return res.json({ message: message500 });
+        return res.json({ error: message500 });
       }
 
       console.log(req.body);
       console.log(req.files);
 
-      req.files.forEach(({ path, }) => {
-        removeFile(path);
-      });
-      
+      let photoError = false;
+      for (const file of req.files) {
+        photoError = await db.sequelize.models
+          .productPhoto
+          .getUploadPhotoError(
+            file.mimetype,
+            file.size,
+          );
+        if (false !== photoError) {
+          break;
+        }
+      }
+      if (false !== photoError) {
+        for (const file of req.files) {
+          removeFile(file.path);
+        }
+        res.status(status.BAD_REQUEST);
+        return res.json({ error: photoError });
+      }
+
       return res.json({ message: message200 });
     })
   },

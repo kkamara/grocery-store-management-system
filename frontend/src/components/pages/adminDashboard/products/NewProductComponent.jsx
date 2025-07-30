@@ -61,24 +61,34 @@ export default function NewProductComponent() {
 
   useEffect(() => {
     if (
-      false === state.createAdminProduct.loading &&
-      null !== state.createAdminProduct.data
+      false === state.createAdminProduct.loading
     ) {
-      setImage(defaultImageState)
-      setImage1(defaultImageState)
-      setImage2(defaultImageState)
-      setImage3(defaultImageState)
-      setImage4(defaultImageState)
-      setImage5(defaultImageState)
-      setImage6(defaultImageState)
-      setName(defaultNameState)
-      setUnits(defaultUnitsState)
-      setWeight(defaultWeightState)
-      setPrice(defaultPriceState)
-      setDescription(defaultDescriptionState)
-      setCategory(defaultCategoryState)
-      setManufacturer(defaultManufacturerState)
-      navigate("/admin/products")
+      if (
+        null !== state.createAdminProduct.data
+      ) {
+        setImage(defaultImageState)
+        setImage1(defaultImageState)
+        setImage2(defaultImageState)
+        setImage3(defaultImageState)
+        setImage4(defaultImageState)
+        setImage5(defaultImageState)
+        setImage6(defaultImageState)
+        setName(defaultNameState)
+        setUnits(defaultUnitsState)
+        setWeight(defaultWeightState)
+        setPrice(defaultPriceState)
+        setDescription(defaultDescriptionState)
+        setCategory(defaultCategoryState)
+        setManufacturer(defaultManufacturerState)
+        navigate("/admin/products")
+      }
+      if (
+        null !== state.createAdminProduct.error
+      ) {
+        setError(
+          state.createAdminProduct.error,
+        )
+      }
     }
   }, [state.createAdminProduct])
 

@@ -3,6 +3,8 @@ const {
   Model
 } = require('sequelize');
 const { appURL, } = require("../../config/index");
+const { fileSize, } = require('../../utils/file');
+
 module.exports = (sequelize, DataTypes) => {
   class productPhoto extends Model {
     /**
@@ -67,6 +69,22 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: photo.createdAt,
         updatedAt: photo.updatedAt,
       };
+    }
+
+    /**
+     * @param {string} mimetype
+     * @param {number} size - binary size
+     */
+    static getUploadPhotoError(mimetype, size) {
+      if (null === mimetype.match(/(jpg|jpeg|png|webp)$/i)) {
+        return "Product photo mimetype must match one of jpg, jpeg, png or webp.";
+      }
+
+      if (size > fileSize) {
+        return "Product photo size must not exceed 3.5MB";
+      }
+
+      return false;
     }
   }
   productPhoto.init({
