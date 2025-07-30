@@ -74,6 +74,13 @@ router.post(
         return res.json({ error: photoError });
       }
 
+      // Get fields error and if
+      // any, delete photos
+
+      // When no errors, proceed
+      // to save product and move
+      // photos to public/ dir
+
       return res.json({ message: message200 });
     })
   },
