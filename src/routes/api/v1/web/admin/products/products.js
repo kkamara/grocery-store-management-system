@@ -6,6 +6,7 @@ const { message500, message200, } = require("../../../../../../utils/httpRespons
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
 const { defaultConfig, } = require("../../../../../../utils/uploads");
+const { removeFile, } = require("../../../../../../utils/file");
 
 const upload = multer(defaultConfig)
   .array("images", 7);
@@ -52,6 +53,11 @@ router.post(
 
       console.log(req.body);
       console.log(req.files);
+
+      req.files.forEach(({ path, }) => {
+        removeFile(path);
+      });
+      
       return res.json({ message: message200 });
     })
   },
