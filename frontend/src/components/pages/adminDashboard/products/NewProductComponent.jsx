@@ -264,6 +264,13 @@ export default function NewProductComponent() {
   const handleFormSubmit = e => {
     e.preventDefault()
     setError("")
+    setImage(defaultImageState)
+    setImage1(defaultImageState)
+    setImage2(defaultImageState)
+    setImage3(defaultImageState)
+    setImage4(defaultImageState)
+    setImage5(defaultImageState)
+    setImage6(defaultImageState)
     const err = formHasError()
     if (false !== err) {
       return setError(err)
