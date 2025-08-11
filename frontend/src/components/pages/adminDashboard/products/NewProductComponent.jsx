@@ -280,6 +280,13 @@ export default function NewProductComponent() {
     for (const image of images) {
       payload.append("images", image)
     }
+    payload.append("name", name)
+    payload.append("units", units)
+    payload.append("weight", weight)
+    payload.append("price", price)
+    payload.append("description", description)
+    payload.append("category", category)
+    payload.append("manufacturer", manufacturer)
     // console.log("payload", [...payload])
     dispatch(newProduct(payload))
   }

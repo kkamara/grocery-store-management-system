@@ -5,6 +5,8 @@ const {
 const moment = require("moment-timezone");
 const { nodeEnv, } = require('../../config');
 const { mysqlTimeFormat, } = require('../../utils/time');
+const { integerNumberRegex, numberWithOptionalDecimalPartRegex, } = require('../../utils/regexes');
+
 module.exports = (sequelize, DataTypes) => {
   class product extends Model {
     /**
@@ -359,6 +361,79 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @param {Object} payload
+     */
+    static async getNewProductError(payload) {
+      if (!payload.name) {
+        return "The name field is required.";
+      } else if ("string" !== typeof payload.name) {
+        return "The name field must be a string.";
+      } else if (50 < payload.name.length) {
+        return "The name field must be less than 51 characters.";
+      }
+
+      if (undefined === payload.units) {
+        return "The units field is required.";
+      } else if (null === `${payload.units}`.match(integerNumberRegex)) {
+        return "The units field must be a number"
+      }
+
+      if (undefined === payload.weight) {
+        return "The weight field is required.";
+      } else if (null === `${payload.weight}`.match(numberWithOptionalDecimalPartRegex)) {
+        return "The weight field must be a number"
+      }
+
+      if (undefined === payload.price) {
+        return "The price field is required.";
+      } else if (null === `${payload.price}`.match(numberWithOptionalDecimalPartRegex)) {
+        return "The price field must be a number"
+      }
+
+      if (payload.description) {
+        if ("string" !== payload.description) {
+          return "The description field must be a string.";
+        } else if (1000 < payload.description.length) {
+          return "The description field must be less than 1001 characters.";
+        }
+      }
+
+      if (payload.category) {
+        if (null === `${payload.category}`.match(integerNumberRegex)) {
+          return "The category field must be a valid integer.";
+        }
+
+        const foundCategory = await this.sequelize
+          .models
+          .category
+          .getProductCategory(
+            payload.category
+          );
+        if (false === foundCategory) {
+          return "The category field was not found in our records.";
+        }
+      }
+
+      if (payload.manufacturer) {
+        if (null === `${payload.manufacturer}`.match(integerNumberRegex)) {
+          return "The manufacturer field must be a valid integer.";
+        }
+
+        const foundManufacturer = await this.sequelize
+          .models
+          .manufacturer
+          .getProductManufacturer(
+            payload.manufacturer
+          );
+        if (false === foundManufacturer) {
+          return "The manufacturer field was not found in our records.";
+        }
+      }
+
+      return false;
+    }
   }
   product.init({
     id: {
@@ -387,7 +462,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     manufacturersId: {

@@ -66,6 +66,7 @@ router.post(
           break;
         }
       }
+      
       if (false !== photoError) {
         for (const file of req.files) {
           removeFile(file.path);
@@ -76,6 +77,18 @@ router.post(
 
       // Get fields error and if
       // any, delete photos
+      const fieldsError = await db.sequelize.models
+        .product
+        .getNewProductError(
+          req.body,
+        );
+      if (false !== fieldsError) {
+        for (const file of req.files) {
+          removeFile(file.path);
+        }
+        res.status(status.BAD_REQUEST);
+        return res.json({ error: fieldsError });
+      }
 
       // When no errors, proceed
       // to save product and move
