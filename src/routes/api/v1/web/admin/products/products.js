@@ -93,7 +93,7 @@ router.post(
       const photos = [];
       for (const file of req.files) {
         const fileExtension = file.mimetype
-          .slice(file.mimetype.indexOf("/") + 1);
+          .slice(1 + file.mimetype.indexOf("/"));
         const newPath = "public/productPhotos/" + file.filename + "." + fileExtension;
         db.sequelize.models
           .productPhoto
