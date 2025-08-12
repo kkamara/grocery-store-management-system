@@ -33,21 +33,12 @@ export default function ProductComponent() {
 
   const renderProductPhotos = () => {
     return <Slide indicators={indicators}>
-        <div className="each-slide-effect">
+        {state.adminGetProduct.data.photos.map(({ path, }, index) => (
+          <div className="each-slide-effect">
             <div
-              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/pizza-6948995_1280.webp)` }}
-              ></div>
-        </div>
-        <div className="each-slide-effect">
-            <div
-              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/apples-2243734_1280.jpg)` }}
-              ></div>
-        </div>
-        <div className="each-slide-effect">
-            <div
-              style={{ 'backgroundImage': `url(http://localhost:8000/productPhotos/dairy-5621769_1280.webp)` }}
-              ></div>
-        </div>
+              style={{ 'backgroundImage': `url(${path})` }}
+            ></div>
+          </div>))}
     </Slide>
   }
 
