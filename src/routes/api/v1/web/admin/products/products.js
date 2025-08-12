@@ -90,9 +90,24 @@ router.post(
         return res.json({ error: fieldsError });
       }
 
-      // When no errors, proceed
-      // to save product and move
-      // photos to public/ dir
+      const photos = [];
+      for (const file of req.files) {
+        const fileExtension = file.mimetype
+          .slice(file.mimetype.indexOf("/") + 1);
+        const newPath = "public/productPhotos/" + file.filename + "." + fileExtension;
+        db.sequelize.models
+          .productPhoto
+          .moveUploadedPhotoToPublicDir(
+            file.path,
+            newPath,
+          );
+        photos.push({
+          mimetype: file.mimetype,
+          newPath,
+        });
+      }
+      console.log(photos);
+      // TODO: Save product & photos to database
 
       return res.json({ message: message200 });
     })

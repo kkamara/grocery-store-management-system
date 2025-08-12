@@ -400,7 +400,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
 
-      if (payload.category) {
+      if (payload.category && Number(payload.category)) {
         if (null === `${payload.category}`.match(integerNumberRegex)) {
           return "The category field must be a valid integer.";
         }
@@ -416,7 +416,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
 
-      if (payload.manufacturer) {
+      if (payload.manufacturer && Number(payload.manufacturer)) {
         if (null === `${payload.manufacturer}`.match(integerNumberRegex)) {
           return "The manufacturer field must be a valid integer.";
         }

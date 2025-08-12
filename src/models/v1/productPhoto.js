@@ -1,4 +1,5 @@
 'use strict';
+const { renameSync, } = require("node:fs");
 const {
   Model
 } = require('sequelize');
@@ -85,6 +86,14 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       return false;
+    }
+
+    /**
+     * @param {string} from - Relavive path
+     * @param {string} to - Relative path
+     */
+    static moveUploadedPhotoToPublicDir(from, to) {
+      renameSync(from, to);
     }
   }
   productPhoto.init({
