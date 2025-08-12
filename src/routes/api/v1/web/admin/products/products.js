@@ -7,6 +7,7 @@ const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthent
 const { integerNumberRegex, } = require("../../../../../../utils/regexes");
 const { defaultConfig, } = require("../../../../../../utils/uploads");
 const { removeFile, } = require("../../../../../../utils/file");
+const { nodeEnv, } = require("../../../../../../config/index");
 
 const upload = multer(defaultConfig)
   .array("images", 7);
@@ -51,8 +52,10 @@ router.post(
         return res.json({ error: message500 });
       }
 
-      console.log(req.body);
-      console.log(req.files);
+      if ("production" !== nodeEnv) {
+        console.log(req.body);
+        console.log(req.files);
+      }
 
       let photoError = false;
       for (const file of req.files) {
@@ -75,8 +78,6 @@ router.post(
         return res.json({ error: photoError });
       }
 
-      // Get fields error and if
-      // any, delete photos
       const fieldsError = await db.sequelize.models
         .product
         .getNewProductError(
@@ -90,24 +91,88 @@ router.post(
         return res.json({ error: fieldsError });
       }
 
+      const cleanData = await db.sequelize
+        .models
+        .product
+        .getNewProductData({
+          name: req.bodyString("name"),
+          units: req.bodyInt("units"),
+          weight: req.bodyFloat("weight"),
+          price: req.bodyFloat("price"),
+          description: req.bodyString("description"),
+          category: req.bodyInt("category"),
+          manufacturer: req.bodyInt("manufacturer"),
+        });
+      if (false === cleanData) {
+        for (const file of req.files) {
+          removeFile(file.path);
+        }
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
+
+      // Save product & photos to database
       const photos = [];
       for (const file of req.files) {
         const fileExtension = file.mimetype
           .slice(1 + file.mimetype.indexOf("/"));
-        const newPath = "public/productPhotos/" + file.filename + "." + fileExtension;
-        db.sequelize.models
-          .productPhoto
-          .moveUploadedPhotoToPublicDir(
-            file.path,
-            newPath,
-          );
+        const filename = file.filename + "." + fileExtension;
+        const newPath = "public/productPhotos/" + filename;
         photos.push({
+          from: file.path,
           mimetype: file.mimetype,
+          filenameToBe: filename,
           newPath,
         });
       }
-      console.log(photos);
-      // TODO: Save product & photos to database
+
+      if ("production" !== nodeEnv) {
+        console.log(photos);
+      }
+
+      const savedProduct = await db.sequelize
+        .models
+        .product
+        .newProduct(cleanData);
+      if (false === savedProduct) {
+        for (const file of req.files) {
+          removeFile(file.path);
+        }
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
+      
+      for (const photo of photos) {
+        const savePhoto = await db.sequelize
+          .models
+          .productPhoto
+          .newProductPhoto(
+            savedProduct.productId,
+            photo.filenameToBe,
+            photo.newPath,
+            photo.mimetype,
+          );
+        if (false === savePhoto) {
+          photoError = true;
+          break;
+        }
+      }
+      if (false !== photoError) {
+        for (const file of req.files) {
+          removeFile(file.path);
+        }
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
+
+      for (const file of photos) {
+        db.sequelize.models
+          .productPhoto
+          .moveUploadedPhotoToPublicDir(
+            file.from,
+            file.newPath,
+          );
+      }
 
       return res.json({ message: message200 });
     })

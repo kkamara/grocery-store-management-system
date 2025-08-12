@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 const moment = require("moment-timezone");
+const slugify = require("slugify");
 const { nodeEnv, } = require('../../config');
 const { mysqlTimeFormat, } = require('../../utils/time');
 const { integerNumberRegex, numberWithOptionalDecimalPartRegex, } = require('../../utils/regexes');
@@ -372,6 +373,13 @@ module.exports = (sequelize, DataTypes) => {
         return "The name field must be a string.";
       } else if (50 < payload.name.length) {
         return "The name field must be less than 51 characters.";
+      } else {
+        const nameExists = await this.getProductBySlug(
+          slugify(payload.name),
+        );
+        if (false !== nameExists) {
+          return "The name field is taken.";
+        }
       }
 
       if (undefined === payload.units) {
@@ -433,6 +441,64 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       return false;
+    }
+
+    static getNewProductData(payload) {
+      const result = {
+        name: payload.name,
+        units: payload.units,
+        weight: payload.weight,
+        price: payload.price,
+      };
+      if (payload.description) {
+        result.description = payload.description;
+      }
+      if (payload.category) {
+        result.category = payload.category;
+      }
+      if (payload.manufacturer) {
+        result.manufacturer = payload.manufacturer;
+      }
+      return result;
+    }
+
+    /**
+     * @param {Object} data
+     * @returns {object|false}
+     */
+    static async newProduct(data) {
+      try {
+        const result = await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
+            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              slug: slugify(data.name),
+              name: data.name,
+              units: data.units,
+              weight: data.weight,
+              price: data.price,
+              description: data.description || null,
+              categoriesId: data.category || null,
+              manufacturersId: data.manufacturer || null,
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            },
+          },
+        );
+
+        return { productId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   product.init({

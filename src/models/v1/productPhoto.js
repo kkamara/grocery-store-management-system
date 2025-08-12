@@ -3,8 +3,10 @@ const { renameSync, } = require("node:fs");
 const {
   Model
 } = require('sequelize');
-const { appURL, } = require("../../config/index");
+const moment = require("moment-timezone");
+const { appURL, nodeEnv, } = require("../../config/index");
 const { fileSize, } = require('../../utils/file');
+const { mysqlTimeFormat, } = require('../../utils/time');
 
 module.exports = (sequelize, DataTypes) => {
   class productPhoto extends Model {
@@ -65,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         id: photo.id,
         productsId: photo.productsId,
         name: photo.name,
-        path: appURL+"/productPhotos/"+photo.path,
+        path: appURL+"/productPhotos/"+photo.name,
         type: photo.type,
         createdAt: photo.createdAt,
         updatedAt: photo.updatedAt,
@@ -94,6 +96,49 @@ module.exports = (sequelize, DataTypes) => {
      */
     static moveUploadedPhotoToPublicDir(from, to) {
       renameSync(from, to);
+    }
+
+    /**
+     * @param {number} productsId
+     * @param {string} fileName
+     * @param {string} path
+     * @param {string} mimetype
+     * @returns {object|false}
+     */
+    static async newProductPhoto(
+      productsId,
+      fileName,
+      path,
+      mimetype,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(productsId, name, path, type, createdAt, updatedAt)
+            VALUES(:productsId, :name, :path, :type, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              name: fileName,
+              type: mimetype,
+              productsId,
+              path,
+            },
+          },
+        );
+
+        return { productId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   productPhoto.init({
