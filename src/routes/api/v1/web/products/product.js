@@ -2,13 +2,12 @@ const express = require("express");
 const { status, } = require("http-status");
 const db = require("../../../../../models/v1");
 const { message404, } = require("../../../../../utils/httpResponses");
-const authenticate = require("../../../../../middlewares/v1/authenticate");
 
 const router = express.Router({
   mergeParams: true,
 });
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   const product = await db.sequelize.models
     .product
     .getProductBySlug(

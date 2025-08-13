@@ -831,14 +831,7 @@
 									"name": "Search Products",
 									"request": {
 										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{token}}",
-													"type": "string"
-												}
-											]
+											"type": "noauth"
 										},
 										"method": "GET",
 										"header": [],
@@ -869,25 +862,18 @@
 									"name": "Get Product",
 									"request": {
 										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{token}}",
-													"type": "string"
-												}
-											]
+											"type": "noauth"
 										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{web}}/products/Bespoke-Bamboo-Hat",
+											"raw": "{{web}}/products/Licensed-Bronze-Hat",
 											"host": [
 												"{{web}}"
 											],
 											"path": [
 												"products",
-												"Bespoke-Bamboo-Hat"
+												"Licensed-Bronze-Hat"
 											]
 										}
 									},

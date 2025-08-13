@@ -2,12 +2,11 @@ const express = require("express");
 const { status, } = require("http-status");
 const db = require("../../../../../models/v1");
 const { message500, } = require("../../../../../utils/httpResponses");
-const authenticate = require("../../../../../middlewares/v1/authenticate");
 const { integerNumberRegex, } = require("../../../../../utils/regexes");
 
 const router = express.Router();
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   const page = req.query.page;
   if (page && null === `${page}`.match(integerNumberRegex)) {
     res.status(status.BAD_REQUEST);
