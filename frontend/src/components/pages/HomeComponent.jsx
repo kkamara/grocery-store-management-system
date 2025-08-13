@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate"
 import { Helmet, } from "react-helmet"
 import Error from "../layouts/Error"
 import { parseDate, } from "../../utils/date"
+import { getProducts, } from "../../redux/actions/productsActions"
 
 import "./HomeComponent.scss"
 
@@ -11,7 +12,12 @@ export default function HomeComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     auth: state.auth,
+    products: state.products,
   }))
+
+  useEffect(() => {
+    dispatch(getProducts())
+  }, []);
 
   const handlePageChange = ({ selected, }) => {
     const newPage = selected + 1
@@ -86,7 +92,14 @@ export default function HomeComponent() {
   ) {
     console.log("authenticated", state.auth.data)
   }
-  if (state.auth.loading) {
+  if (
+    !state.products.loading &&
+    typeof state.products.data === "object" &&
+    null !== state.products.data
+  ) {
+    console.log("products", state.products.data)
+  }
+  if (state.auth.loading || state.products.loading) {
     return <div className="container home-container text-center">
       <Helmet>
         <title>Home - {process.env.REACT_APP_NAME}</title>
