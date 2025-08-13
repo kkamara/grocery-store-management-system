@@ -822,6 +822,82 @@
 					]
 				},
 				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Bearer Token Restricted",
+							"item": [
+								{
+									"name": "Search Products",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{web}}/products?query=hat",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"products"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "5",
+													"disabled": true
+												},
+												{
+													"key": "query",
+													"value": "hat"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Product",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{web}}/products/Bespoke-Bamboo-Hat",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"products",
+												"Bespoke-Bamboo-Hat"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "Get Users",
 					"request": {
 						"method": "GET",

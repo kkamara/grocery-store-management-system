@@ -1,6 +1,6 @@
 const express = require("express");
-const db = require("../../../../../../models/v1");
 const { status, } = require("http-status");
+const db = require("../../../../../../models/v1");
 const { message500, message404, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 
@@ -16,7 +16,7 @@ router.get("/", adminAuthenticate, async (req, res) => {
     );
   if (false === product) {
     res.status(status.NOT_FOUND);
-    return res.json({ message: message404, });
+    return res.json({ error: message404, });
   }
   const photos = await db.sequelize.models
     .productPhoto
@@ -37,7 +37,7 @@ router.delete("/", adminAuthenticate, async (req, res) => {
     );
   if (false === product) {
     res.status(status.NOT_FOUND);
-    return res.json({ message: message404, });
+    return res.json({ error: message404, });
   }
   const deleteProduct = await db.sequelize.models
     .product
@@ -46,7 +46,7 @@ router.delete("/", adminAuthenticate, async (req, res) => {
     );
   if (false === deleteProduct) {
     res.status(status.NOT_FOUND);
-    return res.json({ message: message500, });
+    return res.json({ error: message500, });
   }
   try {
     await db.sequelize.models

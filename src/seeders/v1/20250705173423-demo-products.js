@@ -68,15 +68,18 @@ module.exports = {
 
         const photos = [
           {
-            path: "pizza-6948995_1280.webp",
+            name: "pizza-6948995_1280.webp",
+            path: "public/productPhotos/pizza-6948995_1280.webp",
             type: "image/webp",
           },
           {
-            path: "apples-2243734_1280.jpg",
+            name: "apples-2243734_1280.jpg",
+            path: "public/productPhotos/apples-2243734_1280.jpg",
             type: "image/jpg",
           },
           {
-            path: "dairy-5621769_1280.webp",
+            name: "dairy-5621769_1280.webp",
+            path: "public/productPhotos/dairy-5621769_1280.webp",
             type: "image/webp",
           },
         ];
@@ -88,7 +91,7 @@ module.exports = {
               VALUES (:productsId, :name, :path, :type, :createdAt, :updatedAt)`,
             {
               replacements: {
-                name: faker.commerce.productName(),
+                name: photo.name,
                 path: photo.path,
                 type: photo.type,
                 createdAt: moment().utc().format(mysqlTimeFormat),
