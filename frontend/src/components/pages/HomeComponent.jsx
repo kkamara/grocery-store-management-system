@@ -21,14 +21,14 @@ export default function HomeComponent() {
 
   const handlePageChange = ({ selected, }) => {
     const newPage = selected + 1
-    if (newPage > state.users.data.meta.pages) {
+    if (newPage > state.products.data.meta.pages) {
       return
     }
-    dispatch(getUsers(newPage))
+    dispatch(getProducts(newPage))
   }
 
   const pagination = () => {
-    if (true) {
+    if (!state.products.data) {
         return null
     }
 
@@ -45,41 +45,51 @@ export default function HomeComponent() {
       breakLabel="..."
       breakClassName="page-item"
       breakLinkClassName="page-link"
-      pageCount={state.users.data.meta.pages}
+      pageCount={state.products.data.meta.pages}
       marginPagesDisplayed={2}
       pageRangeDisplayed={5}
       containerClassName="pagination"
       activeClassName="active"
-      forcePage={state.users.data.meta.currentPage - 1}
+      forcePage={state.products.data.meta.currentPage - 1}
     />
   }
 
   const paginationDetail = () => {
     return <div className="text-center">
-      <strong>Page</strong> ({state.users.data.meta.currentPage}),&nbsp;
-      <strong>Page Count</strong> ({state.users.data.meta.pages}),&nbsp;
-      <strong>Displayed Items</strong> ({state.users.data.data.length}),&nbsp;
-      <strong>Items</strong> ({state.users.data.meta.items})
+      <strong>Page</strong> ({state.products.data.meta.currentPage}),&nbsp;
+      <strong>Page Count</strong> ({state.products.data.meta.pages}),&nbsp;
+      <strong>Displayed Items</strong> ({state.products.data.data.length}),&nbsp;
+      <strong>Items</strong> ({state.products.data.meta.items})
     </div>
   }
 
   const renderList = () => {
-    if (true) {
+    if (!state.products.data) {
       return null
     }
     return (
       <>
         {paginationDetail()}
-        <ul className="list-group">
-          {state.users.data.data.map((user, index) => (
-            <li key={index} className="list-group-item home-item">
-              <strong>name</strong> ({user.firstName} {user.lastName}),&nbsp;
-              <strong>email</strong> ({user.email}),&nbsp;
-              <strong>created_at</strong> ({parseDate(user.createdAt)}),&nbsp;
-              <strong>updated_at</strong> ({parseDate(user.updatedAt)})
-            </li>
+        <div className="row">
+          {state.products.data.data.map((product, index) => (
+            <div key={index} className="col-md-2 product-card-container">
+              <div className="card product-card">
+                <div className="card-header">
+                  {product.photos && (
+                    <img
+                      src={product.photos[0].path}
+                      alt={product.photos[0].name}
+                      className="img-fluid"
+                    />
+                  )}
+                </div>
+                <div className="card-body">
+                  <span className="product-name">{product.name}</span>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
         {paginationDetail()}
       </>
     )
@@ -113,14 +123,7 @@ export default function HomeComponent() {
       <Helmet>
         <title>Home - {process.env.REACT_APP_NAME}</title>
       </Helmet>
-      <Error error={state.auth.error}/>
-      <div className="text-center">
-        <button className="btn btn-primary home-button">
-          Test Button
-        </button>
-      </div>
-      <br />
-      <br />
+      <Error error={state.auth.error || state.products.error}/>
       {pagination()}
       {renderList()}
       {pagination()}

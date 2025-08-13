@@ -18,6 +18,8 @@ router.get("/", async (req, res) => {
   const products = await db.sequelize.models.product.searchAdminProducts(
     req.queryString("query"),
     page || 1,
+    24,
+    { singlePhoto: true },
   );
   if (false === products) {
     res.status(status.INTERNAL_SERVER_ERROR)

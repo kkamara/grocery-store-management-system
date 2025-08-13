@@ -140,6 +140,37 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+    
+    /**
+     * @param {number} productId
+     * @returns {object|false}
+     */
+    static async getFirstProductPhoto(productId) {
+      try {
+        const result = await sequelize.query(
+          `SELECT productPhotos.*
+            FROM ${this.getTableName()}
+            WHERE productsId = :productId
+            ORDER BY id ASC
+            LIMIT 1`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { productId },
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedProductPhotoData(result[0]);
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   productPhoto.init({
     id: {

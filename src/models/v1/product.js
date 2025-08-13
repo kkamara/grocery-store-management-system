@@ -46,12 +46,14 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} query
      * @param {number} page
      * @param {number} perPage
+     * @param {boolean} [options.singlePhoto=false] options.singlePhoto
      * @returns {object|false}
      */
     static async searchAdminProducts(
       query = null,
       page = 1,
       perPage = 7,
+      options,
     ) {
       if (null !== query) {
         return this.queryAdminProducts(query, page, perPage)
@@ -99,7 +101,8 @@ module.exports = (sequelize, DataTypes) => {
         page += 1;
         return {
           data: await this.getFormattedProductsData(
-            coreResults
+            coreResults,
+            options,
           ),
           meta: {
             currentPage: page,
@@ -206,13 +209,14 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {array} products
+     * @param {boolean} [options.singlePhoto=false] options.singlePhoto
      * @returns {array}
      */
-    static async getFormattedProductsData(products) {
+    static async getFormattedProductsData(products, options) {
       const result = [];
       for (const product of products) {
         result.push(
-          await this.getFormattedProductData(product)
+          await this.getFormattedProductData(product, options)
         );
       }
       return result;
@@ -223,6 +227,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {Object} options
      * @param {boolean} [options.getCategory=false] options.getCategory
      * @param {boolean} [options.getManufacturer=false] options.getManufacturer
+     * @param {boolean} [options.singlePhoto=false] options.singlePhoto
      * @returns {array}
      */
     static async getFormattedProductData(
@@ -243,20 +248,29 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       };
-      if (options && true === options.getCategory) {
-        const category = await this.sequelize.models
-          .category
-          .getProductCategory(product.categoriesId);
-        if (false !== category) {
-          result.category = category;
+      if (options) {
+        if (true === options.getCategory) {
+          const category = await this.sequelize.models
+            .category
+            .getProductCategory(product.categoriesId);
+          if (false !== category) {
+            result.category = category;
+          }
         }
-      }
-      if (options && true === options.getManufacturer) {
-        const manufacturer = await this.sequelize.models
-          .manufacturer
-          .getProductManufacturer(product.manufacturersId);
-        if (false !== manufacturer) {
-          result.manufacturer = manufacturer;
+        if (true === options.getManufacturer) {
+          const manufacturer = await this.sequelize.models
+            .manufacturer
+            .getProductManufacturer(product.manufacturersId);
+          if (false !== manufacturer) {
+            result.manufacturer = manufacturer;
+          }
+        }
+        if (true == options.singlePhoto) {
+          const photo = await this.sequelize.models.productPhoto
+            .getFirstProductPhoto(product.id);
+          if (false !== photo) {
+            result.photos = [photo];
+          }
         }
       }
       return result;
