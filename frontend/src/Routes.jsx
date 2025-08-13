@@ -37,10 +37,10 @@ export default () => {
       </Route>
       <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
-          <Route path={url("/")} element={<Home />}/>
+          <Route path={url("/user/logout")} element={<Logout />}/>
         </Route>
+        <Route path={url("/")} element={<Home />}/>
         <Route path={url("/user/signin")} element={<SignIn />}/>
-        <Route path={url("/user/logout")} element={<Logout />}/>
         <Route path={url("/user/register")} element={<Register />}/>
       </Route>
       <Route path={url("/admin/signin")} element={<DashboardSignIn/>}/>
