@@ -2,7 +2,6 @@ import React, { useEffect, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import ReactPaginate from "react-paginate"
 import { Helmet, } from "react-helmet"
-import { getUsers, } from "../../redux/actions/usersActions"
 import Error from "../layouts/Error"
 import { parseDate, } from "../../utils/date"
 
@@ -12,12 +11,7 @@ export default function HomeComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     auth: state.auth,
-    users: state.users,
   }))
-
-  useEffect(() => {
-    dispatch(getUsers())
-  }, [])
 
   const handlePageChange = ({ selected, }) => {
     const newPage = selected + 1
@@ -28,7 +22,7 @@ export default function HomeComponent() {
   }
 
   const pagination = () => {
-    if (!state.users.data) {
+    if (true) {
         return null
     }
 
@@ -64,7 +58,7 @@ export default function HomeComponent() {
   }
 
   const renderList = () => {
-    if (!state.users.data) {
+    if (true) {
       return null
     }
     return (
@@ -92,14 +86,7 @@ export default function HomeComponent() {
   ) {
     console.log("authenticated", state.auth.data)
   }
-  if (
-    !state.users.loading &&
-    typeof state.users.data === "object" &&
-    null !== state.users.data
-  ) {
-    console.log("users", state.users.data)
-  }
-  if (state.auth.loading || state.users.loading) {
+  if (state.auth.loading) {
     return <div className="container home-container text-center">
       <Helmet>
         <title>Home - {process.env.REACT_APP_NAME}</title>
@@ -113,7 +100,7 @@ export default function HomeComponent() {
       <Helmet>
         <title>Home - {process.env.REACT_APP_NAME}</title>
       </Helmet>
-      <Error error={state.auth.error || state.users.error}/>
+      <Error error={state.auth.error}/>
       <div className="text-center">
         <button className="btn btn-primary home-button">
           Test Button
