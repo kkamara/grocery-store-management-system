@@ -12,7 +12,7 @@ import { newProduct, } from "../../../../redux/actions/createAdminProductActions
 import "./NewProductComponent.scss"
 
 const defaultImageState = ""
-const defaultNameState = "A Unique Product Name"
+const defaultNameState = ""
 const defaultUnitsState = 1
 const defaultWeightState = "0.01"
 const defaultPriceState = "0.01"
