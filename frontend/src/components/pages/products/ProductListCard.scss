@@ -1,0 +1,28 @@
+.product-card-container {
+  text-decoration: none;
+  margin-bottom: 30px;
+  font-weight: normal !important;
+
+  .product-card {
+    width: 200px;
+  }
+  .card-header {
+    height: 130px;
+  }
+  .card-body {
+    height: 200px;
+  }
+  .product-name {
+    height: 60px;
+    font-size: 18px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2; 
+    -webkit-box-orient: vertical;
+  }
+  .product-price {
+    float: right;
+    font-size: 24px;
+  }
+}

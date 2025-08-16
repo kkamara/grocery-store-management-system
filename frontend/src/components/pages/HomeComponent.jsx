@@ -3,8 +3,8 @@ import { useDispatch, useSelector, } from "react-redux"
 import ReactPaginate from "react-paginate"
 import { Helmet, } from "react-helmet"
 import Error from "../layouts/Error"
-import { parseDate, } from "../../utils/date"
 import { getProducts, } from "../../redux/actions/productsActions"
+import ProductListCard from "./products/ProductListCard"
 
 import "./HomeComponent.scss"
 
@@ -55,7 +55,7 @@ export default function HomeComponent() {
   }
 
   const paginationDetail = () => {
-    return <div className="text-center">
+    return <div className="text-center pagination-detail">
       <strong>Page</strong> ({state.products.data.meta.currentPage}),&nbsp;
       <strong>Page Count</strong> ({state.products.data.meta.pages}),&nbsp;
       <strong>Displayed Items</strong> ({state.products.data.data.length}),&nbsp;
@@ -72,22 +72,10 @@ export default function HomeComponent() {
         {paginationDetail()}
         <div className="row">
           {state.products.data.data.map((product, index) => (
-            <div key={index} className="col-md-2 product-card-container">
-              <div className="card product-card">
-                <div className="card-header">
-                  {product.photos && (
-                    <img
-                      src={product.photos[0].path}
-                      alt={product.photos[0].name}
-                      className="img-fluid"
-                    />
-                  )}
-                </div>
-                <div className="card-body">
-                  <span className="product-name">{product.name}</span>
-                </div>
-              </div>
-            </div>
+            <ProductListCard
+              key={index}
+              product={product}
+            />
           ))}
         </div>
         {paginationDetail()}

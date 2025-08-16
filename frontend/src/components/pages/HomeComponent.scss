@@ -1,19 +1,5 @@
-.product-card-container {
-  .product-card {
-    width: 200px;
-  }
-  .card-header {
-    height: 130px;
-  }
-  .card-body {
-    height: 200px;
-  }
-  .product-name {
-    font-size: 18px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-            line-clamp: 2; 
-    -webkit-box-orient: vertical;
+.home-container {
+  .pagination-detail:first-of-type {
+    margin-bottom: 30px;
   }
 }
