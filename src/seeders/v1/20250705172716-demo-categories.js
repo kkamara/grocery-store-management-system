@@ -8,10 +8,22 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
+      const categories = [
+        { name: "Food Cupboard" },
+        { name: "Frozen Foods" },
+        { name: "Sweets & Snacks" },
+        { name: "Meat & Seafood" },
+        { name: "Bakery" },
+        { name: "Dairy" },
+        { name: "Refrigerated Items" },
+        { name: "Drinks" },
+        { name: "Alcohol" },
+        { name: "Household Goods" },
+      ];
       const insertArray = [];
-      for (let i = 0; i < 15; i++) {
+      for (const category of categories) {
         insertArray.push({
-          name: faker.internet.displayName(),
+          name: category.name,
           createdAt: moment().utc().format(mysqlTimeFormat),
           updatedAt: moment().utc().format(mysqlTimeFormat),
         });
