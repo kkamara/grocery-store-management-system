@@ -8,7 +8,10 @@ export const getProducts = page => {
 
     dispatch({ type: products.GET_PRODUCTS_PENDING, })
 
-    const tokenId = "user-token"
+    let tokenId = "user-token"
+    if (null === localStorage.getItem(tokenId)) {
+      tokenId = ""
+    }
     const path = page ? "/products/?page="+page : "/products"
     await http.getData(path, tokenId)
       .then(res => {

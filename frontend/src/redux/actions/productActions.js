@@ -8,7 +8,10 @@ export const getProduct = slug => {
 
     dispatch({ type: product.GET_PRODUCT_PENDING, })
 
-    const tokenId = "user-token"
+    let tokenId = "user-token"
+    if (null === localStorage.getItem(tokenId)) {
+      tokenId = ""
+    }
     const path = "/products/"+slug
     await http.getData(path, tokenId)
       .then(res => {
