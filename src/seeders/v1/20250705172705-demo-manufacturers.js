@@ -8,10 +8,17 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
+      const manufacturers = [
+        { name: "Multinational Corporation" },
+        { name: "Regional Business" },
+        { name: "Large Regional Business" },
+        { name: "Small Corporation" },
+        { name: "Local Business" },
+      ];
       const insertArray = [];
-      for (let i = 0; i < 15; i++) {
+      for (const manufacturer of manufacturers) {
         insertArray.push({
-          name: faker.internet.displayName(),
+          name: manufacturer.name,
           createdAt: moment().utc().format(mysqlTimeFormat),
           updatedAt: moment().utc().format(mysqlTimeFormat),
         });
