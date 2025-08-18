@@ -11,7 +11,7 @@ export default function ProductListCard({ product, }) {
             <img
               src={product.photos[0].path}
               alt={product.photos[0].name}
-              className="img-fluid"
+              className="img-fluid product-image"
             />
           )}
         </div>
