@@ -415,7 +415,7 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       if (payload.description) {
-        if ("string" !== payload.description) {
+        if ("string" !== typeof payload.description) {
           return "The description field must be a string.";
         } else if (1000 < payload.description.length) {
           return "The description field must be less than 1001 characters.";
