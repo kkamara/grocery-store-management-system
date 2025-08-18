@@ -9,6 +9,7 @@ import SignIn from "./components/pages/auth/SignInComponent"
 import Logout from "./components/pages/auth/LogoutComponent"
 import Register from "./components/pages/auth/RegisterComponent"
 import NotFound from "./components/pages/http/NotFoundComponent"
+import ProductComponent from "./components/pages/products/ProductComponent"
 
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
 import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
@@ -42,6 +43,7 @@ export default () => {
         <Route path={url("/")} element={<Home />}/>
         <Route path={url("/user/signin")} element={<SignIn />}/>
         <Route path={url("/user/register")} element={<Register />}/>
+        <Route path={url("/products/:productSlug")} element={<ProductComponent />}/>
       </Route>
       <Route path={url("/admin/signin")} element={<DashboardSignIn/>}/>
       <Route path={url("*")} element={<NotFound />}/>
