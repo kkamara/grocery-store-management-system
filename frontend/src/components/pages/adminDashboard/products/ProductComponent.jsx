@@ -11,7 +11,7 @@ import DeleteProductModal from "./DeleteProductModal"
 import "react-slideshow-image/dist/styles.css"
 import "./ProductComponent.scss"
 
-const indicators = (index) => (<div className="indicator">{index + 1}</div>);
+const indicators = (index) => (<div className="indicator">{index + 1}</div>)
 
 export default function ProductComponent() {
   let { productSlug, } = useParams()
@@ -33,12 +33,12 @@ export default function ProductComponent() {
 
   const renderProductPhotos = () => {
     return <Slide indicators={indicators}>
-        {state.adminGetProduct.data.photos.map(({ path, }, index) => (
-          <div className="each-slide-effect">
-            <div
-              style={{ 'backgroundImage': `url(${path})` }}
-            ></div>
-          </div>))}
+      {state.adminGetProduct.data.photos.map(({ path, }, index) => (
+        <div key={index} className="each-slide-effect">
+          <div
+            style={{ 'backgroundImage': `url(${path})` }}
+          ></div>
+        </div>))}
     </Slide>
   }
 
