@@ -36,15 +36,23 @@ export default function ProductComponent() {
   }, [state.product])
   
   const renderProductPhotos = () => {
-    return <Zoom indicators={indicators}>
-      {state.product.data.photos.map(({ path, }, index) => (
-        <div className="each-slide-effect">
-          <div
-            className="product-image"
-            style={{ "backgroundImage": `url(${path})` }}
-          ></div>
-        </div>))}
-    </Zoom>
+    if (1 < state.product.data.photos.length) {
+      return <Zoom indicators={indicators}>
+        {state.product.data.photos.map(({ path, }, index) => (
+          <div className="each-slide-effect">
+            <div
+              className="product-image"
+              style={{ "backgroundImage": `url(${path})` }}
+            ></div>
+          </div>))}
+      </Zoom>
+    }
+    if (1 === state.product.data.photos.length) {
+      return <img
+        className="product-image"
+        src={state.product.data.photos[0].path}
+      />
+    }
   }
 
   if (state.product.loading) {
@@ -85,12 +93,32 @@ export default function ProductComponent() {
       </div>
       <div className="row">
         <div className="col-md-9">
-          <div className="card">
+          <div className="card product-detail-card">
             <div className="card-header">
               {renderProductPhotos()}
             </div>
-            <div className="card-body"></div>
-            <div className="card-footer"></div>
+            <div className="card-body">
+              <div className="product-title">
+                {state.product.data.name}
+              </div>
+              <div className="product-category">
+                Category: {state.product.data.category && state.product.data.category.name+"."}
+              </div>
+              <div className="product-manufacturer">
+                Manufacturer: {state.product.data.manufacturer && state.product.data.manufacturer.name+"."}
+              </div>
+              <div className="product-units">
+                Units: {state.product.data.units}.
+              </div>
+              <div className="product-weight">
+                Weight: {state.product.data.weight}.
+              </div>
+              <div className="product-description">
+                Description:
+                <br/>
+                {state.product.data.description}
+              </div>
+            </div>
           </div>
         </div>
         <div className="col-md-3">

@@ -491,7 +491,7 @@ module.exports = (sequelize, DataTypes) => {
               slug: slugify(data.name),
               name: data.name,
               units: data.units,
-              weight: data.weight,
+              weight: data.weight+" kg",
               price: data.price,
               description: data.description || null,
               categoriesId: data.category || null,

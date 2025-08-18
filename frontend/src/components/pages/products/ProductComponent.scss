@@ -1,5 +1,5 @@
 .product-container {
-  .each-slide-effect > div {
+  .product-image {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,5 +33,19 @@
   .product-price {
     font-size: 36px;
     margin-bottom: 20px;
+  }
+
+  .product-title {
+    font-size: 32px;
+  }
+
+  .product-description {
+    white-space: pre-wrap;
+  }
+
+  .product-detail-card {
+    .card-body > div {
+      margin-bottom: 20px;
+    }
   }
 }
