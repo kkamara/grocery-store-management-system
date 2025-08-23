@@ -2,9 +2,11 @@
   .each-slide-effect > div {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-size: cover;
-    height: 350px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 250px;
+    width: 350px;
+    margin: 0px auto;
   }
 
   .each-slide-effect span {
