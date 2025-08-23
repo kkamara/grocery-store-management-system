@@ -82,6 +82,23 @@ export default function ProductComponent() {
       </div>
 
       <div className="row">
+        <div className="col-md-12">
+          <div className="card">
+            <div className="card-header">
+              <div className="float-end product-action-buttons-container">
+                <div className="edit-product-modal-container">
+                  <button className="btn btn-info">
+                    Edit
+                  </button>
+                </div>
+                <DeleteProductModal/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
 
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
@@ -93,16 +110,6 @@ export default function ProductComponent() {
         
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
-            <div className="card-header">
-              <div className="float-end product-action-buttons-container">
-                <div className="edit-product-modal-container">
-                  <button className="btn btn-info">
-                    Edit
-                  </button>
-                </div>
-                <DeleteProductModal/>
-              </div>
-            </div>
             <div className="card-body">
               <ProductDetail data={state.adminGetProduct.data} />              
             </div>
