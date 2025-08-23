@@ -1,7 +1,7 @@
 import React, { useEffect, } from "react"
 import { Helmet, } from "react-helmet"
 import { useParams, Navigate, } from "react-router"
-import { Slide, } from "react-slideshow-image"
+import { Zoom, } from "react-slideshow-image"
 import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
 import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
@@ -32,14 +32,14 @@ export default function ProductComponent() {
   }, [state.adminAuth])
 
   const renderProductPhotos = () => {
-    return <Slide indicators={indicators}>
+    return <Zoom indicators={indicators}>
       {state.adminGetProduct.data.photos.map(({ path, }, index) => (
         <div key={index} className="each-slide-effect">
           <div
             style={{ 'backgroundImage': `url(${path})` }}
           ></div>
         </div>))}
-    </Slide>
+    </Zoom>
   }
 
   if (
