@@ -39,7 +39,7 @@ export default function ProductComponent() {
     if (1 < state.product.data.photos.length) {
       return <Zoom indicators={indicators}>
         {state.product.data.photos.map(({ path, }, index) => (
-          <div className="each-slide-effect">
+          <div key={index} className="each-slide-effect">
             <div
               className="product-image"
               style={{ "backgroundImage": `url(${path})` }}
