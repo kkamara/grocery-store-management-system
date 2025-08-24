@@ -24,7 +24,7 @@
 
 * [To run API tests](#to-run-api-tests)
 
-* [Misc](#misc)
+* [Misc.](#misc)
 
 * [Contributing](#contributing)
 
@@ -136,7 +136,7 @@ docker-compose up --build -d
 yarn test
 ```
 
-## Misc
+## Misc.
 
 I made this app with full-stack JavaScript. Particularly, NodeJS, ExpressJS, and ReactJS. This app is a remake of [Online Grocery Management Store PHP & MySQL Database Project](https://1000projects.org/online-grocery-management-store-php-mysql-database-project.html).
 
