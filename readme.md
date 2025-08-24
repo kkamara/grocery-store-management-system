@@ -10,7 +10,7 @@
 
 # grocery-store-management-system
 
-(25-Jun-2025) Made with https://github.com/kkamara/nodejs-reactjs-boilerplate . See [Misc](#misc) for more details.
+(25-Jun-2025) Made with https://github.com/kkamara/nodejs-reactjs-boilerplate . See [Misc.](#misc) for more details.
 
 * [Using Postman?](#postman)
 
