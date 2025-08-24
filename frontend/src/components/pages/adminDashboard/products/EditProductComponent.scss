@@ -1,0 +1,19 @@
+.dashboard-edit-product-container {
+  .image-file-input {
+    margin-top: 15px;
+    line-height: 1;
+    width: 547px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  #category, #manufacturer {
+    height: 40px;
+  }
+
+  .reset-file-input-icon {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+  }
+}

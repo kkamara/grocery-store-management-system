@@ -1,6 +1,6 @@
 import React, { useEffect, } from "react"
 import { Helmet, } from "react-helmet"
-import { useParams, Navigate, } from "react-router"
+import { useParams, Navigate, useNavigate } from "react-router"
 import { Zoom, } from "react-slideshow-image"
 import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
@@ -14,13 +14,14 @@ import "./ProductComponent.scss"
 const indicators = (index) => (<div className="indicator">{index + 1}</div>)
 
 export default function ProductComponent() {
-  let { productSlug, } = useParams()
+  const { productSlug, } = useParams()
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
     adminGetProduct: state.adminGetProduct,
     adminDeleteProduct: state.adminDeleteProduct,
   }))
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (
@@ -30,6 +31,10 @@ export default function ProductComponent() {
       dispatch(getAdminProduct(productSlug))
     }
   }, [state.adminAuth])
+
+  const handleEditBtnClick = () => {
+    navigate("/admin/products/"+productSlug+"/edit")
+  }
 
   const renderProductPhotos = () => {
     return <Zoom indicators={indicators}>
@@ -87,7 +92,10 @@ export default function ProductComponent() {
             <div className="card-header">
               <div className="float-end product-action-buttons-container">
                 <div className="edit-product-modal-container">
-                  <button className="btn btn-info">
+                  <button
+                    className="btn btn-info"
+                    onClick={handleEditBtnClick}
+                  >
                     Edit
                   </button>
                 </div>
