@@ -4,8 +4,9 @@
     align-items: center;
     background-size: contain;
     background-repeat: no-repeat;
-    height: 250px;
-    width: 350px;
+    min-height: 200px;
+    max-height: 250px;
+    max-width: 200px;
     margin: 0px auto;
   }
 
