@@ -37,6 +37,13 @@ export default function ProductComponent() {
   }
 
   const renderProductPhotos = () => {
+    if (1 === state.adminGetProduct.data.photos.length) {
+      return <img
+        className="img-fluid product-image"
+        src={state.adminGetProduct.data.photos[0].path}
+      />
+    }
+
     return <Zoom indicators={indicators}>
       {state.adminGetProduct.data.photos.map(({ path, }, index) => (
         <div key={index} className="each-slide-effect">
