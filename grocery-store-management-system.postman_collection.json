@@ -487,7 +487,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "",
+													"raw": "{\r\n    \"name\": \"My New Product\",\r\n    \"units\": 500,\r\n    \"weight\": 1,\r\n    \"price\": 0.01,\r\n    \"isLive\": false\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
