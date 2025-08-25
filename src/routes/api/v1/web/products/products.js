@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
     });
   }
   
-  const products = await db.sequelize.models.product.searchAdminProducts(
+  const products = await db.sequelize.models.product.searchProducts(
     req.queryString("query"),
     page || 1,
     24,

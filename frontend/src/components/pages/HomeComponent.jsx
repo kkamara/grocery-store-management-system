@@ -83,20 +83,6 @@ export default function HomeComponent() {
     )
   }
 
-  if (
-    !state.auth.loading &&
-    typeof state.auth.data === "object" &&
-    null !== state.auth.data
-  ) {
-    console.log("authenticated", state.auth.data)
-  }
-  if (
-    !state.products.loading &&
-    typeof state.products.data === "object" &&
-    null !== state.products.data
-  ) {
-    console.log("products", state.products.data)
-  }
   if (state.auth.loading || state.products.loading) {
     return <div className="container home-container text-center">
       <Helmet>

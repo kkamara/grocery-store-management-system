@@ -26,9 +26,6 @@ export default function ProductComponent() {
 
   useEffect(() => {
     if (false === state.product.loading) {
-      if (null !== state.product.data) {
-        console.log(state.product.data)
-      }
       if (null !== state.product.error) {
         setError(state.product.error)
       }

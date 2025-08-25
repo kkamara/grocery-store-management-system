@@ -19,6 +19,7 @@ const defaultPriceState = "0.01"
 const defaultDescriptionState = ""
 const defaultCategoryState = "0"
 const defaultManufacturerState = "0"
+const defaultIsLive = "0"
 
 export default function NewProductComponent() {
   const navigate = useNavigate()
@@ -46,6 +47,7 @@ export default function NewProductComponent() {
   const [description, setDescription] = useState(defaultDescriptionState)
   const [category, setCategory] = useState(defaultCategoryState)
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
+  const [isLive, setIsLive] = useState("0")
 
   const [error, setError] = useState("")
 
@@ -287,6 +289,7 @@ export default function NewProductComponent() {
     payload.append("description", description)
     payload.append("category", category)
     payload.append("manufacturer", manufacturer)
+    payload.append("isLive", "1" === isLive)
     // console.log("payload", [...payload])
     dispatch(newProduct(payload))
   }
@@ -517,6 +520,17 @@ export default function NewProductComponent() {
                   {state.adminManufacturers.data.map(({ id, name }) => (
                     <option key={id} value={id}>{name}</option>
                   ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="isLive">Is Live*:</label>
+                <select
+                  name="isLive"
+                  id="isLive"
+                  className="form-control"
+                >
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
                 </select>
               </div>
             </div>

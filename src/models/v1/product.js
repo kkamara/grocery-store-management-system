@@ -123,6 +123,83 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} query
      * @param {number} page
      * @param {number} perPage
+     * @param {boolean} [options.singlePhoto=false] options.singlePhoto
+     * @returns {object|false}
+     */
+    static async searchProducts(
+      query = null,
+      page = 1,
+      perPage = 7,
+      options,
+    ) {
+      if (null !== query) {
+        return this.queryProducts(query, page, perPage)
+      }
+      page -= 1;
+      const offset = page * perPage;
+      try {
+        const countResult = await sequelize.query(
+          `SELECT count(id) as total
+            FROM ${this.getTableName()}
+            WHERE deletedAt IS NULL AND isLive = 1
+          `,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        if (0 === countResult[0].total) {
+          page += 1;
+          return {
+            data: [],
+            meta: {
+              currentPage: page,
+              items: countResult[0].total,
+              pages: 0,
+              perPage,
+            },
+          }
+        }
+
+        const coreResults = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE deletedAt IS NULL AND isLive = 1
+            ORDER BY id DESC
+            LIMIT :perPage
+            OFFSET :offset
+          `,
+          {
+            replacements: { offset, perPage, },
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        page += 1;
+        return {
+          data: await this.getFormattedProductsData(
+            coreResults,
+            options,
+          ),
+          meta: {
+            currentPage: page,
+            items: countResult[0].total,
+            pages: Math.ceil(countResult[0].total / perPage),
+            perPage,
+          },
+        }
+      } catch (err) {
+        if ('production' !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {string} query
+     * @param {number} page
+     * @param {number} perPage
      * @returns {object|false}
      */
     static async queryAdminProducts(
@@ -208,6 +285,96 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
+     * @param {string} query
+     * @param {number} page
+     * @param {number} perPage
+     * @returns {object|false}
+     */
+    static async queryAdminProducts(
+      query = null,
+      page = 1,
+      perPage = 7,
+    ) {
+      page -= 1;
+      const offset = page * perPage;
+      try {
+        const countResult = await sequelize.query(
+          `SELECT count(id) as total
+            FROM ${this.getTableName()}
+            WHERE (name LIKE :query OR
+              units LIKE :query OR
+              weight LIKE :query OR
+              price LIKE :query OR
+              createdAt LIKE :query OR
+              updatedAt LIKE :query) AND
+              deletedAt IS NULL AND
+              isLive = 1;
+          `,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { query: `%${query}%` },
+          }
+        );
+        
+        if (0 === countResult[0].total) {
+          page += 1;
+          return {
+            data: [],
+            meta: {
+              currentPage: page,
+              items: countResult[0].total,
+              pages: 0,
+              perPage,
+            },
+          }
+        }
+
+        const coreResults = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE (name LIKE :query OR
+              units LIKE :query OR
+              weight LIKE :query OR
+              price LIKE :query OR
+              createdAt LIKE :query OR
+              updatedAt LIKE :query) AND
+              deletedAt IS NULL AND
+              isLive = 1
+            ORDER BY id DESC
+            LIMIT :perPage
+            OFFSET :offset
+          `,
+          {
+            replacements: {
+              query: `%${query}%`,
+              offset,
+              perPage,
+            },
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        
+        page += 1;
+        return {
+          data: await this.getFormattedProductsData(
+            coreResults
+          ),
+          meta: {
+            currentPage: page,
+            items: countResult[0].total,
+            pages: Math.ceil(countResult[0].total / perPage),
+            perPage,
+          },
+        }
+      } catch (err) {
+        if ('production' !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
      * @param {array} products
      * @param {boolean} [options.singlePhoto=false] options.singlePhoto
      * @returns {array}
@@ -245,6 +412,7 @@ module.exports = (sequelize, DataTypes) => {
           .toFixed(2),
         description: product.description,
         manufacturer: null,
+        isLive: 1 === product.isLive,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       };
@@ -281,6 +449,41 @@ module.exports = (sequelize, DataTypes) => {
      * @returns {object|false}
      */
     static async getProductBySlug(slug) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE slug = :slug AND isLive = 1 AND deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { slug },
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedProductData(
+          result[0],
+          {
+            getCategory: true,
+            getManufacturer: true,
+          }
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {string} slug
+     * @returns {object|false}
+     */
+    static async getAdminProductBySlug(slug) {
       try {
         const result = await sequelize.query(
           `SELECT *
@@ -454,6 +657,17 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
 
+      if (undefined === typeof payload.isLive) {
+        return "The isLive field is missing.";
+      } else if (
+        false !== payload.isLive &&
+        true !== payload.isLive &&
+        "false" !== payload.isLive &&
+        "true" !== payload.isLive
+      ) {
+        return "The isLive field must be true or false.";
+      }
+
       return false;
     }
 
@@ -463,6 +677,7 @@ module.exports = (sequelize, DataTypes) => {
         units: payload.units,
         weight: payload.weight,
         price: payload.price,
+        isLive: false,
       };
       if (payload.description) {
         result.description = payload.description;
@@ -472,6 +687,11 @@ module.exports = (sequelize, DataTypes) => {
       }
       if (payload.manufacturer) {
         result.manufacturer = payload.manufacturer;
+      }
+      if (undefined !== payload.isLive) {
+        if (true === payload.isLive || "true" === payload.isLive) {
+          result.isLive = true;
+        }
       }
       return result;
     }
@@ -483,8 +703,8 @@ module.exports = (sequelize, DataTypes) => {
     static async newProduct(data) {
       try {
         const result = await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
-            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, createdAt, updatedAt)
+            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
@@ -496,6 +716,7 @@ module.exports = (sequelize, DataTypes) => {
               description: data.description || null,
               categoriesId: data.category || null,
               manufacturersId: data.manufacturer || null,
+              isLive: data.isLive,
               createdAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -547,6 +768,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     manufacturersId: {
       type: DataTypes.INTEGER
+    },
+    isLive: {
+      type: DataTypes.BOOLEAN
     },
     createdAt: {
       type: DataTypes.DATE,

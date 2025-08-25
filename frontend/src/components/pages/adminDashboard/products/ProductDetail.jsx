@@ -12,6 +12,7 @@ export default function ProductDetail({ data, }) {
     price,
     description,
     manufacturer,
+    isLive,
     createdAt,
     updatedAt,
   } = data
@@ -30,6 +31,8 @@ export default function ProductDetail({ data, }) {
       <strong>Category:</strong> {category ? category.name : null}
       <br />
       <strong>Manufacturer:</strong> {manufacturer ? manufacturer.name : null}
+      <br />
+      <strong>Is Live:</strong> {isLive ? "Yes" : "No"}
       <br />
       <strong>Created At:</strong> {parseDate(createdAt)}
       <br />

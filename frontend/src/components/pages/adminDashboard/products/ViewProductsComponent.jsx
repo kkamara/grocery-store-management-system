@@ -103,6 +103,7 @@ export default function ViewProductsComponent() {
                 <strong>Price:</strong> ({product.price}),&nbsp;
                 <strong>Units:</strong> ({product.units}),&nbsp;
                 <strong>Weight:</strong> ({product.weight}),&nbsp;
+                <strong>Is Live:</strong> ({product.isLive ? "Yes" : "No"}),&nbsp;
                 <strong>Created At:</strong> ({parseDate(product.createdAt)}),&nbsp;
                 <strong>Updated At:</strong> ({parseDate(product.updatedAt)})
               </a>

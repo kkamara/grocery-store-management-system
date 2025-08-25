@@ -58,21 +58,25 @@ router.post(
       }
 
       let photoError = false;
-      for (const file of req.files) {
-        photoError = await db.sequelize.models
-          .productPhoto
-          .getUploadPhotoError(
-            file.mimetype,
-            file.size,
-          );
-        if (false !== photoError) {
-          break;
+      if (req.files) {
+        for (const file of req.files) {
+          photoError = await db.sequelize.models
+            .productPhoto
+            .getUploadPhotoError(
+              file.mimetype,
+              file.size,
+            );
+          if (false !== photoError) {
+            break;
+          }
         }
       }
       
       if (false !== photoError) {
-        for (const file of req.files) {
-          removeFile(file.path);
+        if (req.files) {
+          for (const file of req.files) {
+            removeFile(file.path);
+          }
         }
         res.status(status.BAD_REQUEST);
         return res.json({ error: photoError });
@@ -84,13 +88,15 @@ router.post(
           req.body,
         );
       if (false !== fieldsError) {
-        for (const file of req.files) {
-          removeFile(file.path);
+        if (req.files) {
+          for (const file of req.files) {
+            removeFile(file.path);
+          }
         }
         res.status(status.BAD_REQUEST);
         return res.json({ error: fieldsError });
       }
-
+      
       const cleanData = await db.sequelize
         .models
         .product
@@ -102,10 +108,13 @@ router.post(
           description: req.bodyString("description"),
           category: req.bodyInt("category"),
           manufacturer: req.bodyInt("manufacturer"),
+          isLive: req.body.isLive,
         });
       if (false === cleanData) {
-        for (const file of req.files) {
-          removeFile(file.path);
+        if (req.files) {
+          for (const file of req.files) {
+            removeFile(file.path);
+          }
         }
         res.status(status.INTERNAL_SERVER_ERROR);
         return res.json({ error: message500 });
@@ -113,17 +122,19 @@ router.post(
 
       // Save product & photos to database
       const photos = [];
-      for (const file of req.files) {
-        const fileExtension = file.mimetype
-          .slice(1 + file.mimetype.indexOf("/"));
-        const filename = file.filename + "." + fileExtension;
-        const newPath = "public/productPhotos/" + filename;
-        photos.push({
-          from: file.path,
-          mimetype: file.mimetype,
-          filenameToBe: filename,
-          newPath,
-        });
+      if (req.files) {
+        for (const file of req.files) {
+          const fileExtension = file.mimetype
+            .slice(1 + file.mimetype.indexOf("/"));
+          const filename = file.filename + "." + fileExtension;
+          const newPath = "public/productPhotos/" + filename;
+          photos.push({
+            from: file.path,
+            mimetype: file.mimetype,
+            filenameToBe: filename,
+            newPath,
+          });
+        }
       }
 
       if ("production" !== nodeEnv) {
@@ -135,8 +146,10 @@ router.post(
         .product
         .newProduct(cleanData);
       if (false === savedProduct) {
-        for (const file of req.files) {
-          removeFile(file.path);
+        if (req.files) {
+          for (const file of req.files) {
+            removeFile(file.path);
+          }
         }
         res.status(status.INTERNAL_SERVER_ERROR);
         return res.json({ error: message500 });
@@ -158,8 +171,10 @@ router.post(
         }
       }
       if (false !== photoError) {
-        for (const file of req.files) {
-          removeFile(file.path);
+        if (req.files) {
+          for (const file of req.files) {
+            removeFile(file.path);
+          }
         }
         res.status(status.INTERNAL_SERVER_ERROR);
         return res.json({ error: message500 });

@@ -11,7 +11,7 @@ const router = express.Router({
 router.get("/", adminAuthenticate, async (req, res) => {
   const product = await db.sequelize.models
     .product
-    .getProductBySlug(
+    .getAdminProductBySlug(
       req.paramString("productSlug"),
     );
   if (false === product) {
@@ -32,7 +32,7 @@ router.get("/", adminAuthenticate, async (req, res) => {
 router.delete("/", adminAuthenticate, async (req, res) => {
   const product = await db.sequelize.models
     .product
-    .getProductBySlug(
+    .getAdminProductBySlug(
       req.paramString("productSlug"),
     );
   if (false === product) {
