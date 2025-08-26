@@ -95,49 +95,49 @@ export default function NewProductComponent() {
   }, [state.createAdminProduct])
 
   const handleSetImage = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage(e.target.files[0])
   }
 
   const handleSetImage1 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage1(e.target.files[0])
   }
 
   const handleSetImage2 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage2(e.target.files[0])
   }
 
   const handleSetImage3 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage3(e.target.files[0])
   }
 
   const handleSetImage4 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage4(e.target.files[0])
   }
 
   const handleSetImage5 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage5(e.target.files[0])
   }
 
   const handleSetImage6 = e => {
-    if (false !== imageError(e.target.files[0].type)) {
+    if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
     }
     setImage6(e.target.files[0])
