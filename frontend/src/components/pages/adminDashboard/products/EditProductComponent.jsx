@@ -20,6 +20,7 @@ const defaultPriceState = "0.01"
 const defaultDescriptionState = ""
 const defaultCategoryState = "0"
 const defaultManufacturerState = "0"
+const defaultIsLive = "0"
 
 export default function EditProductComponent() {
   const navigate = useNavigate()
@@ -47,6 +48,7 @@ export default function EditProductComponent() {
   const [description, setDescription] = useState(defaultDescriptionState)
   const [category, setCategory] = useState(defaultCategoryState)
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
+  const [isLive, setIsLive] = useState(defaultIsLive)
 
   const [error, setError] = useState("")
 
@@ -197,6 +199,10 @@ export default function EditProductComponent() {
 
   const handleManufacturerChange = e => {
     setManufacturer(e.target.value)
+  }
+
+  const handleIsLiveChange = e => {
+    setIsLive(e.target.value)
   }
 
   const formHasError = () => {
@@ -519,6 +525,19 @@ export default function EditProductComponent() {
                   {state.adminManufacturers.data.map(({ id, name }) => (
                     <option key={id} value={id}>{name}</option>
                   ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="isLive">Is Live*:</label>
+                <select
+                  name="isLive"
+                  id="isLive"
+                  className="form-control"
+                  value={isLive}
+                  onChange={handleIsLiveChange}
+                >
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
                 </select>
               </div>
             </div>

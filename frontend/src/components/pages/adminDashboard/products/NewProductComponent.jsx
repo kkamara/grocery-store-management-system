@@ -47,7 +47,7 @@ export default function NewProductComponent() {
   const [description, setDescription] = useState(defaultDescriptionState)
   const [category, setCategory] = useState(defaultCategoryState)
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
-  const [isLive, setIsLive] = useState("0")
+  const [isLive, setIsLive] = useState(defaultIsLive)
 
   const [error, setError] = useState("")
 
@@ -211,6 +211,10 @@ export default function NewProductComponent() {
 
   const handleManufacturerChange = e => {
     setManufacturer(e.target.value)
+  }
+
+  const handleIsLiveChange = e => {
+    setIsLive(e.target.value)
   }
 
   const formHasError = () => {
@@ -528,6 +532,8 @@ export default function NewProductComponent() {
                   name="isLive"
                   id="isLive"
                   className="form-control"
+                  value={isLive}
+                  onChange={handleIsLiveChange}
                 >
                   <option value="0">No</option>
                   <option value="1">Yes</option>
