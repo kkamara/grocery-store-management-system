@@ -39,6 +39,10 @@ router.delete("/", adminAuthenticate, async (req, res) => {
     res.status(status.NOT_FOUND);
     return res.json({ error: message404, });
   }
+
+  // TODO: Delete product images
+  
+
   const deleteProduct = await db.sequelize.models
     .product
     .deleteProduct(
