@@ -18,6 +18,7 @@ module.exports = {
         { name: "Drinks" },
         { name: "Alcohol" },
         { name: "Household Goods" },
+        { name: "Toys" },
       ];
       const insertArray = [];
       for (const category of categories) {
