@@ -171,6 +171,37 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+    
+    /**
+     * @param {number} id
+     * @returns {boolean}
+     */
+    static async deleteProductPhoto(id) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET deletedAt = :deletedAt
+            WHERE id = :id`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              deletedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat), 
+              id,
+            },
+          },
+        );
+        console.log("result", result);
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   productPhoto.init({
     id: {

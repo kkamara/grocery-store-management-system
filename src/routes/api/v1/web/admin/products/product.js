@@ -3,6 +3,8 @@ const { status, } = require("http-status");
 const db = require("../../../../../../models/v1");
 const { message500, message404, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
+const { removeFile, productPhotoAsset, } = require("../../../../../../utils/file");
+const { nodeEnv, } = require("../../../../../../config");
 
 const router = express.Router({
   mergeParams: true,
@@ -40,8 +42,29 @@ router.delete("/", adminAuthenticate, async (req, res) => {
     return res.json({ error: message404, });
   }
 
-  // TODO: Delete product images
-  
+  const productPhotos = await db.sequelize.models
+    .productPhoto
+    .getProductPhotos(
+      product.id,
+    );
+  if (false !== productPhotos) {
+    for(const photo of productPhotos) {
+      removeFile(productPhotoAsset(photo.name));
+
+      const deletePhoto = await db.sequelize.models
+        .productPhoto
+        .deleteProductPhoto(
+          photo.id,
+        );
+      if (false === deletePhoto) {
+        if ("production" !== nodeEnv) {
+          console.log(
+            "Delete product image failed with id "+photo.id,
+          )
+        }
+      }
+    }
+  }
 
   const deleteProduct = await db.sequelize.models
     .product

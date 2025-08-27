@@ -6,3 +6,7 @@ exports.removeFile = async path => {
 
 // 3MB
 exports.fileSize = 3145728;
+
+exports.productPhotoAsset = fileName => {
+  return `public/productPhotos/${fileName}`;
+}
