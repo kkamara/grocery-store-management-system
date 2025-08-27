@@ -59,7 +59,7 @@ export const authorize = () => {
     }, error => {
       if (error.response.status === 401) {
         localStorage.removeItem(tokenId)
-        window.location = "/"
+        window.location = "/admin"
       }
       let message
       if ("ERR_NETWORK" === error.code) {
