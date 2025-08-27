@@ -23,7 +23,7 @@ export default function DeleteProductModal() {
   const [modalIsOpen, setIsOpen] = React.useState(false)
   const dispatch = useDispatch()
   const state = useSelector(state => ({
-    adminGetProduct: state.adminGetProduct,
+    adminProduct: state.adminProduct,
     adminDeleteProduct: state.adminDeleteProduct,
   }))
   const [choice, setChoice] = useState(defaultChoiceValue)
@@ -55,7 +55,7 @@ export default function DeleteProductModal() {
       setIsOpen(false)
     } else {
       dispatch(deleteAdminProduct(
-        state.adminGetProduct.data.slug,
+        state.adminProduct.data.slug,
       ))
     }
   }
@@ -81,7 +81,7 @@ export default function DeleteProductModal() {
         <div className="delete-product-modal">
           <h2>
             Are you sure you want to delete&nbsp;
-            {state.adminGetProduct.data.name}?
+            {state.adminProduct.data.name}?
           </h2>
           <form
             className="admin-delete-product-form"

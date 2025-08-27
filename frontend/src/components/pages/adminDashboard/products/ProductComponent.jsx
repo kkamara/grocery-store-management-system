@@ -4,7 +4,7 @@ import { useParams, Navigate, useNavigate } from "react-router"
 import { Zoom, } from "react-slideshow-image"
 import { useDispatch, useSelector, } from "react-redux"
 import { adminDashboardTitle, } from "../../../../constants"
-import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
+import { getAdminProduct, } from "../../../../redux/actions/adminProductActions"
 import ProductDetail from "./ProductDetail"
 import DeleteProductModal from "./DeleteProductModal"
 
@@ -18,7 +18,7 @@ export default function ProductComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     adminAuth: state.adminAuth,
-    adminGetProduct: state.adminGetProduct,
+    adminProduct: state.adminProduct,
     adminDeleteProduct: state.adminDeleteProduct,
   }))
   const navigate = useNavigate()
@@ -37,15 +37,15 @@ export default function ProductComponent() {
   }
 
   const renderProductPhotos = () => {
-    if (1 === state.adminGetProduct.data.photos.length) {
+    if (1 === state.adminProduct.data.photos.length) {
       return <img
         className="img-fluid product-image"
-        src={state.adminGetProduct.data.photos[0].path}
+        src={state.adminProduct.data.photos[0].path}
       />
     }
 
     return <Zoom indicators={indicators}>
-      {state.adminGetProduct.data.photos.map(({ path, }, index) => (
+      {state.adminProduct.data.photos.map(({ path, }, index) => (
         <div key={index} className="each-slide-effect">
           <div
             style={{ 'backgroundImage': `url(${path})` }}
@@ -56,7 +56,7 @@ export default function ProductComponent() {
 
   if (
     state.adminAuth.loading ||
-    state.adminGetProduct.loading ||
+    state.adminProduct.loading ||
     state.adminDeleteProduct.loading
   ) {
     return (
@@ -70,8 +70,8 @@ export default function ProductComponent() {
   }
 
   if (
-    false === state.adminGetProduct.loading &&
-    null !== state.adminGetProduct.error
+    false === state.adminProduct.loading &&
+    null !== state.adminProduct.error
   ) {
     return <Navigate to="/admin/404-not-found"/>
   }
@@ -80,7 +80,7 @@ export default function ProductComponent() {
     <div className="container-fluid dashboard-product-container">
       <Helmet>
         <title>
-          {state.adminGetProduct.data.name}&nbsp;
+          {state.adminProduct.data.name}&nbsp;
           Product Screen - {adminDashboardTitle}
         </title>
       </Helmet>
@@ -89,7 +89,7 @@ export default function ProductComponent() {
           <a href="/admin/products" className="breadcrumb-link">
             View Products
           </a>&nbsp;
-          &#x2022; {state.adminGetProduct.data.name}
+          &#x2022; {state.adminProduct.data.name}
         </h1>
       </div>
 
@@ -126,7 +126,7 @@ export default function ProductComponent() {
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
             <div className="card-body">
-              <ProductDetail data={state.adminGetProduct.data} />              
+              <ProductDetail data={state.adminProduct.data} />              
             </div>
           </div>
         </div>

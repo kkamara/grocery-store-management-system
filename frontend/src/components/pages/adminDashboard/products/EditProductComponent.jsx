@@ -8,7 +8,7 @@ import Error from "../../../layouts/Error"
 import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesActions"
 import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
 // import { newProduct, } from "../../../../redux/actions/createAdminProductActions"
-import { getAdminProduct, } from "../../../../redux/actions/adminGetProductActions"
+import { getAdminProduct, } from "../../../../redux/actions/adminProductActions"
 
 import "./EditProductComponent.scss"
 
@@ -29,7 +29,7 @@ export default function EditProductComponent() {
     adminAuth: state.adminAuth,
     adminCategories: state.adminCategories,
     adminManufacturers: state.adminManufacturers,
-    adminGetProduct: state.adminGetProduct,
+    adminProduct: state.adminProduct,
   }))
   // At least one image is required.
   const [image, setImage] = useState(defaultImageState)
@@ -67,20 +67,20 @@ export default function EditProductComponent() {
 
   useEffect(() => {
     if (
-      false === state.adminGetProduct.loading
+      false === state.adminProduct.loading
     ) {
       if (
-        null !== state.adminGetProduct.data
+        null !== state.adminProduct.data
       ) {
         // TODO: set loaded product data into state.
       }
       if (
-        null !== state.adminGetProduct.error
+        null !== state.adminProduct.error
       ) {
         navigate("/admin/404-not-found")
       }
     }
-  }, [state.adminGetProduct])
+  }, [state.adminProduct])
 
   const handleSetImage = e => {
     if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
@@ -289,7 +289,7 @@ export default function EditProductComponent() {
     state.adminAuth.loading ||
     state.adminCategories.loading ||
     state.adminManufacturers.loading ||
-    state.adminGetProduct.loading
+    state.adminProduct.loading
   ) {
     return (
       <div className="container dashboard-edit-product-container text-center">
@@ -307,9 +307,9 @@ export default function EditProductComponent() {
     >
       <Helmet>
         <title>
-          Edit {state.adminGetProduct.data.name} - {adminDashboardTitle}
+          Edit {state.adminProduct.data.name} - {adminDashboardTitle}
         </title>
-        <meta name="title" content={`Edit ${state.adminGetProduct.data.name} - ${adminDashboardTitle}`}/>
+        <meta name="title" content={`Edit ${state.adminProduct.data.name} - ${adminDashboardTitle}`}/>
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
@@ -317,8 +317,8 @@ export default function EditProductComponent() {
             View Products
           </a>
           &nbsp;&#x2022;&nbsp;
-          <a href={`/admin/products/${state.adminGetProduct.data.slug}`} className="breadcrumb-link">
-            {state.adminGetProduct.data.name}
+          <a href={`/admin/products/${state.adminProduct.data.slug}`} className="breadcrumb-link">
+            {state.adminProduct.data.name}
           </a>
           &nbsp;&#x2022; Edit Product
         </h1>
