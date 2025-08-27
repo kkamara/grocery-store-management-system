@@ -307,8 +307,9 @@ export default function EditProductComponent() {
     >
       <Helmet>
         <title>
-          Edit Product - {adminDashboardTitle}
+          Edit {state.adminGetProduct.data.name} - {adminDashboardTitle}
         </title>
+        <meta name="title" content={`Edit Product - ${adminDashboardTitle}`}/>
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
