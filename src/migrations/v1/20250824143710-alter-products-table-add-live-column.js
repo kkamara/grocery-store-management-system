@@ -27,7 +27,7 @@ module.exports = {
     try {
       await queryInterface.removeColumn(
         "products",
-        "live",
+        "isLive",
         { transaction },
       );
       await transaction.commit();
