@@ -127,7 +127,7 @@ router.post(
           const fileExtension = file.mimetype
             .slice(1 + file.mimetype.indexOf("/"));
           const filename = file.filename + "." + fileExtension;
-          const newPath = "public/productPhotos/" + filename;
+          const newPath = "public/images/productPhotos/" + filename;
           photos.push({
             from: file.path,
             mimetype: file.mimetype,

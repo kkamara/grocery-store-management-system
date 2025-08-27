@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         id: photo.id,
         productsId: photo.productsId,
         name: photo.name,
-        path: appURL+"/productPhotos/"+photo.name,
+        path: appURL+"/images/productPhotos/"+photo.name,
         type: photo.type,
         createdAt: photo.createdAt,
         updatedAt: photo.updatedAt,

@@ -44,8 +44,8 @@ module.exports = {
         const productName = faker.commerce.productName();
         const productSlug = slugify(productName);
         const productInsertResult = await queryInterface.sequelize.query(
-          `INSERT INTO products(name, slug, units, weight, categoriesId, price, description, manufacturersId, createdAt, updatedAt)
-            VALUES (:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :createdAt, :updatedAt)`,
+          `INSERT INTO products(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, createdAt, updatedAt)
+            VALUES (:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :createdAt, :updatedAt)`,
           {
             replacements: {
               name: productName,
@@ -58,6 +58,7 @@ module.exports = {
                 faker.lorem.paragraphs({ min: 1, max: 3, }, "\n") :
                 null,
               manufacturersId: manufacturer[0].id,
+              isLive: 1,
               createdAt: productCreatedAt,
               updatedAt: productCreatedAt,
             },
@@ -69,17 +70,17 @@ module.exports = {
         const photos = [
           {
             name: "pizza-6948995_1280.webp",
-            path: "public/productPhotos/pizza-6948995_1280.webp",
+            path: "public/images/productPhotos/pizza-6948995_1280.webp",
             type: "image/webp",
           },
           {
             name: "apples-2243734_1280.jpg",
-            path: "public/productPhotos/apples-2243734_1280.jpg",
+            path: "public/images/productPhotos/apples-2243734_1280.jpg",
             type: "image/jpg",
           },
           {
             name: "dairy-5621769_1280.webp",
-            path: "public/productPhotos/dairy-5621769_1280.webp",
+            path: "public/images/productPhotos/dairy-5621769_1280.webp",
             type: "image/webp",
           },
         ];
