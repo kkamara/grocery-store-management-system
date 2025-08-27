@@ -27,7 +27,7 @@ export default function LoginComponent() {
 
   useEffect(() => {
     if (state.adminAuth.data) {
-      window.location.href = "/admin"
+      window.location = "/admin"
     }
   }, [state.adminAuth])
 

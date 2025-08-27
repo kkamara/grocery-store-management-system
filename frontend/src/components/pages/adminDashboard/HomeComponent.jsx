@@ -52,7 +52,7 @@ export default function HomeComponent() {
 
   useEffect(() => {
     if (false === state.adminAuth.loading && !state.adminAuth.data) {
-      window.location.href = "/admin/signin"
+      window.location = "/admin/signin"
     }
     if (false === state.adminAuth.loading && state.adminAuth.data) {
       dispatch(getAdminProductsCountStat())
