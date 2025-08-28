@@ -565,6 +565,74 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "Update Product Photos",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PUT",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/products/SpongeBob/photos",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products",
+														"SpongeBob",
+														"photos"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Product Details",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"My New Product\",\r\n    \"units\": 500,\r\n    \"weight\": 1,\r\n    \"price\": 0.01,\r\n    \"isLive\": true\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{web}}/admin/products/My-New-Product",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products",
+														"My-New-Product"
+													]
+												}
+											},
+											"response": []
 										}
 									]
 								}
