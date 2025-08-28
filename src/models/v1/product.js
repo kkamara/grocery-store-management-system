@@ -681,7 +681,127 @@ module.exports = (sequelize, DataTypes) => {
       return false;
     }
 
+    /**
+     * @param {Object} payload
+     * @param {Object} product
+     */
+    static async getUpdateProductError(payload, product) {
+      if (!payload.name) {
+        return "The name field is required.";
+      } else if ("string" !== typeof payload.name) {
+        return "The name field must be a string.";
+      } else if (50 < payload.name.length) {
+        return "The name field must be less than 51 characters.";
+      } else {
+        const newSlug = slugify(payload.name);
+        if (newSlug !== product.slug) {
+          const nameExists = await this.getProductBySlug(
+            newSlug,
+          );
+          if (false !== nameExists) {
+            return "The name field is taken.";
+          }
+        }
+      }
+
+      if (undefined === payload.units) {
+        return "The units field is required.";
+      } else if (null === `${payload.units}`.match(integerNumberRegex)) {
+        return "The units field must be a number"
+      }
+
+      if (undefined === payload.weight) {
+        return "The weight field is required.";
+      } else if (null === `${payload.weight}`.match(numberWithOptionalDecimalPartRegex)) {
+        return "The weight field must be a number"
+      }
+
+      if (undefined === payload.price) {
+        return "The price field is required.";
+      } else if (null === `${payload.price}`.match(numberWithOptionalDecimalPartRegex)) {
+        return "The price field must be a number"
+      }
+
+      if (payload.description) {
+        if ("string" !== typeof payload.description) {
+          return "The description field must be a string.";
+        } else if (1000 < payload.description.length) {
+          return "The description field must be less than 1001 characters.";
+        }
+      }
+
+      if (payload.category && Number(payload.category)) {
+        if (null === `${payload.category}`.match(integerNumberRegex)) {
+          return "The category field must be a valid integer.";
+        }
+
+        const foundCategory = await this.sequelize
+          .models
+          .category
+          .getProductCategory(
+            payload.category
+          );
+        if (false === foundCategory) {
+          return "The category field was not found in our records.";
+        }
+      }
+
+      if (payload.manufacturer && Number(payload.manufacturer)) {
+        if (null === `${payload.manufacturer}`.match(integerNumberRegex)) {
+          return "The manufacturer field must be a valid integer.";
+        }
+
+        const foundManufacturer = await this.sequelize
+          .models
+          .manufacturer
+          .getProductManufacturer(
+            payload.manufacturer
+          );
+        if (false === foundManufacturer) {
+          return "The manufacturer field was not found in our records.";
+        }
+      }
+
+      if (undefined === typeof payload.isLive) {
+        return "The isLive field is missing.";
+      } else if (
+        false !== payload.isLive &&
+        true !== payload.isLive &&
+        "false" !== payload.isLive &&
+        "true" !== payload.isLive
+      ) {
+        return "The isLive field must be true or false.";
+      }
+
+      return false;
+    }
+
     static getNewProductData(payload) {
+      const result = {
+        name: payload.name,
+        units: payload.units,
+        weight: payload.weight,
+        price: payload.price,
+        isLive: false,
+      };
+      if (payload.description) {
+        result.description = payload.description;
+      }
+      if (payload.category) {
+        result.category = payload.category;
+      }
+      if (payload.manufacturer) {
+        result.manufacturer = payload.manufacturer;
+      }
+      if (undefined !== payload.isLive) {
+        if (true === payload.isLive || "true" === payload.isLive) {
+          result.isLive = true;
+        }
+      }
+      return result;
+    }
+
+    static getEditProductData(payload) {
       const result = {
         name: payload.name,
         units: payload.units,
@@ -733,6 +853,55 @@ module.exports = (sequelize, DataTypes) => {
               updatedAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
+            },
+          },
+        );
+
+        return { productId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} id
+     * @param {Object} data
+     * @returns {object|false}
+     */
+    static async updateProduct(id, data) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET name = :name,
+              slug = :slug,
+              units = :units,
+              weight = :weight,
+              categoriesId = :categoriesId,
+              price = :price,
+              description = :description,
+              manufacturersId = :manufacturersId,
+              isLive = :isLive,
+              updatedAt = :updatedAt
+            WHERE id = :id`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              slug: slugify(data.name),
+              name: data.name,
+              units: data.units,
+              weight: data.weight+" kg",
+              price: data.price,
+              description: data.description || null,
+              categoriesId: data.category || null,
+              manufacturersId: data.manufacturer || null,
+              isLive: data.isLive,
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              id,
             },
           },
         );

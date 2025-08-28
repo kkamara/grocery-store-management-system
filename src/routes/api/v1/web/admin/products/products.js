@@ -40,7 +40,7 @@ router.get("/", adminAuthenticate, async (req, res) => {
 router.post(
   "/",
   adminAuthenticate,
-  async (req, res) => {
+  (req, res) => {
     upload(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
