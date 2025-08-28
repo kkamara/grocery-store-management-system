@@ -31,6 +31,28 @@ router.get("/", adminAuthenticate, async (req, res) => {
   return res.json({ data: product, });
 });
 
+router.get("/edit", adminAuthenticate, async (req, res) => {
+  const product = await db.sequelize.models
+    .product
+    .getAdminProductBySlug(
+      req.paramString("productSlug"),
+      { unformatted: true },
+    );
+  if (false === product) {
+    res.status(status.NOT_FOUND);
+    return res.json({ error: message404, });
+  }
+  const photos = await db.sequelize.models
+    .productPhoto
+    .getProductPhotos(product.id);
+  if (false === photos) {
+    product.photos = null;
+  } else {
+    product.photos = photos;
+  }
+  return res.json({ data: product, });
+});
+
 router.delete("/", adminAuthenticate, async (req, res) => {
   const product = await db.sequelize.models
     .product

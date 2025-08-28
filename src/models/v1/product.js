@@ -395,6 +395,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {boolean} [options.getCategory=false] options.getCategory
      * @param {boolean} [options.getManufacturer=false] options.getManufacturer
      * @param {boolean} [options.singlePhoto=false] options.singlePhoto
+     * @param {boolean} [options.unformatted=false] options.unformatted
      * @returns {array}
      */
     static async getFormattedProductData(
@@ -440,6 +441,13 @@ module.exports = (sequelize, DataTypes) => {
             result.photos = [photo];
           }
         }
+        if (true === options.unformatted) {
+          result.price = product.price;
+          result.weight = product.weight.slice(
+            0,
+            product.weight.indexOf(" kg"),
+          );
+        }
       }
       return result;
     }
@@ -481,9 +489,10 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {string} slug
+     * @param {boolean} [options.unformatted=false] options.unformatted
      * @returns {object|false}
      */
-    static async getAdminProductBySlug(slug) {
+    static async getAdminProductBySlug(slug, options) {
       try {
         const result = await sequelize.query(
           `SELECT *
@@ -504,6 +513,7 @@ module.exports = (sequelize, DataTypes) => {
           {
             getCategory: true,
             getManufacturer: true,
+            unformatted: options && true === options.unformatted,
           }
         );
       } catch(err) {

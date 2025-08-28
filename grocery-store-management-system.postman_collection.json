@@ -471,6 +471,36 @@
 											"response": []
 										},
 										{
+											"name": "Get Product Edit",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{web}}/admin/products/SpongeBob/edit",
+													"host": [
+														"{{web}}"
+													],
+													"path": [
+														"admin",
+														"products",
+														"SpongeBob",
+														"edit"
+													]
+												}
+											},
+											"response": []
+										},
+										{
 											"name": "New Product",
 											"request": {
 												"auth": {
@@ -523,14 +553,14 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{web}}/admin/products/Bespoke-Bamboo-Hat",
+													"raw": "{{web}}/admin/products/SpongeBob",
 													"host": [
 														"{{web}}"
 													],
 													"path": [
 														"admin",
 														"products",
-														"Bespoke-Bamboo-Hat"
+														"SpongeBob"
 													]
 												}
 											},

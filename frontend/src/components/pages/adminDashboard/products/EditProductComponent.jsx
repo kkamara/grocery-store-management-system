@@ -8,7 +8,7 @@ import Error from "../../../layouts/Error"
 import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesActions"
 import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
 // import { newProduct, } from "../../../../redux/actions/createAdminProductActions"
-import { getAdminProduct, } from "../../../../redux/actions/adminProductActions"
+import { getAdminProductEdit, } from "../../../../redux/actions/adminProductEditActions"
 
 import "./EditProductComponent.scss"
 
@@ -29,7 +29,7 @@ export default function EditProductComponent() {
     adminAuth: state.adminAuth,
     adminCategories: state.adminCategories,
     adminManufacturers: state.adminManufacturers,
-    adminProduct: state.adminProduct,
+    adminProductEdit: state.adminProductEdit,
   }))
   // At least one image is required.
   const [image, setImage] = useState(defaultImageState)
@@ -61,26 +61,34 @@ export default function EditProductComponent() {
     ) {
       dispatch(getAdminCategories())
       dispatch(getAdminManufacturers())
-      dispatch(getAdminProduct(productSlug))
+      dispatch(getAdminProductEdit(productSlug))
     }
   }, [state.adminAuth])
 
   useEffect(() => {
     if (
-      false === state.adminProduct.loading
+      false === state.adminProductEdit.loading
     ) {
       if (
-        null !== state.adminProduct.data
+        null !== state.adminProductEdit.data
       ) {
         // TODO: set loaded product data into state.
+        setName(state.adminProductEdit.data.name)
+        setUnits(state.adminProductEdit.data.units)
+        setWeight(state.adminProductEdit.data.weight)
+        setPrice(state.adminProductEdit.data.price)
+        setDescription(state.adminProductEdit.data.description)
+        setCategory(state.adminProductEdit.data.category.id)
+        setManufacturer(state.adminProductEdit.data.manufacturer.id)
+        setIsLive(state.adminProductEdit.data.isLive ? "1" : "0")
       }
       if (
-        null !== state.adminProduct.error
+        null !== state.adminProductEdit.error
       ) {
         navigate("/admin/404-not-found")
       }
     }
-  }, [state.adminProduct])
+  }, [state.adminProductEdit])
 
   const handleSetImage = e => {
     if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
@@ -289,7 +297,7 @@ export default function EditProductComponent() {
     state.adminAuth.loading ||
     state.adminCategories.loading ||
     state.adminManufacturers.loading ||
-    state.adminProduct.loading
+    state.adminProductEdit.loading
   ) {
     return (
       <div className="container dashboard-edit-product-container text-center">
@@ -307,9 +315,9 @@ export default function EditProductComponent() {
     >
       <Helmet>
         <title>
-          Edit {state.adminProduct.data.name} - {adminDashboardTitle}
+          Edit {state.adminProductEdit.data.name} - {adminDashboardTitle}
         </title>
-        <meta name="title" content={`Edit ${state.adminProduct.data.name} - ${adminDashboardTitle}`}/>
+        <meta name="title" content={`Edit ${state.adminProductEdit.data.name} - ${adminDashboardTitle}`}/>
       </Helmet>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
@@ -317,8 +325,8 @@ export default function EditProductComponent() {
             View Products
           </a>
           &nbsp;&#x2022;&nbsp;
-          <a href={`/admin/products/${state.adminProduct.data.slug}`} className="breadcrumb-link">
-            {state.adminProduct.data.name}
+          <a href={`/admin/products/${state.adminProductEdit.data.slug}`} className="breadcrumb-link">
+            {state.adminProductEdit.data.name}
           </a>
           &nbsp;&#x2022; Edit Product
         </h1>
