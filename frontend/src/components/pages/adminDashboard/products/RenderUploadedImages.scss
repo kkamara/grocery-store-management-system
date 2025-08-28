@@ -1,0 +1,17 @@
+.render-uploaded-images-container {
+  .product-image {
+    min-height: 50px;
+    min-width: 100px;
+  }
+
+  .reset-uploaded-file-input-icon {
+    float: right;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+  }
+
+  .reset-photo {
+    display: none;
+  }
+}

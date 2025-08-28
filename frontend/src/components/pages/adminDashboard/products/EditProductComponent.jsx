@@ -9,6 +9,7 @@ import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesAc
 import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
 // import { newProduct, } from "../../../../redux/actions/createAdminProductActions"
 import { getAdminProductEdit, } from "../../../../redux/actions/adminProductEditActions"
+import RenderUploadedImages from "./RenderUploadedImages"
 
 import "./EditProductComponent.scss"
 
@@ -31,7 +32,7 @@ export default function EditProductComponent() {
     adminManufacturers: state.adminManufacturers,
     adminProductEdit: state.adminProductEdit,
   }))
-  // At least one image is required.
+  const [uploadedPhotos, setUploadedPhotos] = useState([])
   const [image, setImage] = useState(defaultImageState)
   const [image1, setImage1] = useState(defaultImageState)
   const [image2, setImage2] = useState(defaultImageState)
@@ -72,7 +73,6 @@ export default function EditProductComponent() {
       if (
         null !== state.adminProductEdit.data
       ) {
-        // TODO: set loaded product data into state.
         setName(state.adminProductEdit.data.name)
         setUnits(state.adminProductEdit.data.units)
         setWeight(state.adminProductEdit.data.weight)
@@ -81,6 +81,7 @@ export default function EditProductComponent() {
         setCategory(state.adminProductEdit.data.category.id)
         setManufacturer(state.adminProductEdit.data.manufacturer.id)
         setIsLive(state.adminProductEdit.data.isLive ? "1" : "0")
+        setUploadedPhotos(state.adminProductEdit.data.photos)
       }
       if (
         null !== state.adminProductEdit.error
@@ -179,6 +180,20 @@ export default function EditProductComponent() {
         setImage6("")
         break;
     }
+  }
+
+  const resetUploadedPhoto = id => {
+    const newUploadedPhotos = uploadedPhotos
+    for (const key in newUploadedPhotos) {
+      if (id === newUploadedPhotos[key].id) {
+        if (!newUploadedPhotos[key].reset) {
+          newUploadedPhotos[key].reset = true
+        } else {
+          newUploadedPhotos[key].reset = false
+        }
+      }
+    }
+    setUploadedPhotos(newUploadedPhotos)
   }
 
   const handleNameChange = e => {
@@ -339,6 +354,10 @@ export default function EditProductComponent() {
         <div className="col-xl-6 col-lg-6">
           <div className="card shadow mb-4">
             <div className="card-body">
+              <RenderUploadedImages
+                photos={uploadedPhotos}
+                resetUploadedPhoto={resetUploadedPhoto}
+              />
               <div className="form-group">
                 <input
                   type="file"
