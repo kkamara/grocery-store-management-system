@@ -51,7 +51,8 @@ export default function EditProductComponent() {
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
   const [isLive, setIsLive] = useState(defaultIsLive)
 
-  const [error, setError] = useState("")
+  const [photoError, setPhotoError] = useState("")
+  const [detailError, setDetailError] = useState("")
 
   const { productSlug, } = useParams()
 
@@ -142,7 +143,7 @@ export default function EditProductComponent() {
 
   const imageError = type => {
     if (null === type.match(/(jpg|jpeg|png|webp)$/i)) {
-      return setError(
+      return setPhotoError(
         "Invalid file extension. We take JPG, JPEG, PNG and WEBP."
       )
     }
@@ -228,7 +229,7 @@ export default function EditProductComponent() {
     setIsLive(e.target.value)
   }
 
-  const formHasError = () => {
+  const photosHasError = () => {
     if (
       !image &&
       !image1 &&
@@ -240,6 +241,10 @@ export default function EditProductComponent() {
     ) {
       return "At least one image is required."
     }
+    return false
+  }
+
+  const detailsHasError = () => {
     if (!name) {
       return "The name field is required."
     }
@@ -280,7 +285,8 @@ export default function EditProductComponent() {
 
   const handleFormSubmit = e => {
     e.preventDefault()
-    setError("")
+    setPhotoError("")
+    setDetailError("")
     setImage(defaultImageState)
     setImage1(defaultImageState)
     setImage2(defaultImageState)
@@ -288,9 +294,13 @@ export default function EditProductComponent() {
     setImage4(defaultImageState)
     setImage5(defaultImageState)
     setImage6(defaultImageState)
-    const err = formHasError()
+    let err = photosHasError()
     if (false !== err) {
-      return setError(err)
+      return setPhotoError(err)
+    }
+    err = detailsHasError()
+    if (false !== err) {
+      return setDetailError(err)
     }
     const payload = new FormData()
     const images = getImages()
@@ -347,11 +357,12 @@ export default function EditProductComponent() {
         </h1>
       </div>
 
-      <Error error={error} />
-
       <div className="row">
 
         <div className="col-xl-6 col-lg-6">
+
+          <Error error={photoError} />
+
           <div className="card shadow mb-4">
             <div className="card-body">
               <RenderUploadedImages
@@ -462,6 +473,9 @@ export default function EditProductComponent() {
         </div>
         
         <div className="col-xl-6 col-lg-6">
+
+          <Error error={detailError} />
+
           <div className="card shadow mb-4">
             <div className="card-body">
               <div className="form-group">
