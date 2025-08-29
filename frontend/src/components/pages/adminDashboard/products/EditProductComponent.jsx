@@ -92,6 +92,13 @@ export default function EditProductComponent() {
     }
   }, [state.adminProductEdit])
 
+  /*
+    TODO:
+      Add useEffects for getting error messages
+      from requests for updating product details
+      and product photos.
+  */
+
   const handleSetImage = e => {
     if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {
       return null
