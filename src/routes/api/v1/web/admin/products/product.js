@@ -1,6 +1,7 @@
 const express = require("express");
 const { status, } = require("http-status");
 const multer = require("multer");
+const upath = require("upath");
 const db = require("../../../../../../models/v1");
 const { message500, message404, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
@@ -129,7 +130,7 @@ router.put(
 
       if ("production" !== nodeEnv) {
         console.log(req.files);
-        console.log(req.uploadedPhotos);
+        console.log(req.body);
       }
       const product = await db.sequelize.models
         .product
@@ -221,23 +222,31 @@ router.put(
           );
       }
 
-      if (Array.isArray(req.uploadedPhotos)) {
-        for (const photo of req.uploadedPhotos) {
-          if (photo.reset) {
-            const deletePhoto = await db.sequelize.models
-              .productPhoto
-              .deleteProductPhoto(
-                photo.id,
-              );
-            if (false === deletePhoto) {
-              if ("production" !== nodeEnv) {
-                console.log(
-                  "Error encountered when soft-deleting product photo from our records."
-                );
+      if (req.body.uploadedPhotos) {
+        try {
+          const uploadedPhotos = JSON.parse(req.body.uploadedPhotos)
+          if (Array.isArray(uploadedPhotos)) {
+            for (const photo of uploadedPhotos) {
+              if (photo.reset) {
+                const deletePhoto = await db.sequelize.models
+                  .productPhoto
+                  .deleteProductPhoto(
+                    photo.id,
+                  );
+                if (false === deletePhoto) {
+                  if ("production" !== nodeEnv) {
+                    console.log(
+                      "Error encountered when soft-deleting product photo from our records."
+                    );
+                  }
+                }
+                removeFile("public/images/productPhotos/"+photo.name);
               }
             }
-            removeFile(photo.path);
           }
+        } catch (err) {
+          res.status(status.INTERNAL_SERVER_ERROR);
+          return res.json({ error: message500 });
         }
       }
 

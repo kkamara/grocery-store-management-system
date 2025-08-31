@@ -10,7 +10,7 @@ export const editProductPhotos = (slug, payload) => {
 
     const tokenId = "admin-user-token"
     await http.putFormData(
-      "/admin/products/"+slug,
+      "/admin/products/"+slug+"/photos",
       payload,
       tokenId,
     )

@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         const results = await sequelize.query(
           `SELECT productPhotos.*
             FROM ${this.getTableName()}
-            WHERE productsId = :productId`,
+            WHERE productsId = :productId AND deletedAt IS NULL`,
           {
             type: sequelize.QueryTypes.SELECT,
             replacements: { productId },
@@ -150,7 +150,7 @@ module.exports = (sequelize, DataTypes) => {
         const result = await sequelize.query(
           `SELECT productPhotos.*
             FROM ${this.getTableName()}
-            WHERE productsId = :productId
+            WHERE productsId = :productId AND deletedAt IS NULL
             ORDER BY id ASC
             LIMIT 1`,
           {

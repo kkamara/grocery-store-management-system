@@ -14,6 +14,7 @@ import RenderUploadedImages from "./RenderUploadedImages"
 
 import "./EditProductComponent.scss"
 
+const defaultUploadedPhotosState = []
 const defaultImageState = ""
 const defaultNameState = ""
 const defaultUnitsState = 1
@@ -35,7 +36,7 @@ export default function EditProductComponent() {
     editAdminProductDetails: state.editAdminProductDetails,
     editAdminProductPhotos: state.editAdminProductPhotos,
   }))
-  const [uploadedPhotos, setUploadedPhotos] = useState([])
+  const [uploadedPhotos, setUploadedPhotos] = useState(defaultUploadedPhotosState)
   const [image, setImage] = useState(defaultImageState)
   const [image1, setImage1] = useState(defaultImageState)
   const [image2, setImage2] = useState(defaultImageState)
@@ -121,6 +122,9 @@ export default function EditProductComponent() {
         setPhotoError(
           state.editAdminProductPhotos.error
         )
+      }
+      if (null !== state.editAdminProductPhotos.data) {
+        window.location.reload()
       }
     }
   }, [state.editAdminProductPhotos])
@@ -217,7 +221,12 @@ export default function EditProductComponent() {
   }
 
   const resetUploadedPhoto = id => {
-    const newUploadedPhotos = uploadedPhotos
+    const newUploadedPhotos = []
+    if (uploadedPhotos) {
+      for (const photo of uploadedPhotos) {
+        newUploadedPhotos.push({ ...photo })
+      }
+    }
     for (const key in newUploadedPhotos) {
       if (id === newUploadedPhotos[key].id) {
         if (!newUploadedPhotos[key].reset) {
@@ -263,7 +272,17 @@ export default function EditProductComponent() {
   }
 
   const photosHasError = () => {
+    let uploadedPhotoExists = false
+    for (const photo of uploadedPhotos) {
+      if (
+        "undefined" === typeof photo.reset ||
+        false === photo.reset
+      ) {
+        uploadedPhotoExists = true
+      }
+    }
     if (
+      !uploadedPhotoExists &&
       !image &&
       !image1 &&
       !image2 &&
@@ -316,10 +335,31 @@ export default function EditProductComponent() {
     return results
   }
 
-  const handleFormSubmit = e => {
+  const handleDetailsFormSubmit = e => {
+    e.preventDefault()
+    setDetailError("")
+    const err = detailsHasError()
+    if (false !== err) {
+      return setDetailError(err)
+    }
+    const payload = {}
+    payload.name = name
+    payload.units = units
+    payload.weight = weight
+    payload.price = price
+    payload.description = description
+    payload.category = category
+    payload.manufacturer = manufacturer
+    payload.isLive = "1" === isLive
+    dispatch(editProductDetails(
+      state.adminProductEdit.data.slug,
+      payload,
+    ))
+  }
+  
+  const handlePhotosFormSubmit = e => {
     e.preventDefault()
     setPhotoError("")
-    setDetailError("")
     setImage(defaultImageState)
     setImage1(defaultImageState)
     setImage2(defaultImageState)
@@ -327,35 +367,29 @@ export default function EditProductComponent() {
     setImage4(defaultImageState)
     setImage5(defaultImageState)
     setImage6(defaultImageState)
-    let err = photosHasError()
+    const err = photosHasError()
     if (false !== err) {
       return setPhotoError(err)
-    }
-    err = detailsHasError()
-    if (false !== err) {
-      return setDetailError(err)
     }
     const payload = new FormData()
     const images = getImages()
     for (const image of images) {
       payload.append("images", image)
     }
-    payload.append("name", name)
-    payload.append("units", units)
-    payload.append("weight", weight)
-    payload.append("price", price)
-    payload.append("description", description)
-    payload.append("category", category)
-    payload.append("manufacturer", manufacturer)
-    // console.log("payload", [...payload])
-    dispatch(newProduct(payload))
+    payload.append("uploadedPhotos", JSON.stringify(uploadedPhotos))
+    dispatch(editProductPhotos(
+      state.adminProductEdit.data.slug,
+      payload,
+    ))
   }
 
   if (
     state.adminAuth.loading ||
     state.adminCategories.loading ||
     state.adminManufacturers.loading ||
-    state.adminProductEdit.loading
+    state.adminProductEdit.loading ||
+    state.editAdminProductDetails.loading ||
+    state.editAdminProductPhotos.loading
   ) {
     return (
       <div className="container dashboard-edit-product-container text-center">
@@ -396,7 +430,10 @@ export default function EditProductComponent() {
 
           <Error error={photoError} />
 
-          <div className="card shadow mb-4">
+          <form
+            className="card shadow mb-4"
+            onSubmit={handlePhotosFormSubmit}
+          >
             <div className="card-body">
               <RenderUploadedImages
                 photos={uploadedPhotos}
@@ -502,14 +539,17 @@ export default function EditProductComponent() {
                 />
               </div>
             </div>
-          </div>
+          </form>
         </div>
         
         <div className="col-xl-6 col-lg-6">
 
           <Error error={detailError} />
 
-          <div className="card shadow mb-4">
+          <form
+            className="card shadow mb-4"
+            onSubmit={handleDetailsFormSubmit}
+          >
             <div className="card-body">
               <div className="form-group">
                 <label htmlFor="name">Name*:</label>
@@ -624,7 +664,7 @@ export default function EditProductComponent() {
                 />
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
