@@ -79,8 +79,12 @@ export default function EditProductComponent() {
         setWeight(state.adminProductEdit.data.weight)
         setPrice(state.adminProductEdit.data.price)
         setDescription(state.adminProductEdit.data.description)
-        setCategory(state.adminProductEdit.data.category.id)
-        setManufacturer(state.adminProductEdit.data.manufacturer.id)
+        if (state.adminProductEdit.data.category) {
+          setCategory(state.adminProductEdit.data.category.id)
+        }
+        if (state.adminProductEdit.data.manufacturer) {
+          setManufacturer(state.adminProductEdit.data.manufacturer.id)
+        }
         setIsLive(state.adminProductEdit.data.isLive ? "1" : "0")
         setUploadedPhotos(state.adminProductEdit.data.photos)
       }
