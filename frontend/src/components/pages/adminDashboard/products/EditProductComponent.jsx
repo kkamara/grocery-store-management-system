@@ -7,8 +7,9 @@ import { adminDashboardTitle, } from "../../../../constants"
 import Error from "../../../layouts/Error"
 import { getAdminCategories, } from "../../../../redux/actions/adminCategoriesActions"
 import { getAdminManufacturers, } from "../../../../redux/actions/adminManufacturersActions"
-// import { newProduct, } from "../../../../redux/actions/createAdminProductActions"
 import { getAdminProductEdit, } from "../../../../redux/actions/adminProductEditActions"
+import { editProductDetails, } from "../../../../redux/actions/editAdminProductDetailsActions"
+import { editProductPhotos, } from "../../../../redux/actions/editAdminProductPhotosActions"
 import RenderUploadedImages from "./RenderUploadedImages"
 
 import "./EditProductComponent.scss"
@@ -31,6 +32,8 @@ export default function EditProductComponent() {
     adminCategories: state.adminCategories,
     adminManufacturers: state.adminManufacturers,
     adminProductEdit: state.adminProductEdit,
+    editAdminProductDetails: state.editAdminProductDetails,
+    editAdminProductPhotos: state.editAdminProductPhotos,
   }))
   const [uploadedPhotos, setUploadedPhotos] = useState([])
   const [image, setImage] = useState(defaultImageState)
@@ -78,7 +81,9 @@ export default function EditProductComponent() {
         setUnits(state.adminProductEdit.data.units)
         setWeight(state.adminProductEdit.data.weight)
         setPrice(state.adminProductEdit.data.price)
-        setDescription(state.adminProductEdit.data.description)
+        if (state.adminProductEdit.data.description) {
+          setDescription(state.adminProductEdit.data.description)
+        }
         if (state.adminProductEdit.data.category) {
           setCategory(state.adminProductEdit.data.category.id)
         }
@@ -96,12 +101,29 @@ export default function EditProductComponent() {
     }
   }, [state.adminProductEdit])
 
-  /*
-    TODO:
-      Add useEffects for getting error messages
-      from requests for updating product details
-      and product photos.
-  */
+  useEffect(() => {
+    if (
+      false === state.editAdminProductDetails.loading
+    ) {
+      if (null !== state.editAdminProductDetails.error) {
+        setDetailError(
+          state.editAdminProductDetails.error
+        )
+      }
+    }
+  }, [state.editAdminProductDetails])
+
+  useEffect(() => {
+    if (
+      false === state.editAdminProductPhotos.loading
+    ) {
+      if (null !== state.editAdminProductPhotos.error) {
+        setPhotoError(
+          state.editAdminProductPhotos.error
+        )
+      }
+    }
+  }, [state.editAdminProductPhotos])
 
   const handleSetImage = e => {
     if (1 !== e.target.files.length || false !== imageError(e.target.files[0].type)) {

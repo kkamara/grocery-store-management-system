@@ -70,6 +70,42 @@ export default class HttpService
     )
   }
 
+  putData = (path, item, tokenId="") => {
+    let requestOptions = this.putRequestOptions({ item, })
+    let token
+    if (tokenId.length) {
+      token = localStorage.getItem(tokenId)
+      requestOptions = this.putRequestOptions({ token, item, })
+    }
+    let url = this.url+path
+    if (null !== path.match(/http/g)) {
+      url = path
+    }
+    return axios.put(
+      url, 
+      requestOptions.data, 
+      { headers: requestOptions.headers, timeout: this.timeout, },
+    )
+  }
+
+  putFormData = (path, item, tokenId="") => {
+    let requestOptions = this.putRequestOptions({ item, })
+    let token
+    if (tokenId.length) {
+      token = localStorage.getItem(tokenId)
+      requestOptions = this.putRequestOptions({ token, item, })
+    }
+    let url = this.url+path
+    if (null !== path.match(/http/g)) {
+      url = path
+    }
+    return axios.putForm(
+      url, 
+      requestOptions.data, 
+      { headers: requestOptions.headers, timeout: this.timeout, },
+    )
+  }
+
   getData = (path, tokenId="") => {
     let requestOptions = this.getRequestOptions()
     let token
@@ -116,6 +152,18 @@ export default class HttpService
   }
 
   postRequestOptions = ({ token, item, }) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-type" : "application/json", },
+      data : item || undefined,
+    }
+    if (token) {
+      requestOptions.headers.Authorization = "Bearer " +token
+    }
+    return requestOptions
+  }
+
+  putRequestOptions = ({ token, item, }) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-type" : "application/json", },
