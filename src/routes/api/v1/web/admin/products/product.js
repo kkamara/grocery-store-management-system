@@ -1,7 +1,6 @@
 const express = require("express");
 const { status, } = require("http-status");
 const multer = require("multer");
-const upath = require("upath");
 const db = require("../../../../../../models/v1");
 const { message500, message404, message200, } = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
