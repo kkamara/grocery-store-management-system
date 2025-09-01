@@ -50,10 +50,15 @@ module.exports = (sequelize, DataTypes) => {
     static async getFormattedCartsData(
       payload,
     ) {
-      return payload.map(async cartItem => 
-        await this.getFormattedCartData(
-          cartItem,
-        ));
+      const result = [];
+      for (const cartItem of payload) {
+        result.push(
+          await this.getFormattedCartData(
+            cartItem,
+          ),
+        );
+      }
+      return result;
     }
 
     /**
