@@ -31,6 +31,12 @@ export default function ProductComponent() {
       }
     }
   }, [state.product])
+
+  const onAddToCartPress = () => {
+    if (null === state.auth.data) {
+      alert("You must be signed in to perform this action.")
+    }
+  }
   
   const renderProductPhotos = () => {
     if (1 < state.product.data.photos.length) {
@@ -126,6 +132,7 @@ export default function ProductComponent() {
               </div>
               <button
                 className="btn btn-primary"
+                onClick={onAddToCartPress}
               >
                 Add To Cart
               </button>
