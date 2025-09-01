@@ -2,7 +2,12 @@ const express = require("express");
 const { status, } = require("http-status");
 const multer = require("multer");
 const db = require("../../../../../../models/v1");
-const { message500, message404, message200, } = require("../../../../../../utils/httpResponses");
+const {
+  message500,
+  message404,
+  message200,
+  message400,
+} = require("../../../../../../utils/httpResponses");
 const adminAuthenticate = require("../../../../../../middlewares/v1/adminAuthenticate");
 const { removeFile, productPhotoAsset, } = require("../../../../../../utils/file");
 const { nodeEnv, } = require("../../../../../../config");
@@ -166,6 +171,31 @@ router.put(
         return res.json({ error: photoError });
       }
 
+      let uploadedPhotos;
+      try {
+        uploadedPhotos = JSON.parse(req.body.uploadedPhotos);
+      } catch (err) {
+        res.status(status.BAD_REQUEST);
+        return res.json({ error: message400 });
+      }
+      let allUploadedPhotosAreToBeReset = true;
+      if (Array.isArray(uploadedPhotos)) {
+        for (const photo of uploadedPhotos) {
+          if (!photo.reset) {
+            allUploadedPhotosAreToBeReset = false;
+          }
+        }
+      }
+      if (
+        0 === req.files.length && (
+          (!uploadedPhotos || !Array.isArray(uploadedPhotos) || 0 === uploadedPhotos.length) ||
+          true === allUploadedPhotosAreToBeReset
+        )
+      ) {
+        res.status(status.BAD_REQUEST);
+        return res.json({ error: "At least one image is required." });
+      }
+
       // Save product & photos to database
       const photos = [];
       if (req.files) {
@@ -221,33 +251,27 @@ router.put(
           );
       }
 
-      if (req.body.uploadedPhotos) {
-        try {
-          const uploadedPhotos = JSON.parse(req.body.uploadedPhotos)
-          if (Array.isArray(uploadedPhotos)) {
-            for (const photo of uploadedPhotos) {
-              if (photo.reset) {
-                const deletePhoto = await db.sequelize.models
-                  .productPhoto
-                  .deleteProductPhoto(
-                    photo.id,
+      if (uploadedPhotos) {
+        if (Array.isArray(uploadedPhotos)) {
+          for (const photo of uploadedPhotos) {
+            if (photo.reset) {
+              const deletePhoto = await db.sequelize.models
+                .productPhoto
+                .deleteProductPhoto(
+                  photo.id,
+                );
+              if (false === deletePhoto) {
+                if ("production" !== nodeEnv) {
+                  console.log(
+                    "Error encountered when soft-deleting product photo from our records."
                   );
-                if (false === deletePhoto) {
-                  if ("production" !== nodeEnv) {
-                    console.log(
-                      "Error encountered when soft-deleting product photo from our records."
-                    );
-                  }
                 }
-                removeFile(productPhotoAsset(
-                  photo.name,
-                ));
               }
+              removeFile(productPhotoAsset(
+                photo.name,
+              ));
             }
           }
-        } catch (err) {
-          res.status(status.INTERNAL_SERVER_ERROR);
-          return res.json({ error: message500 });
         }
       }
 
