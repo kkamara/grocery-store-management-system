@@ -239,7 +239,9 @@ router.put(
                     );
                   }
                 }
-                removeFile("public/images/productPhotos/"+photo.name);
+                removeFile(productPhotoAsset(
+                  photo.name,
+                ));
               }
             }
           }
