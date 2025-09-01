@@ -600,10 +600,13 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `UPDATE ${this.getTableName()}
-            SET deletedAt = :deletedAt
+            SET updatedAt = :updatedAt, deletedAt = :deletedAt
             WHERE id = :productId AND deletedAt IS NULL`,
           {
             replacements: {
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat), 
               deletedAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),

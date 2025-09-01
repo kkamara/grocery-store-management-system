@@ -123,27 +123,56 @@ module.exports = (sequelize, DataTypes) => {
 
     /**
      * @param {number} cartsId
-     * @param {number} usersId
      * @param {Object} payload
      * @returns {array|false}
      */
     static async updateCartItem(
       cartsId,
-      usersId,
       payload,
     ) {
       try {
         await sequelize.query(
           `UPDATE ${this.getTableName()}
             SET quantity = :quantity, updatedAt = :updatedAt
-            WHERE id = :id AND usersId = :usersId`,
+            WHERE id = :id AND deletedAt IS NULL`,
           {
             type: sequelize.QueryTypes.UPDATE,
             replacements: {
               id: cartsId,
               quantity: payload.quantity,
               updatedAt: moment().utc().format(mysqlTimeFormat),
-              usersId,
+            },
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} cartsId
+     * @param {Object} payload
+     * @returns {array|false}
+     */
+    static async deleteCartItem(
+      cartsId,
+    ) {
+      try {
+        await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET updatedAt = :updatedAt, deletedAt = :deletedAt
+            WHERE id = :id AND deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              id: cartsId,
+              updatedAt: moment().utc().format(mysqlTimeFormat),
+              deletedAt: moment().utc().format(mysqlTimeFormat),
             },
           },
         );

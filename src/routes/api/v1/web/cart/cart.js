@@ -53,7 +53,6 @@ router.post(
         .cart
         .updateCartItem(
           foundProductCartItem.id,
-          req.session.userId,
           { quantity: 1 + foundProductCartItem.quantity },
         );
       if (false === updateCartItem) {
@@ -69,6 +68,67 @@ router.post(
           { quantity: 1, productsId: product.id, },
         );
       if (false === addToCart) {
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
+    }
+
+    return res.json({ message: message200 });
+  }
+);
+
+router.delete(
+  "/:productId",
+  authenticate,
+  async (req, res) => {
+    const product = await db.sequelize.models
+      .product
+      .getProduct(
+        req.params.productId,
+      );
+    if (false === product) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: "Product not found." });
+    }
+
+    const usersCart = await db.sequelize.models
+      .cart
+      .getCart(
+        req.session.userId,
+      );
+    
+    let foundProductCartItem = false;
+    for (const cartItem of usersCart) {
+      if (cartItem.productsId == req.params.productId) {
+        foundProductCartItem = cartItem;
+      }
+    }
+
+    if (false === foundProductCartItem) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: "The product is not in your cart." });
+    }
+
+    if (1 === foundProductCartItem.quantity) {
+      const deleteCartItem = await db.sequelize.models
+        .cart
+        .deleteCartItem(
+          foundProductCartItem.id,
+        );
+      if (false === deleteCartItem) {
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
+    } else {
+      const updateCartItem = await db.sequelize.models
+        .cart
+        .updateCartItem(
+          foundProductCartItem.id,
+          {
+            quantity: foundProductCartItem.quantity - 1,
+          },
+        );
+      if (false === updateCartItem) {
         res.status(status.INTERNAL_SERVER_ERROR);
         return res.json({ error: message500 });
       }

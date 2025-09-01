@@ -188,14 +188,17 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `UPDATE ${this.getTableName()}
-            SET deletedAt = :deletedAt
+            SET updatedAt = :updatedAt, deletedAt = :deletedAt
             WHERE id = :id`,
           {
             type: sequelize.QueryTypes.UPDATE,
             replacements: {
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
               deletedAt: moment()
                 .utc()
-                .format(mysqlTimeFormat), 
+                .format(mysqlTimeFormat),  
               id,
             },
           },
