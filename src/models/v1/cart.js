@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             replacements: { usersId },
           },
         );
-
+        
         return await this.getFormattedCartsData(
           result,
         );
@@ -85,9 +85,76 @@ module.exports = (sequelize, DataTypes) => {
           result.productsId,
         );
       if (false !== result.product) {
-        result.price = result.product.slice(1) * result.quantity;
+        result.price = result.product.price.slice(1) * result.quantity;
       }
       return result;
+    }
+
+    /**
+     * @param {number} usersId
+     * @param {Object} payload
+     * @returns {array|false}
+     */
+    static async addToCart(usersId, payload) {
+      try {
+        await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(usersId, productsId, quantity, createdAt, updatedAt)
+            VALUES(:usersId, :productsId, :quantity, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              productsId: payload.productsId,
+              quantity: payload.quantity,
+              createdAt: moment().utc().format(mysqlTimeFormat),
+              updatedAt: moment().utc().format(mysqlTimeFormat),
+              usersId,
+            },
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} cartsId
+     * @param {number} usersId
+     * @param {Object} payload
+     * @returns {array|false}
+     */
+    static async updateCartItem(
+      cartsId,
+      usersId,
+      payload,
+    ) {
+      try {
+        await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET quantity = :quantity, updatedAt = :updatedAt
+            WHERE id = :id AND usersId = :usersId`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              id: cartsId,
+              quantity: payload.quantity,
+              updatedAt: moment().utc().format(mysqlTimeFormat),
+              usersId,
+            },
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   cart.init({

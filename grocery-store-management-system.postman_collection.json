@@ -934,7 +934,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{web}}/products?query=hat",
+											"raw": "{{web}}/products",
 											"host": [
 												"{{web}}"
 											],
@@ -949,7 +949,8 @@
 												},
 												{
 													"key": "query",
-													"value": "hat"
+													"value": "hat",
+													"disabled": true
 												}
 											]
 										}
@@ -1008,7 +1009,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\"\r\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "{{web}}/cart",
