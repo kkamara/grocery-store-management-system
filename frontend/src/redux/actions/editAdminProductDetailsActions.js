@@ -1,4 +1,4 @@
-
+import slugify from "slugify"
 import HttpService from "../../services/HttpService"
 import { editAdminProductDetails, } from "../types"
 
@@ -19,6 +19,7 @@ export const editProductDetails = (slug, payload) => {
           type: editAdminProductDetails.UPDATE_ADMIN_PRODUCT_DETAILS_SUCCESS,
           payload: res.data,
         })
+        window.location = "/admin/products/"+slugify(payload.name)+"/edit"
       }).catch(error => {
         let message
         if ("ERR_NETWORK" === error.code) {
