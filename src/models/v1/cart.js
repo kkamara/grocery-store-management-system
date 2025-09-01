@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
             replacements: { usersId },
           },
         );
-        
-        return await this.getFormattedCartData(
+
+        return await this.getFormattedCartsData(
           result,
         );
       } catch(err) {
@@ -47,21 +47,33 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * @param {array} payload 
      */
+    static async getFormattedCartsData(
+      payload,
+    ) {
+      return payload.map(async cartItem => 
+        await this.getFormattedCartData(
+          cartItem,
+        ));
+    }
+
+    /**
+     * @param {Object} payload 
+     */
     static async getFormattedCartData(
       payload,
     ) {
-      const result = payload.map(data => ({
-        id: data.id,
-        usersId: data.usersId,
-        productsId: data.productsId,
-        quantity: data.quantity,
-        createdAt: moment(data.createdAt)
+      const result = {
+        id: payload.id,
+        usersId: payload.usersId,
+        productsId: payload.productsId,
+        quantity: payload.quantity,
+        createdAt: moment(payload.createdAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
-        updatedAt: moment(data.updatedAt)
+        updatedAt: moment(payload.updatedAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
-      }));
+      };
       result.product = await this.sequelize.models
         .product
         .getProduct(
