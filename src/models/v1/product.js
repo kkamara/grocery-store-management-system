@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 const moment = require("moment-timezone");
 const slugify = require("slugify");
-const { nodeEnv, } = require('../../config');
+const { nodeEnv, appTimezone, } = require('../../config');
 const { mysqlTimeFormat, } = require('../../utils/time');
 const { integerNumberRegex, numberWithOptionalDecimalPartRegex, } = require('../../utils/regexes');
 
@@ -414,8 +414,12 @@ module.exports = (sequelize, DataTypes) => {
         description: product.description,
         manufacturer: null,
         isLive: 1 === product.isLive,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
+        createdAt: moment(product.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(product.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
       };
       if (options) {
         if (true === options.getCategory) {

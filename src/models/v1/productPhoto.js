@@ -4,7 +4,11 @@ const {
   Model
 } = require('sequelize');
 const moment = require("moment-timezone");
-const { appURL, nodeEnv, } = require("../../config/index");
+const {
+  appURL,
+  nodeEnv,
+  appTimezone,
+} = require("../../config/index");
 const { fileSize, } = require('../../utils/file');
 const { mysqlTimeFormat, } = require('../../utils/time');
 
@@ -69,8 +73,12 @@ module.exports = (sequelize, DataTypes) => {
         name: photo.name,
         path: appURL+"/images/productPhotos/"+photo.name,
         type: photo.type,
-        createdAt: photo.createdAt,
-        updatedAt: photo.updatedAt,
+        createdAt: moment(photo.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(photo.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
       };
     }
 

@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
+const { appTimezone, } = require("../../config/index");
+const { mysqlTimeFormat, } = require("../../utils/time");
 module.exports = (sequelize, DataTypes) => {
   class category extends Model {
     /**
@@ -56,8 +59,12 @@ module.exports = (sequelize, DataTypes) => {
       const result = {
         id: category.id,
         name: category.name,
-        createdAt: category.createdAt,
-        updatedAt: category.updatedAt,
+        createdAt: moment(category.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(category.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
       };
       if (true === getDescription) {
         result.description = category.description;
