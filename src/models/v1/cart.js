@@ -2,6 +2,10 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
+const { nodeEnv, appTimezone, } = require("../../config/index");
+const { mysqlTimeFormat, } = require('../../utils/time');
+
 module.exports = (sequelize, DataTypes) => {
   class cart extends Model {
     /**
@@ -11,6 +15,62 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+
+    /**
+     * @param {number} usersId
+     * @returns {array|false}
+     */
+    static async getCart(usersId) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE usersId = :usersId AND deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { usersId },
+          },
+        );
+        
+        return await this.getFormattedCartData(
+          result,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {array} payload 
+     */
+    static async getFormattedCartData(
+      payload,
+    ) {
+      const result = payload.map(data => ({
+        id: data.id,
+        usersId: data.usersId,
+        productsId: data.productsId,
+        quantity: data.quantity,
+        createdAt: moment(data.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(data.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+      }));
+      result.product = await this.sequelize.models
+        .product
+        .getProduct(
+          result.productsId,
+        );
+      if (false !== result.product) {
+        result.price = result.product.slice(1) * result.quantity;
+      }
+      return result;
     }
   }
   cart.init({

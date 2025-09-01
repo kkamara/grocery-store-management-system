@@ -492,6 +492,37 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
+     * @param {string} id
+     * @returns {object|false}
+     */
+    static async getProduct(id) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE id = :id AND isLive = 1 AND deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { id },
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedProductData(
+          result[0],
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
      * @param {string} slug
      * @param {boolean} [options.unformatted=false] options.unformatted
      * @returns {object|false}

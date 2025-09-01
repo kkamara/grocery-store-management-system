@@ -982,6 +982,49 @@
 					]
 				},
 				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Bearer Token Restricted",
+							"item": []
+						},
+						{
+							"name": "Get Cart",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"guest@example.com\",\r\n    \"password\": \"secret\"\r\n}"
+								},
+								"url": {
+									"raw": "{{web}}/cart",
+									"host": [
+										"{{web}}"
+									],
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Get Users",
 					"request": {
 						"method": "GET",
