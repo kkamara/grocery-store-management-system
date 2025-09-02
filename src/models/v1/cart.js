@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
           result.productsId,
         );
       if (false !== result.product) {
-        result.price = result.product.price.slice(1) * result.quantity;
+        result.price = "£"+result.product.price.slice(1) * result.quantity;
       }
       return result;
     }
