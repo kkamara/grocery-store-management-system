@@ -25,6 +25,7 @@ export default function addToCartReducer (state = initState, action) {
     case addToCart.ADD_TO_CART_SUCCESS:
       return {
         ...state,
+        data: true,
         loading: false,
         error: null,
       }

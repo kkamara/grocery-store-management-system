@@ -25,6 +25,7 @@ export default function deleteCartItemReducer (state = initState, action) {
     case deleteCartItem.DELETE_CART_ITEM_SUCCESS:
       return {
         ...state,
+        data: true,
         loading: false,
         error: null,
       }

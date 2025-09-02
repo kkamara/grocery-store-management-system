@@ -5,6 +5,8 @@ import { Helmet, } from "react-helmet"
 import { Zoom, } from "react-slideshow-image"
 import { getProduct, } from "../../../redux/actions/productActions"
 import Error from "../../layouts/Error"
+import { addToCartFunc, } from "../../../redux/actions/addToCartActions"
+import { getCartCount, } from "../../../redux/actions/cartCountActions"
 
 import "react-slideshow-image/dist/styles.css"
 import "./ProductComponent.scss"
@@ -17,6 +19,7 @@ export default function ProductComponent() {
   const state = useSelector(state => ({
     auth: state.auth,
     product: state.product,
+    addToCart: state.addToCart,
   }))
   const [error, setError] = useState("")
 
@@ -32,9 +35,21 @@ export default function ProductComponent() {
     }
   }, [state.product])
 
+  useEffect(() => {
+    if (false === state.addToCart.loading) {
+      if (null !== state.addToCart.data) {
+        dispatch(getCartCount())
+      }
+    }
+  }, [state.addToCart])
+
   const onAddToCartPress = () => {
     if (null === state.auth.data) {
       alert("You must be signed in to perform this action.")
+    } else {
+      dispatch(addToCartFunc(
+        state.product.data.id,
+      ))
     }
   }
   
