@@ -987,41 +987,106 @@
 					"item": [
 						{
 							"name": "Bearer Token Restricted",
-							"item": []
-						},
-						{
-							"name": "Get Cart",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
+							"item": [
+								{
+									"name": "Get Cart",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{web}}/cart",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"cart"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
+								{
+									"name": "Add To Cart",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{web}}/cart/32",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"cart",
+												"32"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{web}}/cart",
-									"host": [
-										"{{web}}"
-									],
-									"path": [
-										"cart"
-									]
+								{
+									"name": "Delete or Minus Quantity Cart Item",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{web}}/cart/32",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"cart",
+												"32"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						}
 					]
 				},

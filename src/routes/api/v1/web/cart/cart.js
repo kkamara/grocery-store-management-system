@@ -138,4 +138,22 @@ router.delete(
   }
 );
 
+router.get(
+  "/count",
+  authenticate,
+  async (req, res) => {
+    const usersCart = await db.sequelize.models
+      .cart
+      .getCart(
+        req.session.userId,
+      );
+    let count = 0;
+    for (const cartItem of usersCart) {
+      count += cartItem.quantity;
+    }
+    
+    return res.json({ count });
+  },
+);
+
 module.exports = router;
