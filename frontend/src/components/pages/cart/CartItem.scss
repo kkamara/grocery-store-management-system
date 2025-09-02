@@ -1,0 +1,54 @@
+.cart-item-card {
+  padding: 50px;
+
+  .product-price {
+    font-size: 18px;
+    margin-top: 15px;
+  }
+
+  .row {
+    border: 1px dashed black;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .quantity-container {
+    .quantity {
+      width: 30px;
+      text-align: center;
+      font-size: 24px;
+      top: 6px;
+      position: relative;
+      background-color: #fff;
+      border: none;
+    }
+
+    button > svg {
+      height: 35px;
+      width: 35px;
+    }
+
+    .circle-filled-minus-icon,
+    .circle-filled-plus-icon {
+      display: none;
+    }
+
+    .minus-btn:hover {
+      .circle-outline-minus-icon {
+        display: none;
+      }
+      .circle-filled-minus-icon {
+        display: inherit;
+      }
+    }
+
+    .plus-btn:hover {
+      .circle-outline-plus-icon {
+        display: none;
+      }
+      .circle-filled-plus-icon {
+        display: inherit;
+      }
+    }
+  }
+}

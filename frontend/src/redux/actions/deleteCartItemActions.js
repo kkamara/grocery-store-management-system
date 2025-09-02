@@ -17,6 +17,7 @@ export const deleteCartItemFunc = productId => {
         dispatch({
           type: deleteCartItem.DELETE_CART_ITEM_SUCCESS,
         })
+        window.location.reload()
       }).catch(error => {
         let message
         if ("ERR_NETWORK" === error.code) {

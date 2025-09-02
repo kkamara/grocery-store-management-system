@@ -1023,6 +1023,41 @@
 									"response": []
 								},
 								{
+									"name": "Get Cart Count",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{web}}/cart/count",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"cart",
+												"count"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Add To Cart",
 									"request": {
 										"auth": {

@@ -5,6 +5,7 @@ const {
 const moment = require("moment-timezone");
 const { nodeEnv, appTimezone, } = require("../../config/index");
 const { mysqlTimeFormat, } = require('../../utils/time');
+const { roundTo2FixedPoints } = require('../../utils/number');
 
 module.exports = (sequelize, DataTypes) => {
   class cart extends Model {
@@ -83,9 +84,10 @@ module.exports = (sequelize, DataTypes) => {
         .product
         .getProduct(
           result.productsId,
+          { singlePhoto: true },
         );
       if (false !== result.product) {
-        result.price = "£"+result.product.price.slice(1) * result.quantity;
+        result.price = "£"+roundTo2FixedPoints(result.product.price.slice(1) * result.quantity);
       }
       return result;
     }

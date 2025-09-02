@@ -7,6 +7,7 @@ const slugify = require("slugify");
 const { nodeEnv, appTimezone, } = require('../../config');
 const { mysqlTimeFormat, } = require('../../utils/time');
 const { integerNumberRegex, numberWithOptionalDecimalPartRegex, } = require('../../utils/regexes');
+const { roundTo2FixedPoints } = require('../../utils/number');
 
 module.exports = (sequelize, DataTypes) => {
   class product extends Model {
@@ -409,8 +410,7 @@ module.exports = (sequelize, DataTypes) => {
         units: product.units,
         weight: product.weight,
         category: null,
-        price: "£"+(Math.round((product.price + Number.EPSILON) * 100) / 100)
-          .toFixed(2),
+        price: "£"+roundTo2FixedPoints(product.price),
         description: product.description,
         manufacturer: null,
         isLive: 1 === product.isLive,
@@ -495,7 +495,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} id
      * @returns {object|false}
      */
-    static async getProduct(id) {
+    static async getProduct(id, options) {
       try {
         const result = await sequelize.query(
           `SELECT *
@@ -513,6 +513,7 @@ module.exports = (sequelize, DataTypes) => {
         
         return this.getFormattedProductData(
           result[0],
+          options,
         );
       } catch(err) {
         if ("production" !== nodeEnv) {

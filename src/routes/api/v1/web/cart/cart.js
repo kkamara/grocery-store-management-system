@@ -16,7 +16,18 @@ router.get(
         req.session.userId,
       );
     
-    return res.json({ cart: usersCart });
+    let cost = 0;
+    for (const cartItem of usersCart) {
+      cost += Number(cartItem.price.slice(1));
+    }
+    cost = "£"+cost.toFixed(2);
+    
+    return res.json({
+      data: {
+        totalPrice: cost,
+        cart: usersCart,
+      },
+    });
   }
 );
 

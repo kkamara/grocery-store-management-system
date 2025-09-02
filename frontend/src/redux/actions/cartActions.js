@@ -16,7 +16,7 @@ export const getCart = () => {
       .then(res => {
         dispatch({
           type: cart.GET_CART_SUCCESS,
-          payload: res.data.cart,
+          payload: res.data.data,
         })
       }).catch(error => {
         let message

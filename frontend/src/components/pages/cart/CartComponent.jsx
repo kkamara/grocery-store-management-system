@@ -2,6 +2,9 @@ import React, { useEffect, } from "react"
 import { useSelector, useDispatch, } from "react-redux"
 import { Helmet, } from "react-helmet"
 import { getCart, } from "../../../redux/actions/cartActions"
+import CartItem from "./CartItem"
+
+import "./CartComponent.scss"
 
 export default function CartComponent() {
   const dispatch = useDispatch()
@@ -12,8 +15,6 @@ export default function CartComponent() {
   useEffect(() => {
     dispatch(getCart())
   }, [])
-
-  console.log(state.cart)
 
   if (state.cart.loading) {
     return (
@@ -31,7 +32,30 @@ export default function CartComponent() {
       <Helmet>
         <title>Your Cart - {process.env.REACT_APP_NAME}</title>
       </Helmet>
-      CartComponent
+      <div className="row">
+        <div className="col-md-10">
+          {state.cart.data.cart.map((cartItem, index) => (
+            <CartItem
+              key={index}
+              data={cartItem}
+            />
+          ))}
+        </div>
+        <div className="col-md-2">
+          <span className="product-price-label">
+            Subtotal:&nbsp;
+          </span>
+          <h2 className="product-price">
+            {state.cart.data.totalPrice}
+          </h2>
+          <a
+            href="/checkout"
+            className="btn btn-success checkout-btn"
+          >
+            Checkout
+          </a>
+        </div>
+      </div>
     </div>
   )
 }
