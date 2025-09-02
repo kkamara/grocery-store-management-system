@@ -18,7 +18,7 @@ export default function CartItem({ data }) {
   }))
 
   useEffect(() => {
-    if (true === state.addToCart.loading) {
+    if (false === state.addToCart.loading) {
       if (null !== state.addToCart.data) {
         console.log(1)
         dispatch(getCart())
