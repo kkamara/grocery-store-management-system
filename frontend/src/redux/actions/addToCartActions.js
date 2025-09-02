@@ -1,7 +1,7 @@
 import HttpService from "../../services/HttpService"
 import { addToCart, } from "../types"
 
-export const addToCart = productId => {
+export const addToCartFunc = productId => {
   return async dispatch => {
     const http = new HttpService()
 
