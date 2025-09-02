@@ -26,7 +26,7 @@ export default function LoginComponent() {
   }, [])
 
   useEffect(() => {
-    if (state.adminAuth.data) {
+    if (null !== state.adminAuth.data) {
       window.location = "/admin"
     }
   }, [state.adminAuth])
