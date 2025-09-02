@@ -10,6 +10,7 @@ import Logout from "./components/pages/auth/LogoutComponent"
 import Register from "./components/pages/auth/RegisterComponent"
 import NotFound from "./components/pages/http/NotFoundComponent"
 import ProductComponent from "./components/pages/products/ProductComponent"
+import CartComponent from "./components/pages/cart/CartComponent"
 
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
 import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
@@ -41,6 +42,7 @@ export default () => {
       <Route element={<MainSiteRoute/>}>
         <Route element={<AuthRoute/>}>
           <Route path={url("/user/logout")} element={<Logout />}/>
+          <Route path={url("/cart")} element={<CartComponent />}/>
         </Route>
         <Route path={url("/")} element={<Home />}/>
         <Route path={url("/user/signin")} element={<SignIn />}/>
