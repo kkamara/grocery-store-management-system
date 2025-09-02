@@ -20,6 +20,7 @@ import editAdminProductDetailsReducer from "./editAdminProductDetailsReducer"
 import editAdminProductPhotosReducer from "./editAdminProductPhotosReducer"
 import cartReducer from "./cartReducer"
 import cartCountReducer from "./cartCountReducer"
+import addToCartReducer from "./addToCartReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -43,4 +44,5 @@ export default combineReducers({
   editAdminProductPhotos: editAdminProductPhotosReducer,
   cart: cartReducer,
   cartCount: cartCountReducer,
+  addToCart: addToCartReducer,
 })
