@@ -1,16 +1,39 @@
-import React from "react"
+import React, { useEffect, } from "react"
 import { CiCircleMinus } from "react-icons/ci"
 import { FaMinusCircle } from "react-icons/fa"
 import { CiCirclePlus } from "react-icons/ci"
 import { FaPlusCircle } from "react-icons/fa"
-import { useDispatch, } from "react-redux"
+import { useDispatch, useSelector, } from "react-redux"
 import { deleteCartItemFunc } from "../../../redux/actions/deleteCartItemActions"
 import { addToCartFunc, } from "../../../redux/actions/addToCartActions"
+import { getCart, } from "../../../redux/actions/cartActions"
 
 import "./CartItem.scss"
 
 export default function CartItem({ data }) {
   const dispatch = useDispatch()
+  const state = useSelector(state => ({
+    addToCart: state.addToCart,
+    deleteCartItem: state.deleteCartItem,
+  }))
+
+  useEffect(() => {
+    if (true === state.addToCart.loading) {
+      if (null !== state.addToCart.data) {
+        console.log(1)
+        dispatch(getCart())
+      }
+    }
+  }, [state.addToCart])
+
+  useEffect(() => {
+    if (false === state.deleteCartItem.loading) {
+      if (null !== state.deleteCartItem.data) {
+        console.log(2)
+        dispatch(getCart())
+      }
+    }
+  }, [state.deleteCartItem])
 
   function handleMinusCartItemBtnPress() {
     dispatch(deleteCartItemFunc(data.productsId))

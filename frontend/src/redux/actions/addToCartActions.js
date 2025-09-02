@@ -21,7 +21,7 @@ export const addToCartFunc = productId => {
         dispatch({
           type: addToCart.ADD_TO_CART_SUCCESS,
         })
-        window.location.reload()
+        // window.location.reload()
       }).catch(error => {
         let message
         if ("ERR_NETWORK" === error.code) {
