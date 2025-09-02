@@ -1,4 +1,4 @@
-import { addToCart, } from "../types"
+import { deleteCartItem, } from "../types"
 
 const initState = {
   data: null,
@@ -6,23 +6,23 @@ const initState = {
   loading: true,
 }
 
-export default function addToCartReducer (state = initState, action) {
+export default function deleteCartItemReducer (state = initState, action) {
   switch (action.type) {
     
-    case addToCart.ADD_TO_CART_ERROR:
+    case deleteCartItem.DELETE_CART_ITEM_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case addToCart.ADD_TO_CART_PENDING:
+    case deleteCartItem.DELETE_CART_ITEM_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case addToCart.ADD_TO_CART_SUCCESS:
+    case deleteCartItem.DELETE_CART_ITEM_SUCCESS:
       return {
         ...state,
         loading: false,

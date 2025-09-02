@@ -1,25 +1,21 @@
 import HttpService from "../../services/HttpService"
-import { addToCart, } from "../types"
+import { deleteCartItem, } from "../types"
 
-export const addToCart = productId => {
+export const deleteCartItemFunc = productId => {
   return async dispatch => {
     const http = new HttpService()
 
-    dispatch({ type: addToCart.ADD_TO_CART_PENDING, })
+    dispatch({ type: deleteCartItem.DELETE_CART_ITEM_PENDING, })
 
     let tokenId = "user-token"
     if (null === localStorage.getItem(tokenId)) {
       tokenId = ""
     }
     const path = "/cart/"+productId
-    await http.postData(
-      path,
-      null,
-      tokenId,
-    )
+    await http.delData(path, tokenId)
       .then(() => {
         dispatch({
-          type: addToCart.ADD_TO_CART_SUCCESS,
+          type: deleteCartItem.DELETE_CART_ITEM_SUCCESS,
         })
       }).catch(error => {
         let message
@@ -35,7 +31,7 @@ export const addToCart = productId => {
           message = "Something went wrong. Please come back later."
         }
         dispatch({ 
-          type: addToCart.ADD_TO_CART_ERROR, 
+          type: deleteCartItem.DELETE_CART_ITEM_ERROR, 
           payload: message,
         })
       })
