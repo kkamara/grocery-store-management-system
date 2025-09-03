@@ -45,9 +45,9 @@ export default function CartComponent() {
           <span className="product-price-label">
             Subtotal:&nbsp;
           </span>
-          <h2 className="product-price">
+          <h3 className="product-price">
             {state.cart.data.totalPrice}
-          </h2>
+          </h3>
           <div className="action-buttons-container">
             <a
               href="/checkout"
