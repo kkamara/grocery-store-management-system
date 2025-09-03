@@ -5,7 +5,7 @@ const {
 const moment = require("moment-timezone");
 const { mysqlTimeFormat, } = require("../../utils/time");
 const { nodeEnv, } = require("../../config");
-const { roundTo2DecimalNumbers } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/numbers');
 module.exports = (sequelize, DataTypes) => {
   class order extends Model {
     /**

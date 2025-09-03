@@ -5,7 +5,7 @@ const {
 const moment = require("moment-timezone");
 const { nodeEnv, appTimezone, } = require("../../config/index");
 const { mysqlTimeFormat, } = require('../../utils/time');
-const { roundTo2DecimalNumbers } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/numbers');
 
 module.exports = (sequelize, DataTypes) => {
   class cart extends Model {

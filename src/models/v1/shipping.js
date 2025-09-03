@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { roundTo2DecimalNumbers } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/numbers');
 module.exports = (sequelize, DataTypes) => {
   class shipping extends Model {
     /**
