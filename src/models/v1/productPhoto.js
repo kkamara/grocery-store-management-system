@@ -88,11 +88,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static getUploadPhotoError(mimetype, size) {
       if (null === mimetype.match(/(jpg|jpeg|png|webp)$/i)) {
-        return "Product photo mimetype must match one of jpg, jpeg, png or webp.";
+        return "The product photo mimetype must match one of jpg, jpeg, png or webp.";
       }
 
       if (size > fileSize) {
-        return "Product photo size must not exceed 3.5MB";
+        return "The product photo size must not exceed 3.5MB";
       }
 
       return false;

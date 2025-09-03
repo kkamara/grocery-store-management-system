@@ -707,14 +707,14 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       if (undefined === typeof payload.isLive) {
-        return "The isLive field is missing.";
+        return "The is live field is missing.";
       } else if (
         false !== payload.isLive &&
         true !== payload.isLive &&
         "false" !== payload.isLive &&
         "true" !== payload.isLive
       ) {
-        return "The isLive field must be true or false.";
+        return "The is live field must be true or false.";
       }
 
       return false;
@@ -802,14 +802,14 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       if (undefined === typeof payload.isLive) {
-        return "The isLive field is missing.";
+        return "The is live field is missing.";
       } else if (
         false !== payload.isLive &&
         true !== payload.isLive &&
         "false" !== payload.isLive &&
         "true" !== payload.isLive
       ) {
-        return "The isLive field must be true or false.";
+        return "The is live field must be true or false.";
       }
 
       return false;
