@@ -7,7 +7,7 @@ const slugify = require("slugify");
 const { nodeEnv, appTimezone, } = require('../../config');
 const { mysqlTimeFormat, } = require('../../utils/time');
 const { integerNumberRegex, numberWithOptionalDecimalPartRegex, } = require('../../utils/regexes');
-const { roundTo2FixedPoints } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/number');
 
 module.exports = (sequelize, DataTypes) => {
   class product extends Model {
@@ -410,7 +410,7 @@ module.exports = (sequelize, DataTypes) => {
         units: product.units,
         weight: product.weight,
         category: null,
-        price: "£"+roundTo2FixedPoints(product.price),
+        price: "£"+roundTo2DecimalNumbers(product.price),
         description: product.description,
         manufacturer: null,
         isLive: 1 === product.isLive,

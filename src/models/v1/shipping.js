@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { roundTo2FixedPoints } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/number');
 module.exports = (sequelize, DataTypes) => {
   class shipping extends Model {
     /**
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         
         let result = (part[0].count / whole[0].count) * 100;
         if (0 < result) {
-          result = roundTo2FixedPoints(result);
+          result = roundTo2DecimalNumbers(result);
         }
         return { percentage: result + "%" };
       } catch(err) {

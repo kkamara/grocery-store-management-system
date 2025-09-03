@@ -5,7 +5,7 @@ const {
 const moment = require("moment-timezone");
 const { mysqlTimeFormat, } = require("../../utils/time");
 const { nodeEnv, } = require("../../config");
-const { roundTo2FixedPoints } = require('../../utils/number');
+const { roundTo2DecimalNumbers } = require('../../utils/number');
 module.exports = (sequelize, DataTypes) => {
   class order extends Model {
     /**
@@ -108,13 +108,13 @@ module.exports = (sequelize, DataTypes) => {
           }
         );
         result.datasets[0].data.push(
-          roundTo2FixedPoints(threeMonthAgoResults[0].amountSum),
+          roundTo2DecimalNumbers(threeMonthAgoResults[0].amountSum),
         );
         result.datasets[0].data.push(
-          roundTo2FixedPoints(twoMonthAgoResults[0].amountSum),
+          roundTo2DecimalNumbers(twoMonthAgoResults[0].amountSum),
         );
         result.datasets[0].data.push(
-          roundTo2FixedPoints(lastMonthResults[0].amountSum),
+          roundTo2DecimalNumbers(lastMonthResults[0].amountSum),
         );
         return result;
       } catch(err) {
