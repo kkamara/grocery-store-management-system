@@ -48,12 +48,14 @@ export default function CartComponent() {
           <h2 className="product-price">
             {state.cart.data.totalPrice}
           </h2>
-          <a
-            href="/checkout"
-            className="btn btn-success checkout-btn"
-          >
-            Checkout
-          </a>
+          <div className="action-buttons-container">
+            <a
+              href="/checkout"
+              className="btn btn-success checkout-btn"
+            >
+              Checkout
+            </a>
+          </div>
         </div>
       </div>
     </div>
