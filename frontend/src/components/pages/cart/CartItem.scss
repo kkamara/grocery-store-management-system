@@ -51,4 +51,12 @@
       }
     }
   }
+
+  .product-name > a {
+    text-decoration: none;
+  }
+
+  .product-name > a:hover {
+    color: initial;
+  }
 }

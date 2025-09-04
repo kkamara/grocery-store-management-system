@@ -43,7 +43,9 @@ export default function CartItem({ data }) {
         </div>
         <div className="col-md-8">
           <h3 className="product-name">
-            {data.product.name}
+            <a href={`/products/${data.product.slug}`}>
+              {data.product.name}
+            </a>
           </h3>
 
           <div className="quantity-container">
