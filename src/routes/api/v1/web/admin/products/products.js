@@ -109,6 +109,7 @@ router.post(
           category: req.bodyInt("category"),
           manufacturer: req.bodyInt("manufacturer"),
           isLive: req.body.isLive,
+          stripeProductId: req.bodyString("stripeProductId"),
         });
       if (false === cleanData) {
         if (req.files) {

@@ -13,6 +13,7 @@ export default function ProductDetail({ data, }) {
     description,
     manufacturer,
     isLive,
+    stripeProductId,
     createdAt,
     updatedAt,
   } = data
@@ -33,6 +34,8 @@ export default function ProductDetail({ data, }) {
       <strong>Manufacturer:</strong> {manufacturer ? manufacturer.name : null}
       <br />
       <strong>Is Live:</strong> {isLive ? "Yes" : "No"}
+      <br />
+      <strong>Stripe Payment ID:</strong> {stripeProductId}
       <br />
       <strong>Created At:</strong> {parseDate(createdAt)}
       <br />

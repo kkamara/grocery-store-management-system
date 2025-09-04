@@ -214,13 +214,16 @@ module.exports = (sequelize, DataTypes) => {
         const countResult = await sequelize.query(
           `SELECT count(id) as total
             FROM ${this.getTableName()}
-            WHERE (name LIKE :query OR
+            WHERE (
+              name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
+              isLive LIKE :query OR
+              stripeProductId LIKE :query OR
               createdAt LIKE :query OR
-              updatedAt LIKE :query) AND
-              deletedAt IS NULL;
+              updatedAt LIKE :query
+            );
           `,
           {
             type: sequelize.QueryTypes.SELECT,
@@ -244,13 +247,16 @@ module.exports = (sequelize, DataTypes) => {
         const coreResults = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
-            WHERE (name LIKE :query OR
+            WHERE (
+              name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
+              isLive LIKE :query OR
+              stripeProductId LIKE :query OR
               createdAt LIKE :query OR
-              updatedAt LIKE :query) AND
-              deletedAt IS NULL
+              updatedAt LIKE :query
+            )
             ORDER BY id DESC
             LIMIT :perPage
             OFFSET :offset
@@ -291,7 +297,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {number} perPage
      * @returns {object|false}
      */
-    static async queryAdminProducts(
+    static async queryProducts(
       query = null,
       page = 1,
       perPage = 7,
@@ -302,13 +308,12 @@ module.exports = (sequelize, DataTypes) => {
         const countResult = await sequelize.query(
           `SELECT count(id) as total
             FROM ${this.getTableName()}
-            WHERE (name LIKE :query OR
+            WHERE (
+              name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
-              createdAt LIKE :query OR
-              updatedAt LIKE :query) AND
-              deletedAt IS NULL AND
+            ) AND deletedAt IS NULL AND
               isLive = 1;
           `,
           {
@@ -333,13 +338,12 @@ module.exports = (sequelize, DataTypes) => {
         const coreResults = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
-            WHERE (name LIKE :query OR
+            WHERE (
+              name LIKE :query OR
               units LIKE :query OR
               weight LIKE :query OR
               price LIKE :query OR
-              createdAt LIKE :query OR
-              updatedAt LIKE :query) AND
-              deletedAt IS NULL AND
+            ) AND deletedAt IS NULL AND
               isLive = 1
             ORDER BY id DESC
             LIMIT :perPage
@@ -414,6 +418,7 @@ module.exports = (sequelize, DataTypes) => {
         description: product.description,
         manufacturer: null,
         isLive: 1 === product.isLive,
+        stripeProductId: product.stripeProductId,
         createdAt: moment(product.createdAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
@@ -717,6 +722,16 @@ module.exports = (sequelize, DataTypes) => {
         return "The is live field must be true or false.";
       }
 
+      if (payload.stripeProductId) {
+        if ("string" !== typeof payload.stripeProductId) {
+          return "The stripe product id field must be of type string."
+        } else if (15 > payload.stripeProductId.length) {
+          return "The stripe product id field length must be greater than 15 characters.";
+        } else if (30 < payload.stripeProductId.length) {
+          return "The stripe product id field length must not exceed 30 characters.";
+        }
+      }
+
       return false;
     }
 
@@ -811,6 +826,16 @@ module.exports = (sequelize, DataTypes) => {
       ) {
         return "The is live field must be true or false.";
       }
+      
+      if (payload.stripeProductId) {
+        if ("string" !== typeof payload.stripeProductId) {
+          return "The stripe product id field must be of type string."
+        } else if (15 > payload.stripeProductId.length) {
+          return "The stripe product id field length must be greater than 15 characters.";
+        } else if (30 < payload.stripeProductId.length) {
+          return "The stripe product id field length must not exceed 30 characters.";
+        }
+      }
 
       return false;
     }
@@ -837,6 +862,9 @@ module.exports = (sequelize, DataTypes) => {
           result.isLive = true;
         }
       }
+      if (payload.stripeProductId) {
+        result.stripeProductId = payload.stripeProductId;
+      }
       return result;
     }
 
@@ -862,6 +890,9 @@ module.exports = (sequelize, DataTypes) => {
           result.isLive = true;
         }
       }
+      if (payload.stripeProductId) {
+        result.stripeProductId = payload.stripeProductId;
+      }
       return result;
     }
 
@@ -872,8 +903,8 @@ module.exports = (sequelize, DataTypes) => {
     static async newProduct(data) {
       try {
         const result = await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, createdAt, updatedAt)
-            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, stripeProductId, createdAt, updatedAt)
+            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :stripeProductId, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
@@ -886,6 +917,7 @@ module.exports = (sequelize, DataTypes) => {
               categoriesId: data.category || null,
               manufacturersId: data.manufacturer || null,
               isLive: data.isLive,
+              stripeProductId: data.stripeProductId || null,
               createdAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -923,6 +955,7 @@ module.exports = (sequelize, DataTypes) => {
               description = :description,
               manufacturersId = :manufacturersId,
               isLive = :isLive,
+              stripeProductId = :stripeProductId,
               updatedAt = :updatedAt
             WHERE id = :id`,
           {
@@ -937,6 +970,7 @@ module.exports = (sequelize, DataTypes) => {
               categoriesId: data.category || null,
               manufacturersId: data.manufacturer || null,
               isLive: data.isLive,
+              stripeProductId: data.stripeProductId || null,
               updatedAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -989,6 +1023,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     isLive: {
       type: DataTypes.BOOLEAN
+    },
+    stripeProductId: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,

@@ -44,8 +44,8 @@ module.exports = {
         const productName = faker.commerce.productName();
         const productSlug = slugify(productName);
         const productInsertResult = await queryInterface.sequelize.query(
-          `INSERT INTO products(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, createdAt, updatedAt)
-            VALUES (:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :createdAt, :updatedAt)`,
+          `INSERT INTO products(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, stripeProductId, createdAt, updatedAt)
+            VALUES (:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :stripeProductId, :createdAt, :updatedAt)`,
           {
             replacements: {
               name: productName,
@@ -59,6 +59,7 @@ module.exports = {
                 null,
               manufacturersId: manufacturer[0].id,
               isLive: 1,
+              stripeProductId: "prod_SziSLdpKlO8nNK",
               createdAt: productCreatedAt,
               updatedAt: productCreatedAt,
             },

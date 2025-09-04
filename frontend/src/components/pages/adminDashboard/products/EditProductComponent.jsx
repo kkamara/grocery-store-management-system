@@ -24,6 +24,7 @@ const defaultDescriptionState = ""
 const defaultCategoryState = "0"
 const defaultManufacturerState = "0"
 const defaultIsLive = "0"
+const defaultStripeProductId = "prod_SziSLdpKlO8nNK"
 
 export default function EditProductComponent() {
   const navigate = useNavigate()
@@ -54,6 +55,7 @@ export default function EditProductComponent() {
   const [category, setCategory] = useState(defaultCategoryState)
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
   const [isLive, setIsLive] = useState(defaultIsLive)
+  const [stripeProductId, setStripeProductId] = useState(defaultStripeProductId)
 
   const [photoError, setPhotoError] = useState("")
   const [detailError, setDetailError] = useState("")
@@ -93,6 +95,11 @@ export default function EditProductComponent() {
         }
         setIsLive(state.adminProductEdit.data.isLive ? "1" : "0")
         setUploadedPhotos(state.adminProductEdit.data.photos)
+        if (state.adminProductEdit.data.stripeProductId) {
+          setStripeProductId(
+            state.adminProductEdit.data.stripeProductId,
+          )
+        }
       }
       if (
         null !== state.adminProductEdit.error
@@ -271,6 +278,10 @@ export default function EditProductComponent() {
     setIsLive(e.target.value)
   }
 
+  const handleStripeProductIdChange = e => {
+    setStripeProductId(e.target.value)
+  }
+
   const photosHasError = () => {
     let uploadedPhotoExists = false
     for (const photo of uploadedPhotos) {
@@ -351,6 +362,7 @@ export default function EditProductComponent() {
     payload.category = category
     payload.manufacturer = manufacturer
     payload.isLive = "1" === isLive
+    payload.stripeProductId = stripeProductId
     dispatch(editProductDetails(
       state.adminProductEdit.data.slug,
       payload,
@@ -654,6 +666,17 @@ export default function EditProductComponent() {
                   <option value="0">No</option>
                   <option value="1">Yes</option>
                 </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="stripeProductId">Stripe Product ID:</label>
+                <input
+                  type="text"
+                  name="stripeProductId"
+                  id="stripeProductId"
+                  className="form-control"
+                  value={stripeProductId}
+                  onChange={handleStripeProductIdChange}
+                />
               </div>
             </div>
             <div className="card-footer">
