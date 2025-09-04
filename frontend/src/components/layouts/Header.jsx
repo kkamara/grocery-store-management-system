@@ -78,7 +78,7 @@ export default function Header(props) {
     }
   }
 
-  return <nav className="navbar navbar-expand-lg mb-4 bg-primary" data-bs-theme="dark">
+  return <nav className="navbar navbar-expand-lg mb-4 bg-primary header-container" data-bs-theme="dark">
     <div className="container">
       <Link className="navbar-brand" to="/">
         {process.env.REACT_APP_NAME}
@@ -91,6 +91,24 @@ export default function Header(props) {
           <li className="nav-item">
             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
           </li>
+        </ul>
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search products..."
+              aria-label="Search"
+              name="search"
+              id="search"
+            />
+            <button
+              class="btn btn-outline-success"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
         </ul>
         <ul className="navbar-nav">
           {renderNavLinks()}
