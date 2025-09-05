@@ -93,9 +93,9 @@ export default function Header(props) {
           </li>
         </ul>
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-          <form class="d-flex" role="search">
+          <form className="d-flex" role="search">
             <input
-              class="form-control me-2"
+              className="form-control me-2"
               type="search"
               placeholder="Search products..."
               aria-label="Search"
@@ -103,7 +103,7 @@ export default function Header(props) {
               id="search"
             />
             <button
-              class="btn btn-outline-success"
+              className="btn btn-outline-success"
               type="submit"
             >
               Search
