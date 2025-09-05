@@ -31,6 +31,8 @@ const config = {
   appURL: process.env.APP_URL,
   appPort: process.env.PORT || process.env.port || 8000,
   allowedOrigins: process.env.ALLOWED_ORIGINS,
+  stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY, 
 };
 
 module.exports = config;
