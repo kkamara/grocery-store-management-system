@@ -6,7 +6,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.addColumn(
-        "productOrders",
+        "ordersProducts",
         "stripeProductId",
         {
           type: Sequelize.STRING,
@@ -26,7 +26,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.removeColumn(
-        "productOrders",
+        "ordersProducts",
         "stripeProductId",
         { transaction },
       );
