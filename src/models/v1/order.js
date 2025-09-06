@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 const moment = require("moment-timezone");
 const { mysqlTimeFormat, } = require("../../utils/time");
-const { nodeEnv, } = require("../../config");
+const { nodeEnv, appTimezone, } = require("../../config");
 const { roundTo2DecimalNumbers } = require('../../utils/numbers');
 module.exports = (sequelize, DataTypes) => {
   class order extends Model {
@@ -208,6 +208,126 @@ module.exports = (sequelize, DataTypes) => {
         }
         return false;
       }
+    }
+
+    /**
+     * @param {string} billingReference
+     * @param {Object} options
+     * @returns {object|false}
+     */
+    static async getOrderByBillingReference(
+      billingReference,
+      options,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE billingReference = :billingReference AND
+            deletedAt IS NULL
+            LIMIT 1`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { billingReference }
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return await this.getFormattedOrderData(
+          result[0],
+          options,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {array} payload
+     * @param {Object} options
+     */
+    static async getFormattedOrdersData(payload, options) {
+      const result = [];
+      for (const item of payload) {
+        result.push(
+          await this.getFormattedOrderData(
+            item,
+            options,
+          )
+        );
+      }
+      return result;
+    }
+
+    /**
+     * @param {Object} payload
+     * @param {boolean} [options.getShipping=false] options.getShipping
+     * @param {boolean} [options.getUserAdress=false] options.getUserAdress
+     * @param {boolean} [options.getUser=false] options.getUser
+     */
+    static async getFormattedOrderData(
+      payload,
+      options,
+    ) {
+      const result = {
+        id: payload.id,
+        paymentMethod: payload.paymentMethod,
+        billingReference: payload.billingReference,
+        amount: "£"+roundTo2DecimalNumbers(
+          payload.amount
+        ),
+        shippingsId: payload.shippingsId,
+        userAddressesId: payload.userAddressesId,
+        usersId: payload.usersId,
+        createdAt: moment(payload.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(payload.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+      };
+      if (options) {
+        if (options.getShipping) {
+          const shipping = await this.sequelize
+            .models
+            .shipping
+            .getShippingById(
+              payload.shippingsId
+            );
+          if (false !== shipping) {
+            result.shipping = shipping;
+          }
+        }
+        if (options.getUserAddress) {
+          const userAddress = await this.sequelize
+            .models
+            .userAddress
+            .getUserAddressById(
+              payload.shippingsId
+            );
+          if (false !== userAddress) {
+            result.userAddress = userAddress;
+          }
+        }
+        if (options.getUser) {
+          const user = await this.sequelize
+            .models
+            .user
+            .getUserById(
+              payload.usersId
+            );
+          if (false !== user) {
+            result.user = user;
+          }
+        }
+      }
+      return result;
     }
   }
   order.init({

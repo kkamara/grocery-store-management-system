@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
     static async getUserById(id) {
       let res = false;
       try {
-        const [result, metadata] = await sequelize.query(
+        const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
               password, passwordSalt, updatedAt
             FROM ${this.getTableName()}
@@ -74,11 +74,13 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         
-        if (undefined === result) {
+        if (0 === result.length) {
           return false;
         }
 
-        res = result;
+        res = this.getFormattedUserData(
+          result[0]
+        );
         return res;
       } catch(err) {
         return res;
@@ -92,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
     static async getUserByToken(token) {
       let res = false;
       try {
-        const [result, metadata] = await sequelize.query(
+        const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
               password, passwordSalt, updatedAt
             ${this.getTableName()}.updatedAt, username
@@ -108,11 +110,13 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         
-        if (undefined === result) {
+        if (0 === result.length) {
           return false;
         }
 
-        res = result;
+        res = this.getFormattedUserData(
+          result[0]
+        );
         return res;
       } catch(err) {
         if ("production" !== nodeEnv) {
@@ -129,7 +133,7 @@ module.exports = (sequelize, DataTypes) => {
     static async getUser(id) {
       let res = false;
       try {
-        const [result, metadata] = await sequelize.query(
+        const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
               password, passwordSalt, updatedAt
             FROM ${this.getTableName()}
@@ -141,12 +145,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
 
-        if (undefined === result) {
+        if (0 === result.length) {
           res = false;
           return res;
         }
 
-        res = result;
+        res = this.getFormattedUserData(
+          result[0]
+        );
         return res;
       } catch(err) {
         if ("production" !== nodeEnv) {
@@ -240,7 +246,9 @@ module.exports = (sequelize, DataTypes) => {
         
         page += 1;
         return {
-          data: coreResults,
+          data: this.getFormattedUsersData(
+            coreResults
+          ),
           meta: {
             currentPage: page,
             items: countResult[0].total,
@@ -671,6 +679,46 @@ module.exports = (sequelize, DataTypes) => {
         }
         return false;
       }
+    }
+
+    /**
+     * @param {array} payload 
+     */
+    static getFormattedUsersData(
+      payload,
+    ) {
+      const result = [];
+      for (const item of payload) {
+        result.push(
+          this.getFormattedUserData(
+            item,
+          )
+        );
+      }
+      return result;
+    }
+
+    /**
+     * @param {Object} payload
+     * @returns 
+     */
+    static getFormattedUserData(
+      payload,
+    ) {
+      const result = {
+        id: payload.id,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
+        role: payload.role,
+        createdAt: moment(payload.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(payload.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+      };
+      return result;
     }
   }
   

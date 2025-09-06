@@ -481,7 +481,7 @@ module.exports = (sequelize, DataTypes) => {
           return false;
         }
         
-        return this.getFormattedProductData(
+        return await this.getFormattedProductData(
           result[0],
           {
             getCategory: true,
@@ -516,7 +516,7 @@ module.exports = (sequelize, DataTypes) => {
           return false;
         }
         
-        return this.getFormattedProductData(
+        return await this.getFormattedProductData(
           result[0],
           options,
         );
@@ -549,7 +549,7 @@ module.exports = (sequelize, DataTypes) => {
           return false;
         }
         
-        return this.getFormattedProductData(
+        return await this.getFormattedProductData(
           result[0],
           {
             getCategory: true,

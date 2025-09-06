@@ -1126,6 +1126,44 @@
 					]
 				},
 				{
+					"name": "Checkout",
+					"item": [
+						{
+							"name": "Bearer Token Restricted",
+							"item": [
+								{
+									"name": "Get Checkout Data",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{web}}/checkout/560071856",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"checkout",
+												"560071856"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "Get Users",
 					"request": {
 						"method": "GET",

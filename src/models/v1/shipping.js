@@ -2,7 +2,10 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
 const { roundTo2DecimalNumbers } = require('../../utils/numbers');
+const { nodeEnv, appTimezone, } = require("../../config");
+const { mysqlTimeFormat, } = require("../../utils/time");
 module.exports = (sequelize, DataTypes) => {
   class shipping extends Model {
     /**
@@ -51,6 +54,79 @@ module.exports = (sequelize, DataTypes) => {
         }
         return false;
       }
+    }
+
+    /**
+     * @param {number} id
+     * @param {Object} options
+     * @returns {object|false}
+     */
+    static async getShippingById(
+      id,
+      options,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE id = :id AND
+            deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { id }
+          },
+        );
+
+        if (0 === result.length) {
+          return false;
+        }
+        
+        return this.getFormattedShippingData(
+          result[0],
+          options,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {array} payload
+     */
+    static getFormattedShippingsData(
+      payload
+    ) {
+      const result = [];
+      for (const item of payload) {
+        result.push(
+          this.getFormattedShippingData(
+            item
+          )
+        );
+      }
+      return result;
+    }
+
+    /**
+     * @param {Object} payload
+     * @returns 
+     */
+    static getFormattedShippingData(
+      payload
+    ) {
+      return {
+        id: payload.id,
+        status: payload.status,
+        createdAt: moment(payload.createdAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+        updatedAt: moment(payload.updatedAt)
+          .tz(appTimezone)
+          .format(mysqlTimeFormat),
+      };
     }
   }
   shipping.init({
