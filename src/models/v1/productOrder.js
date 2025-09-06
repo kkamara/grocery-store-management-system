@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.FLOAT
     },
+    stripeProductId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
