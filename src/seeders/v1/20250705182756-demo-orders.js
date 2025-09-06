@@ -63,7 +63,24 @@ module.exports = {
           }
         );
 
-        await queryInterface.sequelize.query(
+        const productsForOrderResult = await queryInterface.sequelize.query(
+          "SELECT * FROM products ORDER BY rand() LIMIT :limit",
+          {
+            type: Sequelize.QueryTypes.SELECT, transaction,
+            replacements: { limit: faker.number.int({ min: 1, max: 10, }) },
+          },
+        );
+
+        if (0 === productsForOrderResult.length) {
+          throw new Error("No products are available to select.");
+        }
+
+        let orderTotalPrice = 0;
+        for (const productForOrder of productsForOrderResult) {
+          orderTotalPrice += productForOrder.price;
+        }
+
+        const orderInsertResult = await queryInterface.sequelize.query(
           `INSERT INTO orders(paymentMethod, billingReference, amount, shippingsId, userAddressesId, usersId, createdAt, updatedAt)
             VALUES (:paymentMethod, :billingReference, :amount, :shippingsId, :userAddressesId, :usersId, :createdAt, :updatedAt)`,
           {
@@ -71,7 +88,7 @@ module.exports = {
               paymentMethod: "debit-card",
               name: faker.commerce.productName(),
               billingReference: faker.number.int({ min: 100000000, max: 999999999, }),
-              amount: faker.number.float({ min: 0, max: 100, }),
+              amount: orderTotalPrice,
               shippingsId: shippingsInsertResult[0],
               userAddressesId: userAddressesResult[0].id,
               usersId: userResult[0].id,
@@ -82,6 +99,31 @@ module.exports = {
             transaction,
           }
         );
+        const orderId = orderInsertResult[0];
+
+        for (const productForOrder of productsForOrderResult) {
+          await queryInterface.sequelize.query(
+            `INSERT INTO ordersProducts(productsId, ordersId, quantity, price, stripeProductId, createdAt, updatedAt)
+              VALUES (:productsId, :ordersId, :quantity, :price, :stripeProductId, :createdAt, :updatedAt)`,
+            {
+              replacements: {
+                productsId: productForOrder.id,
+                ordersId: orderId,
+                quantity: 1,
+                price: orderTotalPrice,
+                stripeProductId: productForOrder.stripeProductId,
+                createdAt: moment()
+                  .utc()
+                  .format(mysqlTimeFormat),
+                updatedAt: moment()
+                  .utc()
+                  .format(mysqlTimeFormat),
+              },
+              type: Sequelize.QueryTypes.INSERT,
+              transaction,
+            }
+          );
+        }
       }
       await transaction.commit();
     } catch (err) {
