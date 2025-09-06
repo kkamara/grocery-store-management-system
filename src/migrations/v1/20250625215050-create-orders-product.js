@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable('productOrders', {
+      await queryInterface.createTable('ordersProducts', {
         id: {
           allowNull: false,
           autoIncrement: true,
@@ -45,7 +45,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.dropTable('productOrders', { transaction, });
+      await queryInterface.dropTable('ordersProducts', { transaction, });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
