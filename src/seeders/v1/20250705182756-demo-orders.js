@@ -54,7 +54,7 @@ module.exports = {
             replacements: {
               status: 0 === faker.number.int({ min: 0, max: 1 }) ?
                 "shipped" :
-                null,
+                "placed",
               createdAt: createdAt,
               updatedAt: createdAt,
             },
