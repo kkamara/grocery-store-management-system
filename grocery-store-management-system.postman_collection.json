@@ -1147,13 +1147,79 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{web}}/checkout/560071856",
+											"raw": "{{web}}/checkout/f938844c3fba73ecf167",
 											"host": [
 												"{{web}}"
 											],
 											"path": [
 												"checkout",
-												"560071856"
+												"f938844c3fba73ecf167"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Checkout Session",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userAddress\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{web}}/checkout/create-checkout-session",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"checkout",
+												"create-checkout-session"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Cancel Checkout",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{web}}/checkout/f938844c3fba73ecf167/cancel",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"checkout",
+												"f938844c3fba73ecf167",
+												"cancel"
 											]
 										}
 									},

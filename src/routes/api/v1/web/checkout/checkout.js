@@ -220,4 +220,38 @@ router.post('/webhook', async (req, res) => {
   res.json({ message: message200 });
 });
 
+router.post(
+  "/:billingReference/cancel",
+  authenticate,
+  async (req, res) => {
+    const order = await db.sequelize.models
+      .order
+      .getOrderByBillingReference(
+        req.paramString("billingReference"),
+        {
+          getShipping: true,
+          getUserAddress: true,
+          getUser: true,
+        },
+      );
+    if (false === order) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: message404 });
+    }
+
+    const updateShippingStatus = await db.sequelize.models
+      .shipping
+      .updateShipping(
+        order.shippingsId,
+        { status: "cancelled" },
+      );
+    if (false === updateShippingStatus) {
+      res.status(status.INTERNAL_SERVER_ERROR);
+      return res.json({ error: message500 });
+    }
+
+    return res.json({ message: message200 });
+  },
+);
+
 module.exports = router;
