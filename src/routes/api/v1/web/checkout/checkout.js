@@ -47,21 +47,21 @@ router.get(
       return res.json({ error: "You have not made this order." });
     }
 
-    // const orderTimestamp = moment(
-    //   order.createdAt
-    // )
-    //   .utc()
-    //   .unix();
-    // const thirtyMinutesAgoTimestamp = moment()
-    //   .utc()
-    //   .subtract(
-    //     30, "minutes"
-    //   )
-    //   .unix();
-    // if (orderTimestamp < thirtyMinutesAgoTimestamp) {
-    //   res.status(status.NOT_FOUND);
-    //   return res.json({ error: message404 });
-    // }
+    const orderTimestamp = moment(
+      order.createdAt
+    )
+      .utc()
+      .unix();
+    const thirtyMinutesAgoTimestamp = moment()
+      .utc()
+      .subtract(
+        30, "minutes"
+      )
+      .unix();
+    if (orderTimestamp < thirtyMinutesAgoTimestamp) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: message404 });
+    }
 
     return res.json({ data: order })
   },
