@@ -67,7 +67,7 @@ router.post(
   '/create-checkout-session',
   authenticate,
   async (req, res) => {
-    const userAddressId = req.bodyString("userAddressId");
+    const userAddressId = req.bodyInt("userAddress");
     if (!userAddressId) {
       res.status(status.BAD_REQUEST);
       return res.json({ error: "The user address id field is missing." });
