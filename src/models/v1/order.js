@@ -339,8 +339,8 @@ module.exports = (sequelize, DataTypes) => {
     ) {
       try {
         const result = await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(paymentMethod, billingReference, amount, shippingsId, userAddressId, usersId, createdAt, updatedAt)
-            VALUES(:paymentMethod, :billingReference, :amount, :shippingsId, :userAddressId, :usersId, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(paymentMethod, billingReference, amount, shippingsId, userAddressesId, usersId, createdAt, updatedAt)
+            VALUES(:paymentMethod, :billingReference, :amount, :shippingsId, :userAddressesId, :usersId, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {

@@ -176,7 +176,6 @@ module.exports = (sequelize, DataTypes) => {
         await sequelize.query(
           `UPDATE ${this.getTableName()}
             SET status = COALESCE(:status, status),
-              createdAt = COALESCE(:createdAt, createdAt),
               updatedAt = COALESCE(:updatedAt, updatedAt)
             WHERE id = :id`,
           {

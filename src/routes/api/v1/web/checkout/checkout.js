@@ -1,6 +1,5 @@
 const express = require("express");
 const { status } = require("http-status");
-const moment = require("moment-timezone");
 const db = require("../../../../../models/v1");
 const authenticate = require("../../../../../middlewares/v1/authenticate");
 const {
@@ -14,6 +13,7 @@ const {
   appURL,
 } = require("../../../../../config/index");
 const { generateToken } = require("../../../../../utils/tokens");
+const { roundTo2DecimalNumbers } = require("../../../../../utils/numbers");
 
 let stripe;
 if ("test" !== nodeEnv) {
@@ -45,22 +45,6 @@ router.get(
     if (false === userOwnsOrder) {
       res.status(status.NOT_FOUND);
       return res.json({ error: "You have not made this order." });
-    }
-
-    const orderTimestamp = moment(
-      order.createdAt
-    )
-      .utc()
-      .unix();
-    const thirtyMinutesAgoTimestamp = moment()
-      .utc()
-      .subtract(
-        30, "minutes"
-      )
-      .unix();
-    if (orderTimestamp < thirtyMinutesAgoTimestamp) {
-      res.status(status.NOT_FOUND);
-      return res.json({ error: message404 });
     }
 
     return res.json({ data: order })
@@ -105,14 +89,19 @@ router.post(
       return res.json({ error: message500 });
     }
     const billingReference = generateToken(10);
+    let cost = 0;
+    for (const cartItem of usersCart) {
+      cost += Number(cartItem.price.slice(1));
+    }
+    cost = roundTo2DecimalNumbers(cost);
     const order = await db.sequelize.models
       .order
       .newOrder({
         billingReference,
         paymentMethod: "visa",
-        amount: usersCart.price.slice(1),
+        amount: cost,
         shippingsId: shipping.shippingId,
-        userAddressId: userAddressFromDB.id,
+        userAddressesId: userAddressFromDB.id,
         usersId: req.session.userId,
       });
     if (false === order) {
@@ -131,6 +120,7 @@ router.post(
           productsId: cartItem.product.id,
           ordersId: order.orderId,
           quantity: cartItem.quantity,
+          price: cartItem.product.price.slice(1),
           stripeProductId: cartItem.product.stripeProductId,
           stripePriceId: cartItem.product.stripePriceId,
         });
@@ -160,8 +150,10 @@ router.post(
       mode: 'payment',
       success_url: successURL,
       cancel_url: cancelledURL,
-      automatic_tax: {enabled: true},
-      metadata: { billingReference, },
+      automatic_tax: { enabled: true },
+      payment_intent_data: {
+        metadata: { billingReference, }
+      },
     });
 
     return res.json({ redirectURL: session.url });
@@ -177,6 +169,8 @@ router.post('/webhook', async (req, res) => {
       if ("production" !== nodeEnv) {
         console.log('PaymentIntent was successful!', paymentIntent);
       }
+      const fs = require("node:fs");
+      fs.writeFileSync("./log.txt", JSON.stringify(paymentIntent))
       const billingReference = paymentIntent
         .metadata
         .billingReference;

@@ -6,6 +6,7 @@ import CartItem from "../cart/CartItem"
 import { getUserAddresses, } from "../../../redux/actions/userAddressesActions"
 import DeliveryAddresses from "./DeliveryAddresses"
 import Error from "../../layouts/Error"
+import { createCheckoutFunc, } from "../../../redux/actions/createCheckoutActions"
 
 import "./CheckoutComponent.scss"
 
@@ -17,6 +18,7 @@ export default function CartComponent() {
   const state = useSelector(state => ({
     cart: state.cart,
     userAddresses: state.userAddresses,
+    createCheckout: state.createCheckout,
   }))
   const [userHasAddresses, setUserHasAddresses] = useState(defaultUserHasAddressesState)
   const [userAddress, setuserAddress] = useState(defaultUserAddressState)
@@ -26,6 +28,14 @@ export default function CartComponent() {
     dispatch(getCart())
     dispatch(getUserAddresses())
   }, [])
+
+  useEffect(() => {
+    if (false === state.createCheckout.loading) {
+      if (null !== state.createCheckout.data) {
+        window.location = state.createCheckout.data.redirectURL
+      }
+    }
+  }, [state.createCheckout])
 
   useEffect(() => {
     if (false === state.userAddresses.loading) {
@@ -55,7 +65,9 @@ export default function CartComponent() {
     if (false !== err) {
       return setError(err)
     }
-    console.log("Form submitted")
+    dispatch(createCheckoutFunc(
+      userAddress
+    ))
   }
 
   if (
