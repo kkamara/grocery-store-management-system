@@ -1,5 +1,6 @@
 const express = require("express");
 const { status } = require("http-status");
+const moment = require("moment-timezone");
 const db = require("../../../../../models/v1");
 const authenticate = require("../../../../../middlewares/v1/authenticate");
 const {
@@ -14,6 +15,7 @@ const {
 } = require("../../../../../config/index");
 const { generateToken } = require("../../../../../utils/tokens");
 const { roundTo2DecimalNumbers } = require("../../../../../utils/numbers");
+const { mysqlTimeFormat, } = require("../../../../../utils/time");
 
 let stripe;
 if ("test" !== nodeEnv) {
@@ -45,6 +47,23 @@ router.get(
     if (false === userOwnsOrder) {
       res.status(status.NOT_FOUND);
       return res.json({ error: "You have not made this order." });
+    }
+
+    const orderTimestamp = moment(
+      order.createdAt,
+    )
+      .unix();
+    const thirtyMinutesAgoTimestamp = moment(
+      moment()
+        .utc()
+        .subtract(
+          30, "minutes"
+        )
+        .format(mysqlTimeFormat)
+    ).unix();
+    if (orderTimestamp < thirtyMinutesAgoTimestamp) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: message404 });
     }
 
     return res.json({ data: order })
