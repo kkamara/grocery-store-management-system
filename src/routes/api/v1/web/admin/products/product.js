@@ -326,6 +326,7 @@ router.put(
         manufacturer: req.bodyInt("manufacturer"),
         isLive: req.body.isLive,
         stripeProductId: req.bodyString("stripeProductId"),
+        stripePriceId: req.bodyString("stripePriceId"),
       });
     if (false === cleanData) {
       res.status(status.INTERNAL_SERVER_ERROR);

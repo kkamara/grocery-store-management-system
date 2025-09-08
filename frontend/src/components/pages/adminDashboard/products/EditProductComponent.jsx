@@ -25,6 +25,7 @@ const defaultCategoryState = "0"
 const defaultManufacturerState = "0"
 const defaultIsLive = "0"
 const defaultStripeProductId = "prod_SziSLdpKlO8nNK"
+const defaultStripePriceId = "stripePriceId"
 
 export default function EditProductComponent() {
   const navigate = useNavigate()
@@ -56,6 +57,7 @@ export default function EditProductComponent() {
   const [manufacturer, setManufacturer] = useState(defaultManufacturerState)
   const [isLive, setIsLive] = useState(defaultIsLive)
   const [stripeProductId, setStripeProductId] = useState(defaultStripeProductId)
+  const [stripePriceId, setStripePriceId] = useState(defaultStripePriceId)
 
   const [photoError, setPhotoError] = useState("")
   const [detailError, setDetailError] = useState("")
@@ -98,6 +100,11 @@ export default function EditProductComponent() {
         if (state.adminProductEdit.data.stripeProductId) {
           setStripeProductId(
             state.adminProductEdit.data.stripeProductId,
+          )
+        }
+        if (state.adminProductEdit.data.stripePriceId) {
+          setStripePriceId(
+            state.adminProductEdit.data.stripePriceId,
           )
         }
       }
@@ -282,6 +289,10 @@ export default function EditProductComponent() {
     setStripeProductId(e.target.value)
   }
 
+  const handleStripePriceIdChange = e => {
+    setStripePriceId(e.target.value)
+  }
+
   const photosHasError = () => {
     let uploadedPhotoExists = false
     for (const photo of uploadedPhotos) {
@@ -363,6 +374,7 @@ export default function EditProductComponent() {
     payload.manufacturer = manufacturer
     payload.isLive = "1" === isLive
     payload.stripeProductId = stripeProductId
+    payload.stripePriceId = stripePriceId
     dispatch(editProductDetails(
       state.adminProductEdit.data.slug,
       payload,
@@ -676,6 +688,17 @@ export default function EditProductComponent() {
                   className="form-control"
                   value={stripeProductId}
                   onChange={handleStripeProductIdChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="stripePriceId">Stripe Price ID:</label>
+                <input
+                  type="text"
+                  name="stripePriceId"
+                  id="stripePriceId"
+                  className="form-control"
+                  value={stripePriceId}
+                  onChange={handleStripePriceIdChange}
                 />
               </div>
             </div>

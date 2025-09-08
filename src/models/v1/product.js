@@ -221,6 +221,7 @@ module.exports = (sequelize, DataTypes) => {
               price LIKE :query OR
               isLive LIKE :query OR
               stripeProductId LIKE :query OR
+              stripePriceId LIKE :query OR
               createdAt LIKE :query OR
               updatedAt LIKE :query
             );
@@ -254,6 +255,7 @@ module.exports = (sequelize, DataTypes) => {
               price LIKE :query OR
               isLive LIKE :query OR
               stripeProductId LIKE :query OR
+              stripePriceId LIKE :query OR
               createdAt LIKE :query OR
               updatedAt LIKE :query
             )
@@ -419,6 +421,7 @@ module.exports = (sequelize, DataTypes) => {
         manufacturer: null,
         isLive: 1 === product.isLive,
         stripeProductId: product.stripeProductId,
+        stripePriceId: product.stripePriceId,
         createdAt: moment(product.createdAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
@@ -731,6 +734,25 @@ module.exports = (sequelize, DataTypes) => {
           return "The stripe product id field length must not exceed 30 characters.";
         }
       }
+      
+      if (payload.stripePriceId) {
+        if ("string" !== typeof payload.stripePriceId) {
+          return "The stripe price id field must be of type string."
+        } else if (15 > payload.stripePriceId.length) {
+          return "The stripe price id field length must be greater than 15 characters.";
+        } else if (50 < payload.stripePriceId.length) {
+          return "The stripe price id field length must not exceed 50 characters.";
+        }
+      }
+
+      if (true === payload.isLive || "true" === payload.isLive) {
+        if (!payload.stripeProductId) {
+          return "You set the is live field to be true when the stripe product id field is missing.";
+        }
+        if (!payload.stripePriceId) {
+          return "You set the is live field to be true when the stripe price id field is missing.";
+        }
+      }
 
       return false;
     }
@@ -837,6 +859,25 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
 
+      if (payload.stripePriceId) {
+        if ("string" !== typeof payload.stripePriceId) {
+          return "The stripe price id field must be of type string."
+        } else if (15 > payload.stripePriceId.length) {
+          return "The stripe price id field length must be greater than 15 characters.";
+        } else if (50 < payload.stripePriceId.length) {
+          return "The stripe price id field length must not exceed 50 characters.";
+        }
+      }
+
+      if (true === payload.isLive || "true" === payload.isLive) {
+        if (!payload.stripeProductId) {
+          return "You set the is live field to be true when the stripe product id field is missing.";
+        }
+        if (!payload.stripePriceId) {
+          return "You set the is live field to be true when the stripe price id field is missing.";
+        }
+      }
+
       return false;
     }
 
@@ -864,6 +905,9 @@ module.exports = (sequelize, DataTypes) => {
       }
       if (payload.stripeProductId) {
         result.stripeProductId = payload.stripeProductId;
+      }
+      if (payload.stripePriceId) {
+        result.stripePriceId = payload.stripePriceId;
       }
       return result;
     }
@@ -893,6 +937,9 @@ module.exports = (sequelize, DataTypes) => {
       if (payload.stripeProductId) {
         result.stripeProductId = payload.stripeProductId;
       }
+      if (payload.stripePriceId) {
+        result.stripePriceId = payload.stripePriceId;
+      }
       return result;
     }
 
@@ -903,8 +950,8 @@ module.exports = (sequelize, DataTypes) => {
     static async newProduct(data) {
       try {
         const result = await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, stripeProductId, createdAt, updatedAt)
-            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :stripeProductId, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(name, slug, units, weight, categoriesId, price, description, manufacturersId, isLive, stripeProductId, stripePriceId, createdAt, updatedAt)
+            VALUES(:name, :slug, :units, :weight, :categoriesId, :price, :description, :manufacturersId, :isLive, :stripeProductId, :stripePriceId, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
@@ -918,6 +965,7 @@ module.exports = (sequelize, DataTypes) => {
               manufacturersId: data.manufacturer || null,
               isLive: data.isLive,
               stripeProductId: data.stripeProductId || null,
+              stripePriceId: data.stripePriceId || null,
               createdAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -956,6 +1004,7 @@ module.exports = (sequelize, DataTypes) => {
               manufacturersId = :manufacturersId,
               isLive = :isLive,
               stripeProductId = :stripeProductId,
+              stripePriceId = :stripePriceId,
               updatedAt = :updatedAt
             WHERE id = :id`,
           {
@@ -971,6 +1020,7 @@ module.exports = (sequelize, DataTypes) => {
               manufacturersId: data.manufacturer || null,
               isLive: data.isLive,
               stripeProductId: data.stripeProductId || null,
+              stripePriceId: data.stripePriceId || null,
               updatedAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -1025,6 +1075,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN
     },
     stripeProductId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    stripePriceId: {
       type: DataTypes.STRING,
       allowNull: true,
     },

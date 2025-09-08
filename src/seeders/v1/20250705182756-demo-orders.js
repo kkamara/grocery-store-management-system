@@ -103,8 +103,8 @@ module.exports = {
 
         for (const productForOrder of productsForOrderResult) {
           await queryInterface.sequelize.query(
-            `INSERT INTO ordersProducts(productsId, ordersId, quantity, price, stripeProductId, createdAt, updatedAt)
-              VALUES (:productsId, :ordersId, :quantity, :price, :stripeProductId, :createdAt, :updatedAt)`,
+            `INSERT INTO ordersProducts(productsId, ordersId, quantity, price, stripeProductId, stripePriceId, createdAt, updatedAt)
+              VALUES (:productsId, :ordersId, :quantity, :price, :stripeProductId, :stripePriceId, :createdAt, :updatedAt)`,
             {
               replacements: {
                 productsId: productForOrder.id,
@@ -112,6 +112,7 @@ module.exports = {
                 quantity: 1,
                 price: orderTotalPrice,
                 stripeProductId: productForOrder.stripeProductId,
+                stripePriceId: productForOrder.stripePriceId,
                 createdAt: moment()
                   .utc()
                   .format(mysqlTimeFormat),
