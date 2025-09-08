@@ -134,7 +134,17 @@ router.post(
         res.status(status.INTERNAL_SERVER_ERROR);
         return res.json({ error: message500 });
       }
+      const deleteCartItem = await db.sequelize.models
+        .cart
+        .deleteCartItem(
+          cartItem.id
+        );
+      if (false === deleteCartItem) {
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({ error: message500 });
+      }
     }
+    
     let returnURL = appURL+"/checkout/"+billingReference;
     if ("production" !== nodeEnv){
       returnURL = "http://localhost:3000/checkout/"+billingReference;
