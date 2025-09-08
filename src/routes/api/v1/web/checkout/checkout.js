@@ -14,7 +14,11 @@ const {
   appURL,
 } = require("../../../../../config/index");
 const { generateToken } = require("../../../../../utils/tokens");
-const stripe = require("stripe")(stripeSecretKey);
+
+let stripe;
+if ("test" !== nodeEnv) {
+  stripe = require("stripe")(stripeSecretKey);
+}
 
 const router = express.Router();
 
