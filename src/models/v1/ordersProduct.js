@@ -2,6 +2,10 @@
 const {
   Model
 } = require('sequelize');
+const moment = require("moment-timezone");
+const { nodeEnv, } = require('../../config');
+const { mysqlTimeFormat, } = require('../../utils/time');
+
 module.exports = (sequelize, DataTypes) => {
   class ordersProduct extends Model {
     /**
@@ -11,6 +15,43 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+
+    /**
+     * @param {Object} data
+     * @returns {object|false}
+     */
+    static async newOrdersProduct(data) {
+      try {
+        const result = await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(productsId, ordersId, quantity, price, stripeProductId, stripePriceId, createdAt, updatedAt)
+            VALUES(:productsId, :ordersId, :quantity, :price, :stripeProductId, :stripePriceId, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              productsId: data.productsId,
+              ordersId: data.ordersId,
+              quantity: data.quantity,
+              price: data.price,
+              stripeProductId: data.stripeProductId || null,
+              stripePriceId: data.stripePriceId || null,
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            },
+          },
+        );
+
+        return { ordersProductId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
     }
   }
   ordersProduct.init({

@@ -329,6 +329,82 @@ module.exports = (sequelize, DataTypes) => {
       }
       return result;
     }
+
+    /**
+     * @param {string} payload
+     * @returns {number|false}
+     */
+    static async newOrder(
+      payload,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(paymentMethod, billingReference, amount, shippingsId, userAddressId, usersId, createdAt, updatedAt)
+            VALUES(:paymentMethod, :billingReference, :amount, :shippingsId, :userAddressId, :usersId, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              ...payload,
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            }
+          },
+        );
+        
+        return { orderId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number} id
+     * @param {string} payload
+     * @returns {boolean}
+     */
+    static async updateOrder(
+      id,
+      payload,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET paymentMethod = COALESCE(:paymentMethod, paymentMethod),
+              billingReference = COALESCE(:billingReference, billingReference),
+              amount = COALESCE(:amount, amount),
+              shippingsId = COALESCE(:shippingsId, shippingsId),
+              userAddressId = COALESCE(:userAddressId, userAddressId),
+              usersId = COALESCE(:usersId, usersId),
+              createdAt = COALESCE(:createdAt, createdAt),
+              updatedAt = COALESCE(:updatedAt, updatedAt)
+            WHERE id = :id`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              ...payload,
+              id,
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            }
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   order.init({
     id: {

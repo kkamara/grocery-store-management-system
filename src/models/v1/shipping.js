@@ -128,6 +128,77 @@ module.exports = (sequelize, DataTypes) => {
           .format(mysqlTimeFormat),
       };
     }
+    
+    /**
+     * @param {string} payload
+     * @returns {number|false}
+     */
+    static async newShipping(
+      payload,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(status, createdAt, updatedAt)
+            VALUES(:status, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              ...payload,
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            }
+          },
+        );
+        
+        return { shippingId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+    
+    /**
+     * @param {number} id
+     * @param {string} payload
+     * @returns {boolean}
+     */
+    static async updateShipping(
+      id,
+      payload,
+    ) {
+      try {
+        await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET status = COALESCE(:status, status),
+              createdAt = COALESCE(:createdAt, createdAt),
+              updatedAt = COALESCE(:updatedAt, updatedAt)
+            WHERE id = :id`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              ...payload,
+              id,
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            }
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   shipping.init({
     id: {

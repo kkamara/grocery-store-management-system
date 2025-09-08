@@ -26,7 +26,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.removeColumn(
-        "orderProducts",
+        "ordersProducts",
         "stripePriceId",
         { transaction },
       );

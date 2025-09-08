@@ -2,6 +2,7 @@
 const moment = require("moment-timezone");
 const { faker, } = require('@faker-js/faker');
 const { mysqlTimeFormat, } = require("../../utils/time");
+const { generateToken } = require("../../utils/tokens");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -85,9 +86,9 @@ module.exports = {
             VALUES (:paymentMethod, :billingReference, :amount, :shippingsId, :userAddressesId, :usersId, :createdAt, :updatedAt)`,
           {
             replacements: {
-              paymentMethod: "debit-card",
+              paymentMethod: "visa",
               name: faker.commerce.productName(),
-              billingReference: faker.number.int({ min: 100000000, max: 999999999, }),
+              billingReference: generateToken(10),
               amount: orderTotalPrice,
               shippingsId: shippingsInsertResult[0],
               userAddressesId: userAddressesResult[0].id,
