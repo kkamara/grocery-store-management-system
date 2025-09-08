@@ -1,14 +1,10 @@
 import React, { useState, } from 'react'
 
-const defaultUserAddressState = "0"
-
-export default function DeliveryAddresses({ data }) {
-  const [userAddress, setuserAddress] = useState(defaultUserAddressState)
-
-  const handleUserAddressChange = e => {
-    setuserAddress(e.target.value)
-  }
-
+export default function DeliveryAddresses({
+  data,
+  handleUserAddressChange,
+  userAddress,
+}) {
   return (
     <div
       className="delivery-addresses-container form-group"

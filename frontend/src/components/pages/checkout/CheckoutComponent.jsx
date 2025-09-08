@@ -5,10 +5,12 @@ import { getCart, } from "../../../redux/actions/cartActions"
 import CartItem from "../cart/CartItem"
 import { getUserAddresses, } from "../../../redux/actions/userAddressesActions"
 import DeliveryAddresses from "./DeliveryAddresses"
+import Error from "../../layouts/Error"
 
 import "./CheckoutComponent.scss"
 
 const defaultUserHasAddressesState = false
+const defaultUserAddressState = "0"
 
 export default function CartComponent() {
   const dispatch = useDispatch()
@@ -17,6 +19,8 @@ export default function CartComponent() {
     userAddresses: state.userAddresses,
   }))
   const [userHasAddresses, setUserHasAddresses] = useState(defaultUserHasAddressesState)
+  const [userAddress, setuserAddress] = useState(defaultUserAddressState)
+  const [error, setError] = useState("")
 
   useEffect(() => {
     dispatch(getCart())
@@ -32,9 +36,25 @@ export default function CartComponent() {
       }
     }
   }, [state.userAddresses])
+  
+  const handleUserAddressChange = e => {
+    setuserAddress(e.target.value)
+  }
+
+  const getError = () => {
+    if ("0" === userAddress) {
+      return "The delivery address field is missing."
+    }
+    return false
+  }
 
   const handleSubmitForm = e => {
     e.preventDefault()
+    setError("")
+    const err = getError()
+    if (false !== err) {
+      return setError(err)
+    }
     console.log("Form submitted")
   }
 
@@ -59,6 +79,7 @@ export default function CartComponent() {
       </Helmet>
       <div className="row">
         <h1>Checkout</h1>
+        <Error error={error}/>
         <div className="col-md-9">
           {state.cart.data.cart.map((cartItem, index) => (
             <CartItem
@@ -72,7 +93,11 @@ export default function CartComponent() {
           {userHasAddresses && (
             <>
               <label htmlFor="userAddress">Delivery Address:</label>
-              <DeliveryAddresses data={state.userAddresses.data} />
+              <DeliveryAddresses
+                data={state.userAddresses.data}
+                handleUserAddressChange={handleUserAddressChange}
+                userAddress={userAddress}
+              />
             </>
           )}
           {!userHasAddresses && (
