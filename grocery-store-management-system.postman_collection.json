@@ -1164,6 +1164,43 @@
 					]
 				},
 				{
+					"name": "User Addresses",
+					"item": [
+						{
+							"name": "Bearer Token Restricted",
+							"item": [
+								{
+									"name": "Get User Addresses",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{web}}/user-addresses",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"user-addresses"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "Get Users",
 					"request": {
 						"method": "GET",

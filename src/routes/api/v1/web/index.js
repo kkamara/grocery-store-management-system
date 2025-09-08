@@ -7,6 +7,7 @@ const charts = require("./charts");
 const products = require("./products");
 const cart = require("./cart");
 const checkout = require("./checkout");
+const userAddresses = require("./userAddresses");
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use("/charts", charts);
 router.use("/products", products);
 router.use("/cart", cart);
 router.use("/checkout", checkout);
+router.use("/user-addresses", userAddresses);
 
 module.exports = router;

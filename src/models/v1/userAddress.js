@@ -50,6 +50,38 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
+     * @param {number} userId
+     * @param {Object} options
+     * @returns {object|false}
+     */
+    static async getUserAddressesByUserId(
+      userId,
+      options,
+    ) {
+      try {
+        const result = await sequelize.query(
+          `SELECT *
+            FROM ${this.getTableName()}
+            WHERE usersId = :userId AND deletedAt IS NULL`,
+          {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { userId },
+          },
+        );
+        
+        return await this.getFormattedUserAddressesData(
+          result,
+          options,
+        );
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
      * @param {array} payload 
      */
     static async getFormattedUserAddressesData(
@@ -59,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
       const result = [];
       for (const item of payload) {
         result.push(
-          await this.getFormattedUserAddressesData(
+          await this.getFormattedUserAddressData(
             item,
             options,
           )
