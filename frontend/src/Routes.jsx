@@ -13,6 +13,7 @@ import ProductComponent from "./components/pages/products/ProductComponent"
 import CartComponent from "./components/pages/cart/CartComponent"
 import CheckoutSuccessComponent from "./components/pages/checkout/CheckoutSuccessComponent"
 import CheckoutComponent from "./components/pages/checkout/CheckoutComponent"
+import CheckoutCancelledComponent from "./components/pages/checkout/CheckoutCancelledComponent"
 
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
 import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
@@ -45,6 +46,7 @@ export default () => {
         <Route element={<AuthRoute/>}>
           <Route path={url("/user/logout")} element={<Logout />}/>
           <Route path={url("/cart")} element={<CartComponent />}/>
+          <Route path={url("/checkout/:billingReference/cancelled")} element={<CheckoutCancelledComponent />}/>
           <Route path={url("/checkout/:billingReference")} element={<CheckoutSuccessComponent />}/>
           <Route path={url("/checkout")} element={<CheckoutComponent />}/>
         </Route>

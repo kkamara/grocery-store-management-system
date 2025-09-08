@@ -149,15 +149,17 @@ router.post(
       }
     }
     
-    let returnURL = appURL+"/checkout/"+billingReference;
+    let successURL = appURL+"/checkout/"+billingReference;
+    let cancelledURL = appURL+"/checkout/"+billingReference+"/cancelled";
     if ("production" !== nodeEnv){
-      returnURL = "http://localhost:3000/checkout/"+billingReference;
+      successURL = "http://localhost:3000/checkout/"+billingReference;
+      cancelledURL = "http://localhost:3000/checkout/"+billingReference+"/cancelled";
     }
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: 'payment',
-      success_url: returnURL,
-      cancel_url: returnURL+"/?cancelled=true",
+      success_url: successURL,
+      cancel_url: cancelledURL,
       automatic_tax: {enabled: true},
       metadata: { billingReference, },
     });
