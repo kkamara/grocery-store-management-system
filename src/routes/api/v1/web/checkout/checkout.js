@@ -107,7 +107,7 @@ router.post(
       res.status(status.INTERNAL_SERVER_ERROR);
       return res.json({ error: message500 });
     }
-    const billingReference = generateToken(5);
+    const billingReference = generateToken(3);
     let cost = 0;
     for (const cartItem of usersCart) {
       cost += Number(cartItem.price.slice(1));
