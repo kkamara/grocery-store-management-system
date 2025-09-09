@@ -1261,6 +1261,43 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Add User Address",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"addressLine1\": \"Flat 18\",\r\n    \"addressLine2\": \"62 Balliol Road\",\r\n    \"zipCode\": \"L20 7EJ\",\r\n    \"city\": \"Liverpool\",\r\n    \"state\": \"Merseyside\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{web}}/user-addresses/new",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"user-addresses",
+												"new"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}

@@ -139,6 +139,97 @@ module.exports = (sequelize, DataTypes) => {
       }
       return result;
     }
+
+    /**
+     * @param {Object} payload
+     * @return {string|false}
+     */
+    static getNewUserAddressError(payload) {
+      if (!payload.addressLine1) {
+        return "The address line 1 field is required.";
+      }
+
+      if (!payload.zipCode) {
+        return "The zip code field is required.";
+      }
+
+      if (!payload.city) {
+        return "The city field is required.";
+      }
+
+      if (!payload.state) {
+        return "The state field is required.";
+      }
+
+      return false;
+    }
+
+    /**
+     * @param {Object} payload
+     * @return {Object}
+     */
+    static getNewUserAddressData(payload) {
+      const result = {};
+
+      if (payload.addressLine1) {
+        result.addressLine1 = payload.addressLine1;
+      }
+
+      if (payload.addressLine2) {
+        result.addressLine2 = payload.addressLine2;
+      }
+
+      if (payload.zipCode) {
+        result.zipCode = payload.zipCode;
+      }
+
+      if (payload.city) {
+        result.city = payload.city;
+      }
+
+      if (payload.state) {
+        result.state = payload.state;
+      }
+
+      return result;
+    }
+
+    /**
+     * @param {number} userId
+     * @param {Object} payload
+     * @returns {object|false}
+     */
+    static async newUserAddress(
+      userId,
+      payload,
+    ) {
+      try {
+        await sequelize.query(
+          `INSERT INTO ${this.getTableName()}(usersId, addressLine1, addressLine2, zipCode, city, state, createdAt, updatedAt)
+            VALUES(:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :createdAt, :updatedAt)`,
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              ...payload,
+              usersId: userId,
+              createdAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+            },
+          },
+        );
+        
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   userAddress.init({
     id: {
