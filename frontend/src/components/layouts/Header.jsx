@@ -46,6 +46,14 @@ export default function Header(props) {
             <li>
               <Link
                 className="dropdown-item" 
+                to="/user/addresses"
+              >
+                Delivery Addresses
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="dropdown-item" 
                 to="/user/logout"
               >
                 Sign Out

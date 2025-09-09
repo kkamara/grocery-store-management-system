@@ -14,6 +14,7 @@ import CartComponent from "./components/pages/cart/CartComponent"
 import CheckoutSuccessComponent from "./components/pages/checkout/CheckoutSuccessComponent"
 import CheckoutComponent from "./components/pages/checkout/CheckoutComponent"
 import CheckoutCancelledComponent from "./components/pages/checkout/CheckoutCancelledComponent"
+import DeliveryAddressesComponent from "./components/pages/deliveryAddresses/DeliveryAddressesComponent"
 
 import DashboardHome from "./components/pages/adminDashboard/HomeComponent"
 import DashboardSignIn from "./components/pages/adminDashboard/auth/SignInComponent"
@@ -49,6 +50,7 @@ export default () => {
           <Route path={url("/checkout/:billingReference/cancelled")} element={<CheckoutCancelledComponent />}/>
           <Route path={url("/checkout/:billingReference")} element={<CheckoutSuccessComponent />}/>
           <Route path={url("/checkout")} element={<CheckoutComponent />}/>
+          <Route path={url("/user/addresses")} element={<DeliveryAddressesComponent />}/>
         </Route>
         <Route path={url("/")} element={<Home />}/>
         <Route path={url("/user/signin")} element={<SignIn />}/>
