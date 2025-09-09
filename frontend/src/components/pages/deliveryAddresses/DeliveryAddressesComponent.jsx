@@ -38,11 +38,12 @@ export default function DeliveryAddressesComponent() {
           </div>
           <div className="col-md-2">
             <div className="float-end">
-              <button
+              <a
+                href="/user/addresses/new"
                 className="btn btn-primary"
               >
                 Add New
-              </button>
+              </a>
             </div>
           </div>
         </div>
