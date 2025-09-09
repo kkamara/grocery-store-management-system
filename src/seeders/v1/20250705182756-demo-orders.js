@@ -88,7 +88,7 @@ module.exports = {
             replacements: {
               paymentMethod: "visa",
               name: faker.commerce.productName(),
-              billingReference: generateToken(10),
+              billingReference: generateToken(5),
               amount: orderTotalPrice,
               shippingsId: shippingsInsertResult[0],
               userAddressesId: userAddressesResult[0].id,
