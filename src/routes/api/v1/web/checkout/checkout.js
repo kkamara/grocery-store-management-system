@@ -188,8 +188,6 @@ router.post('/webhook', async (req, res) => {
       if ("production" !== nodeEnv) {
         console.log('PaymentIntent was successful!', paymentIntent);
       }
-      const fs = require("node:fs");
-      fs.writeFileSync("./log.txt", JSON.stringify(paymentIntent))
       const billingReference = paymentIntent
         .metadata
         .billingReference;
