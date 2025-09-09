@@ -62,7 +62,8 @@ module.exports = (sequelize, DataTypes) => {
         const result = await sequelize.query(
           `SELECT *
             FROM ${this.getTableName()}
-            WHERE usersId = :userId AND deletedAt IS NULL`,
+            WHERE usersId = :userId AND deletedAt IS NULL
+            ORDER BY id DESC`,
           {
             type: sequelize.QueryTypes.SELECT,
             replacements: { userId },
