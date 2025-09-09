@@ -210,7 +210,11 @@ module.exports = (sequelize, DataTypes) => {
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
-              ...payload,
+              addressLine1: payload.addressLine1,
+              addressLine2: payload.addressLine2 || null,
+              zipCode: payload.zipCode,
+              city: payload.city,
+              state: payload.state,
               usersId: userId,
               createdAt: moment()
                 .utc()

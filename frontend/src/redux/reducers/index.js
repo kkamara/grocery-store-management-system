@@ -25,6 +25,7 @@ import deleteCartItemReducer from "./deleteCartItemReducer"
 import checkoutReducer from "./checkoutReducer"
 import userAddressesReducer from "./userAddressesReducer"
 import createCheckoutReducer from "./createCheckoutReducer"
+import createUserAddressReducer from "./createUserAddressReducer"
 
 export default combineReducers({
   auth: authReducer,
@@ -53,4 +54,5 @@ export default combineReducers({
   checkout: checkoutReducer,
   userAddresses: userAddressesReducer,
   createCheckout: createCheckoutReducer,
+  createUserAddress: createUserAddressReducer,
 })
