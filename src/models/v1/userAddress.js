@@ -151,18 +151,32 @@ module.exports = (sequelize, DataTypes) => {
     static async getNewUserAddressError(usersId, payload) {
       if (!payload.addressLine1) {
         return "The address line 1 field is required.";
+      } else if ("string" !== typeof payload.addressLine1) {
+        return "The address line 1 field must be of type string.";
+      }
+
+      if (payload.addressLine2) {
+        if ("string" !== typeof payload.addressLine2) {
+          return "The address line 2 field must be of type string.";
+        }
       }
 
       if (!payload.zipCode) {
         return "The zip code field is required.";
+      } else if ("string" !== typeof payload.zipCode) {
+        return "The zip code field must be of type string.";
       }
 
       if (!payload.city) {
         return "The city field is required.";
+      } else if ("string" !== typeof payload.city) {
+        return "The city field must be of type string.";
       }
 
       if (!payload.state) {
         return "The state field is required.";
+      } else if ("string" !== typeof payload.state) {
+        return "The state field must be of type string.";
       }
 
       if (payload.telephoneAreaCode) {
