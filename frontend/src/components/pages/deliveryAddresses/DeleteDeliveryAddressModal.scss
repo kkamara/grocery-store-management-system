@@ -7,3 +7,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.delete-user-address-form > input[type="submit"],
+.delete-user-address-form > button {
+  margin-bottom: 1.5px;
+  margin-left: 10px;
+}
