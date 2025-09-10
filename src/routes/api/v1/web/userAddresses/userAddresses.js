@@ -31,16 +31,17 @@ router.post(
   "/new",
   authenticate,
   async (req, res) => {
-    const inputError = db.sequelize.models
+    const inputError = await db.sequelize.models
       .userAddress
       .getNewUserAddressError(
-        req.body
+        req.session.userId,
+        req.body,
       );
     if (false !== inputError) {
       res.status(status.BAD_REQUEST);
       return res.json({ error: inputError });
     }
-
+    return res.json({message:"Success"});
     const cleanData = db.sequelize.models
       .userAddress
       .getNewUserAddressData({
