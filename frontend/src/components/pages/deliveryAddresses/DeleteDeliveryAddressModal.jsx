@@ -1,10 +1,7 @@
-import React, { useEffect, useState, } from "react"
+import React, { useState, } from "react"
 import Modal from "react-modal"
-import { useDispatch, useSelector, } from "react-redux"
-import { useNavigate, } from "react-router"
-import { deleteAdminProduct, } from "../../../../redux/actions/adminDeleteProductActions"
 
-import "./DeleteProductModal.scss"
+import "./DeleteDeliveryAddressModal.scss"
 
 const customStyles = {
   content: {
@@ -20,32 +17,15 @@ const customStyles = {
 const defaultModalIsOpenValue = false
 const defaultChoiceValue = "0"
 
-export default function DeleteProductModal() {
-  const [modalIsOpen, setModalIsOpen] = useState(
+export default function DeleteDeliveryAddressModal({
+  onSuccess,
+  data,
+}) {
+  const [modalIsOpen, setModalIsOpen] = React.useState(
     defaultModalIsOpenValue
   )
-  const dispatch = useDispatch()
-  const state = useSelector(state => ({
-    adminProduct: state.adminProduct,
-    adminDeleteProduct: state.adminDeleteProduct,
-  }))
   const [choice, setChoice] = useState(defaultChoiceValue)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (
-      false === state.adminDeleteProduct.loading &&
-      true === state.adminDeleteProduct.data
-    ) {
-      setModalIsOpen(false)
-      navigate("/admin/products")
-    }
-  }, [state.adminDeleteProduct])
-
-  function openModal() {
-    setModalIsOpen(true)
-  }
-
+  
   function closeModal() {
     setChoice(defaultChoiceValue)
     setModalIsOpen(false)
@@ -57,9 +37,7 @@ export default function DeleteProductModal() {
     if ("0" === choice) {
       setModalIsOpen(false)
     } else {
-      dispatch(deleteAdminProduct(
-        state.adminProduct.data.slug,
-      ))
+      onSuccess()
     }
   }
 
@@ -67,8 +45,12 @@ export default function DeleteProductModal() {
     setChoice(e.target.value)
   }
 
+  function openModal() {
+    setModalIsOpen(true)
+  }
+
   return (
-    <div className="delete-product-modal-container">
+    <>
       <button
         className="btn btn-danger"
         onClick={openModal}
@@ -79,15 +61,15 @@ export default function DeleteProductModal() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Delete Product Modal"
+        contentLabel="Delete User Address Modal"
       >
-        <div className="delete-product-modal">
+        <div className="delete-user-address-modal">
           <h2>
             Are you sure you want to delete&nbsp;
-            {state.adminProduct.data.name}?
+            {data.addressLine1}, {data.zipCode}?
           </h2>
           <form
-            className="admin-delete-product-form"
+            className="delete-user-address-form"
             onSubmit={handleSubmit}
           >
             <select
@@ -112,6 +94,6 @@ export default function DeleteProductModal() {
           </form>
         </div>
       </Modal>
-    </div>
+    </>
   )
 }

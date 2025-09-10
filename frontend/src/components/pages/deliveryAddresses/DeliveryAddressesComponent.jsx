@@ -2,6 +2,7 @@ import React, { useEffect, } from "react"
 import { Helmet, } from "react-helmet"
 import { useSelector, useDispatch } from "react-redux"
 import { getUserAddresses } from "../../../redux/actions/userAddressesActions"
+import DeleteDeliveryAddressModal from "./DeleteDeliveryAddressModal"
 
 import "./DeliveryAddressesComponent.scss"
 
@@ -14,6 +15,10 @@ export default function DeliveryAddressesComponent() {
   useEffect(() => {
     dispatch(getUserAddresses())
   }, [])
+
+  const handleDeleteAddress = () => {
+
+  }
 
   if (state.userAddresses.loading) {
     return (
@@ -61,11 +66,10 @@ export default function DeliveryAddressesComponent() {
                 >
                   Edit
                 </button>
-                <button
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
+                <DeleteDeliveryAddressModal
+                  onSuccess={handleDeleteAddress}
+                  data={address}
+                />
               </div>
             </div>
           </div>
