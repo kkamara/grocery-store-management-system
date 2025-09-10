@@ -142,10 +142,11 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
+     * @param {number} usersId
      * @param {Object} payload
      * @return {string|false}
      */
-    static getNewUserAddressError(payload) {
+    static async getNewUserAddressError(usersId, payload) {
       if (!payload.addressLine1) {
         return "The address line 1 field is required.";
       }
@@ -160,6 +161,16 @@ module.exports = (sequelize, DataTypes) => {
 
       if (!payload.state) {
         return "The state field is required.";
+      }
+
+      const userAddresses = await this.
+        getUserAddressesByUserId(
+          usersId,
+        );
+      if (false !== userAddresses) {
+        if (5 === userAddresses.length) {
+          return "You can not have more than 5 delivery addresses.";
+        }
       }
 
       return false;
