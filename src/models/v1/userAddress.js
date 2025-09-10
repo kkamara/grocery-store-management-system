@@ -153,36 +153,46 @@ module.exports = (sequelize, DataTypes) => {
         return "The address line 1 field is required.";
       } else if ("string" !== typeof payload.addressLine1) {
         return "The address line 1 field must be of type string.";
+      } else if (50 < payload.addressLine1.trim().length) {
+        return "The address line 1 field must not exceed 50 characters";
       }
 
       if (payload.addressLine2) {
         if ("string" !== typeof payload.addressLine2) {
           return "The address line 2 field must be of type string.";
         }
+      } else if (50 < payload.addressLine2.trim().length) {
+        return "The address line 2 field must not exceed 50 characters";
       }
 
       if (!payload.zipCode) {
         return "The zip code field is required.";
       } else if ("string" !== typeof payload.zipCode) {
         return "The zip code field must be of type string.";
+      } else if (10 < payload.zipCode.trim().length) {
+        return "The zip code field must not exceed 10 characters";
       }
 
       if (!payload.city) {
         return "The city field is required.";
       } else if ("string" !== typeof payload.city) {
         return "The city field must be of type string.";
+      } else if (20 < payload.city.trim().length) {
+        return "The city field must not exceed 20 characters";
       }
 
       if (!payload.state) {
         return "The state field is required.";
       } else if ("string" !== typeof payload.state) {
         return "The state field must be of type string.";
+      } else if (20 < payload.state.trim().length) {
+        return "The address line 1 field must not exceed 20 characters";
       }
 
       if (payload.telephoneAreaCode) {
         if ("string" !== typeof payload.telephoneAreaCode) {
           return "The telephone area code field must be of type string.";
-        } else if (6 < payload.telephoneAreaCode.length) {
+        } else if (6 < payload.telephoneAreaCode.trim().length) {
           return "The telephone area code field must not be greater than 6 characters.";
         }
       }
@@ -191,7 +201,7 @@ module.exports = (sequelize, DataTypes) => {
         return "The telephone field is required.";
       } else if ("string" !== typeof payload.telephone) {
         return "The telephone field must be of type string.";
-      } else if (30 < payload.telephone.length) {
+      } else if (30 < payload.telephone.trim().length) {
         return "The telephone field must not be greater than 30 characters.";
       }
 
@@ -216,31 +226,31 @@ module.exports = (sequelize, DataTypes) => {
       const result = {};
 
       if (payload.addressLine1) {
-        result.addressLine1 = payload.addressLine1;
+        result.addressLine1 = payload.addressLine1.trim();
       }
 
       if (payload.addressLine2) {
-        result.addressLine2 = payload.addressLine2;
+        result.addressLine2 = payload.addressLine2.trim();
       }
 
       if (payload.zipCode) {
-        result.zipCode = payload.zipCode;
+        result.zipCode = payload.zipCode.trim();
       }
 
       if (payload.city) {
-        result.city = payload.city;
+        result.city = payload.city.trim();
       }
 
       if (payload.state) {
-        result.state = payload.state;
+        result.state = payload.state.trim();
       }
 
       if (payload.telephoneAreaCode) {
-        result.telephoneAreaCode = payload.telephoneAreaCode;
+        result.telephoneAreaCode = payload.telephoneAreaCode.trim();
       }
 
       if (payload.telephone) {
-        result.telephone = payload.telephone;
+        result.telephone = payload.telephone.trim();
       }
 
       return result;

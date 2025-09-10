@@ -645,7 +645,7 @@ module.exports = (sequelize, DataTypes) => {
         return "The name field is required.";
       } else if ("string" !== typeof payload.name) {
         return "The name field must be a string.";
-      } else if (50 < payload.name.length) {
+      } else if (50 < payload.name.trim().length) {
         return "The name field must be less than 51 characters.";
       } else {
         const nameExists = await this.getProductBySlug(
@@ -666,18 +666,22 @@ module.exports = (sequelize, DataTypes) => {
         return "The weight field is required.";
       } else if (null === `${payload.weight}`.match(numberWithOptionalDecimalPartRegex)) {
         return "The weight field must be a number"
+      } else if (500 < Number(payload.weight)) {
+        return "The weight field number must not be greater than 500.";
       }
 
       if (undefined === payload.price) {
         return "The price field is required.";
       } else if (null === `${payload.price}`.match(numberWithOptionalDecimalPartRegex)) {
         return "The price field must be a number"
+      } else if (500 < Number(payload.price)) {
+        return "The price field number must not be greater than 500.";
       }
 
       if (payload.description) {
         if ("string" !== typeof payload.description) {
           return "The description field must be a string.";
-        } else if (1000 < payload.description.length) {
+        } else if (1000 < payload.description.trim().length) {
           return "The description field must be less than 1001 characters.";
         }
       }
@@ -728,9 +732,9 @@ module.exports = (sequelize, DataTypes) => {
       if (payload.stripeProductId) {
         if ("string" !== typeof payload.stripeProductId) {
           return "The stripe product id field must be of type string."
-        } else if (15 > payload.stripeProductId.length) {
+        } else if (15 > payload.stripeProductId.trim().length) {
           return "The stripe product id field length must be greater than 15 characters.";
-        } else if (30 < payload.stripeProductId.length) {
+        } else if (30 < payload.stripeProductId.trim().length) {
           return "The stripe product id field length must not exceed 30 characters.";
         }
       }
@@ -738,9 +742,9 @@ module.exports = (sequelize, DataTypes) => {
       if (payload.stripePriceId) {
         if ("string" !== typeof payload.stripePriceId) {
           return "The stripe price id field must be of type string."
-        } else if (15 > payload.stripePriceId.length) {
+        } else if (15 > payload.stripePriceId.trim().length) {
           return "The stripe price id field length must be greater than 15 characters.";
-        } else if (50 < payload.stripePriceId.length) {
+        } else if (50 < payload.stripePriceId.trim().length) {
           return "The stripe price id field length must not exceed 50 characters.";
         }
       }
@@ -766,7 +770,7 @@ module.exports = (sequelize, DataTypes) => {
         return "The name field is required.";
       } else if ("string" !== typeof payload.name) {
         return "The name field must be a string.";
-      } else if (50 < payload.name.length) {
+      } else if (50 < payload.name.trim().length) {
         return "The name field must be less than 51 characters.";
       } else {
         const newSlug = slugify(payload.name);
@@ -790,18 +794,22 @@ module.exports = (sequelize, DataTypes) => {
         return "The weight field is required.";
       } else if (null === `${payload.weight}`.match(numberWithOptionalDecimalPartRegex)) {
         return "The weight field must be a number"
+      } else if (500 < Number(payload.weight)) {
+        return "The weight field number must not be greater than 500.";
       }
 
       if (undefined === payload.price) {
         return "The price field is required.";
       } else if (null === `${payload.price}`.match(numberWithOptionalDecimalPartRegex)) {
         return "The price field must be a number"
+      } else if (500 < Number(payload.price)) {
+        return "The price field number must not be greater than 500.";
       }
 
       if (payload.description) {
         if ("string" !== typeof payload.description) {
           return "The description field must be a string.";
-        } else if (1000 < payload.description.length) {
+        } else if (1000 < payload.description.trim().length) {
           return "The description field must be less than 1001 characters.";
         }
       }
@@ -883,14 +891,14 @@ module.exports = (sequelize, DataTypes) => {
 
     static getNewProductData(payload) {
       const result = {
-        name: payload.name,
+        name: payload.name.trim(),
         units: payload.units,
         weight: payload.weight,
         price: payload.price,
         isLive: false,
       };
       if (payload.description) {
-        result.description = payload.description;
+        result.description = payload.description.trim();
       }
       if (payload.category) {
         result.category = payload.category;
@@ -904,24 +912,24 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
       if (payload.stripeProductId) {
-        result.stripeProductId = payload.stripeProductId;
+        result.stripeProductId = payload.stripeProductId.trim();
       }
       if (payload.stripePriceId) {
-        result.stripePriceId = payload.stripePriceId;
+        result.stripePriceId = payload.stripePriceId.trim();
       }
       return result;
     }
 
     static getEditProductData(payload) {
       const result = {
-        name: payload.name,
+        name: payload.name.trim(),
         units: payload.units,
         weight: payload.weight,
         price: payload.price,
         isLive: false,
       };
       if (payload.description) {
-        result.description = payload.description;
+        result.description = payload.description.trim();
       }
       if (payload.category) {
         result.category = payload.category;
@@ -935,10 +943,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
       if (payload.stripeProductId) {
-        result.stripeProductId = payload.stripeProductId;
+        result.stripeProductId = payload.stripeProductId.trim();
       }
       if (payload.stripePriceId) {
-        result.stripePriceId = payload.stripePriceId;
+        result.stripePriceId = payload.stripePriceId.trim();
       }
       return result;
     }
