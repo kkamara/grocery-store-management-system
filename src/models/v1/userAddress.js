@@ -165,8 +165,20 @@ module.exports = (sequelize, DataTypes) => {
         return "The state field is required.";
       }
 
+      if (payload.telephoneAreaCode) {
+        if ("string" !== typeof payload.telephoneAreaCode) {
+          return "The telephone area code field must be of type string.";
+        } else if (6 < payload.telephoneAreaCode.length) {
+          return "The telephone area code field must not be greater than 6 characters.";
+        }
+      }
+
       if (!payload.telephone) {
         return "The telephone field is required.";
+      } else if ("string" !== typeof payload.telephone) {
+        return "The telephone field must be of type string.";
+      } else if (30 < payload.telephone.length) {
+        return "The telephone field must not be greater than 30 characters.";
       }
 
       const userAddresses = await this.
