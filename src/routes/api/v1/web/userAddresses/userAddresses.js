@@ -41,7 +41,7 @@ router.post(
       res.status(status.BAD_REQUEST);
       return res.json({ error: inputError });
     }
-    return res.json({message:"Success"});
+    
     const cleanData = db.sequelize.models
       .userAddress
       .getNewUserAddressData({
