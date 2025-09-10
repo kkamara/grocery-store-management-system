@@ -118,6 +118,8 @@ module.exports = (sequelize, DataTypes) => {
         zipCode: payload.zipCode,
         city: payload.city,
         state: payload.state,
+        telephoneAreaCode: payload.telephoneAreaCode,
+        telephone: payload.telephone,
         createdAt: moment(payload.createdAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
@@ -163,6 +165,10 @@ module.exports = (sequelize, DataTypes) => {
         return "The state field is required.";
       }
 
+      if (!payload.telephone) {
+        return "The telephone field is required.";
+      }
+
       const userAddresses = await this.
         getUserAddressesByUserId(
           usersId,
@@ -203,6 +209,14 @@ module.exports = (sequelize, DataTypes) => {
         result.state = payload.state;
       }
 
+      if (payload.telephoneAreaCode) {
+        result.telephoneAreaCode = payload.telephoneAreaCode;
+      }
+
+      if (payload.telephone) {
+        result.telephone = payload.telephone;
+      }
+
       return result;
     }
 
@@ -217,8 +231,8 @@ module.exports = (sequelize, DataTypes) => {
     ) {
       try {
         await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(usersId, addressLine1, addressLine2, zipCode, city, state, createdAt, updatedAt)
-            VALUES(:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(usersId, addressLine1, addressLine2, zipCode, city, state, telephoneAreaCode, telephone, createdAt, updatedAt)
+            VALUES(:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :telephoneAreaCode, :telephone, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
@@ -227,6 +241,8 @@ module.exports = (sequelize, DataTypes) => {
               zipCode: payload.zipCode,
               city: payload.city,
               state: payload.state,
+              telephoneAreaCode: payload.telephoneAreaCode,
+              telephone: payload.telephone,
               usersId: userId,
               createdAt: moment()
                 .utc()
