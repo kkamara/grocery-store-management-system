@@ -50,6 +50,8 @@ router.post(
         zipCode: req.bodyString("zipCode"),
         city: req.bodyString("city"),
         state: req.bodyString("state"),
+        telephoneAreaCode: req.bodyString("telephoneAreaCode"),
+        telephone: req.bodyString("telephone"),
       });
     
     const newUserAddress = await db.sequelize
