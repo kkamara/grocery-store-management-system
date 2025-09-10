@@ -12,6 +12,8 @@ const defaultAddressLine2State = ""
 const defaultZipCodeState = ""
 const defaultCityState = ""
 const defaultStateState = ""
+const defaultTelephoneAreaCodeState = ""
+const defaultTelephoneState = ""
 
 export default function NewDeliveryAddressComponent() {
   const [addressLine1, setAddressLine1] = useState(defaultAddressLine1State)
@@ -19,6 +21,8 @@ export default function NewDeliveryAddressComponent() {
   const [zipCode, setZipCode] = useState(defaultZipCodeState)
   const [city, setCity] = useState(defaultCityState)
   const [stateState, setState] = useState(defaultStateState)
+  const [telephoneAreaCode, setTelephoneAreaCode] = useState(defaultTelephoneAreaCodeState)
+  const [telephone, setTelephone] = useState(defaultTelephoneState)
 
   const dispatch = useDispatch()
   const state = useSelector(state => ({
@@ -59,6 +63,14 @@ export default function NewDeliveryAddressComponent() {
     setState(e.target.value)
   }
 
+  const handleTelephoneAreaCodeChange = e => {
+    setTelephoneAreaCode(e.target.value)
+  }
+
+  const handleTelephoneChange = e => {
+    setTelephone(e.target.value)
+  }
+
   const handleFormSubmit = e => {
     e.preventDefault()
     dispatch(newUserAddress({
@@ -66,6 +78,8 @@ export default function NewDeliveryAddressComponent() {
       addressLine2,
       zipCode,
       city,
+      telephoneAreaCode,
+      telephone,
       state: stateState,
     }))
   }
@@ -94,7 +108,7 @@ export default function NewDeliveryAddressComponent() {
           <div className="card">
             <div className="card-body">
               <div className="form-group">
-                <label htmlFor="addressLine1">Address Line 1:</label>
+                <label htmlFor="addressLine1">Address Line 1*:</label>
                 <input
                   type="text"
                   name="addressLine1"
@@ -116,7 +130,7 @@ export default function NewDeliveryAddressComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="zipCode">Zip Code:</label>
+                <label htmlFor="zipCode">Zip Code*:</label>
                 <input
                   type="text"
                   name="zipCode"
@@ -127,7 +141,7 @@ export default function NewDeliveryAddressComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="city">City:</label>
+                <label htmlFor="city">City*:</label>
                 <input
                   type="text"
                   name="city"
@@ -138,13 +152,35 @@ export default function NewDeliveryAddressComponent() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="state">State:</label>
+                <label htmlFor="state">State*:</label>
                 <input
                   type="text"
                   name="state"
                   id="state"
                   value={stateState}
                   onChange={handleStateChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="telephoneAreaCode">Telephone Area Code:</label>
+                <input
+                  type="text"
+                  name="telephoneAreaCode"
+                  id="telephoneAreaCode"
+                  value={telephoneAreaCode}
+                  onChange={handleTelephoneAreaCodeChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="telephone">Telephone*:</label>
+                <input
+                  type="text"
+                  name="telephone"
+                  id="telephone"
+                  value={telephone}
+                  onChange={handleTelephoneChange}
                   className="form-control"
                 />
               </div>

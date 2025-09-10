@@ -118,6 +118,8 @@ module.exports = (sequelize, DataTypes) => {
         zipCode: payload.zipCode,
         city: payload.city,
         state: payload.state,
+        telephoneAreaCode: payload.telephoneAreaCode,
+        telephone: payload.telephone,
         createdAt: moment(payload.createdAt)
           .tz(appTimezone)
           .format(mysqlTimeFormat),
@@ -149,18 +151,48 @@ module.exports = (sequelize, DataTypes) => {
     static async getNewUserAddressError(usersId, payload) {
       if (!payload.addressLine1) {
         return "The address line 1 field is required.";
+      } else if ("string" !== typeof payload.addressLine1) {
+        return "The address line 1 field must be of type string.";
+      }
+
+      if (payload.addressLine2) {
+        if ("string" !== typeof payload.addressLine2) {
+          return "The address line 2 field must be of type string.";
+        }
       }
 
       if (!payload.zipCode) {
         return "The zip code field is required.";
+      } else if ("string" !== typeof payload.zipCode) {
+        return "The zip code field must be of type string.";
       }
 
       if (!payload.city) {
         return "The city field is required.";
+      } else if ("string" !== typeof payload.city) {
+        return "The city field must be of type string.";
       }
 
       if (!payload.state) {
         return "The state field is required.";
+      } else if ("string" !== typeof payload.state) {
+        return "The state field must be of type string.";
+      }
+
+      if (payload.telephoneAreaCode) {
+        if ("string" !== typeof payload.telephoneAreaCode) {
+          return "The telephone area code field must be of type string.";
+        } else if (6 < payload.telephoneAreaCode.length) {
+          return "The telephone area code field must not be greater than 6 characters.";
+        }
+      }
+
+      if (!payload.telephone) {
+        return "The telephone field is required.";
+      } else if ("string" !== typeof payload.telephone) {
+        return "The telephone field must be of type string.";
+      } else if (30 < payload.telephone.length) {
+        return "The telephone field must not be greater than 30 characters.";
       }
 
       const userAddresses = await this.
@@ -203,6 +235,14 @@ module.exports = (sequelize, DataTypes) => {
         result.state = payload.state;
       }
 
+      if (payload.telephoneAreaCode) {
+        result.telephoneAreaCode = payload.telephoneAreaCode;
+      }
+
+      if (payload.telephone) {
+        result.telephone = payload.telephone;
+      }
+
       return result;
     }
 
@@ -217,8 +257,8 @@ module.exports = (sequelize, DataTypes) => {
     ) {
       try {
         await sequelize.query(
-          `INSERT INTO ${this.getTableName()}(usersId, addressLine1, addressLine2, zipCode, city, state, createdAt, updatedAt)
-            VALUES(:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :createdAt, :updatedAt)`,
+          `INSERT INTO ${this.getTableName()}(usersId, addressLine1, addressLine2, zipCode, city, state, telephoneAreaCode, telephone, createdAt, updatedAt)
+            VALUES(:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :telephoneAreaCode, :telephone, :createdAt, :updatedAt)`,
           {
             type: sequelize.QueryTypes.INSERT,
             replacements: {
@@ -227,6 +267,8 @@ module.exports = (sequelize, DataTypes) => {
               zipCode: payload.zipCode,
               city: payload.city,
               state: payload.state,
+              telephoneAreaCode: payload.telephoneAreaCode,
+              telephone: payload.telephone,
               usersId: userId,
               createdAt: moment()
                 .utc()
@@ -271,6 +313,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     state: {
       type: DataTypes.STRING
+    },
+    telephoneAreaCode: {
+      type: DataTypes.STRING(6),
+      defaultValue: null,
+    },
+    telephone: {
+      type: DataTypes.STRING(30),
     },
     createdAt: {
       type: DataTypes.DATE,

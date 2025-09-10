@@ -270,7 +270,7 @@ module.exports = (sequelize, DataTypes) => {
     static getRegisterError(bodyInput) {
       if (undefined === bodyInput.firstName) {
         return "The first name field is missing.";
-      } else if (typeof bodyInput.firstName !== "string") {
+      } else if ("string" !== typeof bodyInput.firstName) {
         return "The first name field must be of type string";
       } else if (20 < bodyInput.firstName.trim().length) {
         return "The first name field length must not exceed 20 characters.";
@@ -280,7 +280,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (undefined === bodyInput.lastName) {
         return "The last name field is missing.";
-      } else if (typeof bodyInput.lastName !== "string") {
+      } else if ("string" !== typeof bodyInput.lastName) {
         return "The last name field must be of type string";
       } else if (20 < bodyInput.lastName.trim().length) {
         return "The last name field length must not exceed 20 characters.";
@@ -290,7 +290,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (undefined === bodyInput.email) {
         return "The email field is missing.";
-      } else if (typeof bodyInput.email !== "string") {
+      } else if ("string" !== typeof bodyInput.email) {
         return "The email field must be of type string";
       } else if (30 < bodyInput.email.length) {
         return "The email field length must not exceed 30 characters.";
@@ -300,7 +300,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (undefined === bodyInput.password) {
         return "The password field is missing.";
-      } else if (typeof bodyInput.password !== "string") {
+      } else if ("string" !== typeof bodyInput.password) {
         return "The password field must be of type string";
       } else if (20 < bodyInput.password.length) {
         return "The password field length must not exceed 20 characters.";
@@ -506,7 +506,7 @@ module.exports = (sequelize, DataTypes) => {
     static getLoginError(bodyInput) {
       if (undefined === bodyInput.email) {
         return "The email field is missing.";
-      } else if (typeof bodyInput.email !== "string") {
+      } else if ("string" !== typeof bodyInput.email) {
         return "The email field must be of type string";
       } else if (30 < bodyInput.email.length) {
         return "The email field length must not exceed 30 characters.";
@@ -516,7 +516,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (undefined === bodyInput.password) {
         return "The password field is missing.";
-      } else if (typeof bodyInput.password !== "string") {
+      } else if ("string" !== typeof bodyInput.password) {
         return "The password field must be of type string";
       } else if (20 < bodyInput.password.length) {
         return "The password field length must not exceed 20 characters.";
