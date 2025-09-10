@@ -31,8 +31,8 @@ module.exports = {
       );
       const usersId = userInsertResult[0];
       await queryInterface.sequelize.query(
-        `INSERT INTO userAddresses(usersId, addressLine1, addressLine2, zipCode, city, state, createdAt, updatedAt)
-          VALUES (:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :createdAt, :updatedAt)`,
+        `INSERT INTO userAddresses(usersId, addressLine1, addressLine2, zipCode, city, state, telephone, createdAt, updatedAt)
+          VALUES (:usersId, :addressLine1, :addressLine2, :zipCode, :city, :state, :telephone, :createdAt, :updatedAt)`,
         {
           replacements: {
             addressLine1: faker.location.streetAddress(),
@@ -40,6 +40,9 @@ module.exports = {
             zipCode: faker.location.zipCode(),
             city: faker.location.city(),
             state: faker.location.state(),
+            telephone: faker.phone.number({
+              international: true,
+            }),
             createdAt: moment().utc().format(mysqlTimeFormat),
             updatedAt: moment().utc().format(mysqlTimeFormat),
             usersId,

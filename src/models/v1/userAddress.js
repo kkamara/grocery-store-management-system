@@ -288,6 +288,13 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.STRING
     },
+    telephoneAreaCode: {
+      type: DataTypes.STRING(6),
+      defaultValue: null,
+    },
+    telephone: {
+      type: DataTypes.STRING(30),
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
