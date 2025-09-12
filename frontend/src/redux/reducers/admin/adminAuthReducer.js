@@ -1,4 +1,4 @@
-import { adminAuth, } from "../types"
+import { adminAuth, } from "../../types"
 
 const initState = {
   data: null,

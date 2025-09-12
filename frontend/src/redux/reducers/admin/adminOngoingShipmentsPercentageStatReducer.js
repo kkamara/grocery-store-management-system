@@ -1,4 +1,4 @@
-import { adminOngoingShipmentsPercentageStat, } from "../types"
+import { adminOngoingShipmentsPercentageStat, } from "../../types"
 
 const initState = {
   data: null,

@@ -1,4 +1,4 @@
-import { adminGuestUsersCountStat, } from "../types"
+import { adminOrdersBarChart, } from "../../types"
 
 const initState = {
   data: null,
@@ -6,23 +6,23 @@ const initState = {
   loading: true,
 }
 
-export default function adminGuestUsersCountStatReducer (state = initState, action) {
+export default function adminOrdersBarChartReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminGuestUsersCountStat.GET_ADMIN_GUEST_USERS_COUNT_STAT_ERROR:
+    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminGuestUsersCountStat.GET_ADMIN_GUEST_USERS_COUNT_STAT_PENDING:
+    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminGuestUsersCountStat.GET_ADMIN_GUEST_USERS_COUNT_STAT_SUCCESS:
+    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_SUCCESS:
       return {
         ...state,
         data: action.payload,

@@ -1,28 +1,28 @@
-import { adminOrdersBarChart, } from "../types"
+import { adminNewProduct, } from "../../types"
 
 const initState = {
   data: null,
   error: null,
-  loading: true,
+  loading: false,
 }
 
-export default function adminOrdersBarChartReducer (state = initState, action) {
+export default function createAdminProductReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_ERROR:
+    case adminNewProduct.CREATE_ADMIN_PRODUCT_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_PENDING:
+    case adminNewProduct.CREATE_ADMIN_PRODUCT_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminOrdersBarChart.GET_ADMIN_ORDERS_BAR_CHART_SUCCESS:
+    case adminNewProduct.CREATE_ADMIN_PRODUCT_SUCCESS:
       return {
         ...state,
         data: action.payload,

@@ -1,4 +1,4 @@
-import { adminProductEdit, } from "../types"
+import { adminEarningsLineChart, } from "../../types"
 
 const initState = {
   data: null,
@@ -6,23 +6,23 @@ const initState = {
   loading: true,
 }
 
-export default function adminEditProductReducer (state = initState, action) {
+export default function adminEarningsLineChartReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminProductEdit.GET_ADMIN_PRODUCT_EDIT_ERROR:
+    case adminEarningsLineChart.GET_ADMIN_EARNINGS_LINE_CHART_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminProductEdit.GET_ADMIN_PRODUCT_EDIT_PENDING:
+    case adminEarningsLineChart.GET_ADMIN_EARNINGS_LINE_CHART_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminProductEdit.GET_ADMIN_PRODUCT_EDIT_SUCCESS:
+    case adminEarningsLineChart.GET_ADMIN_EARNINGS_LINE_CHART_SUCCESS:
       return {
         ...state,
         data: action.payload,

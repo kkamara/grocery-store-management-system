@@ -1,28 +1,28 @@
-import { adminProduct, } from "../types"
+import { editAdminProductDetails, } from "../../types"
 
 const initState = {
   data: null,
   error: null,
-  loading: true,
+  loading: false,
 }
 
-export default function adminProductReducer (state = initState, action) {
+export default function editAdminProductDetailsReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminProduct.GET_ADMIN_PRODUCT_ERROR:
+    case editAdminProductDetails.UPDATE_ADMIN_PRODUCT_DETAILS_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminProduct.GET_ADMIN_PRODUCT_PENDING:
+    case editAdminProductDetails.UPDATE_ADMIN_PRODUCT_DETAILS_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminProduct.GET_ADMIN_PRODUCT_SUCCESS:
+    case editAdminProductDetails.UPDATE_ADMIN_PRODUCT_DETAILS_SUCCESS:
       return {
         ...state,
         data: action.payload,

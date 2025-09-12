@@ -1,4 +1,4 @@
-import { adminPastMonthOrdersCountStat, } from "../types"
+import { adminSearchProducts, } from "../../types"
 
 const initState = {
   data: null,
@@ -6,23 +6,23 @@ const initState = {
   loading: true,
 }
 
-export default function adminPastMonthOrdersCountStatReducer (state = initState, action) {
+export default function adminSearchProductsReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminPastMonthOrdersCountStat.GET_ADMIN_PAST_MONTH_ORDERS_COUNT_STAT_ERROR:
+    case adminSearchProducts.GET_ADMIN_SEARCH_PRODUCTS_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminPastMonthOrdersCountStat.GET_ADMIN_PAST_MONTH_ORDERS_COUNT_STAT_PENDING:
+    case adminSearchProducts.GET_ADMIN_SEARCH_PRODUCTS_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminPastMonthOrdersCountStat.GET_ADMIN_PAST_MONTH_ORDERS_COUNT_STAT_SUCCESS:
+    case adminSearchProducts.GET_ADMIN_SEARCH_PRODUCTS_SUCCESS:
       return {
         ...state,
         data: action.payload,

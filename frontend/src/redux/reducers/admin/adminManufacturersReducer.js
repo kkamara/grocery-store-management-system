@@ -1,4 +1,4 @@
-import { adminProductsCountStat, } from "../types"
+import { adminManufacturers, } from "../../types"
 
 const initState = {
   data: null,
@@ -6,23 +6,23 @@ const initState = {
   loading: true,
 }
 
-export default function adminProductsCountStatReducer (state = initState, action) {
+export default function adminManufacturersReducer (state = initState, action) {
   switch (action.type) {
     
-    case adminProductsCountStat.GET_ADMIN_PRODUCTS_COUNT_STAT_ERROR:
+    case adminManufacturers.GET_ADMIN_MANUFACTURERS_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       }
     
-    case adminProductsCountStat.GET_ADMIN_PRODUCTS_COUNT_STAT_PENDING:
+    case adminManufacturers.GET_ADMIN_MANUFACTURERS_PENDING:
       return {
         ...state,
         loading: true,
       }
     
-    case adminProductsCountStat.GET_ADMIN_PRODUCTS_COUNT_STAT_SUCCESS:
+    case adminManufacturers.GET_ADMIN_MANUFACTURERS_SUCCESS:
       return {
         ...state,
         data: action.payload,
