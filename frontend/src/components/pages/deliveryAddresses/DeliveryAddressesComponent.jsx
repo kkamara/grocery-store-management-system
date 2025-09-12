@@ -69,11 +69,12 @@ export default function DeliveryAddressesComponent() {
             </div>
             <div className="card-footer">
               <div className="float-end">
-                <button
-                  className="btn btn-info"
+                <a
+                  className="btn btn-info edit-link-button"
+                  href={`/user-addresses/${address.id}/edit`}
                 >
                   Edit
-                </button>
+                </a>
                 <DeleteDeliveryAddressModal
                   onSuccess={handleDeleteAddress}
                   data={address}
