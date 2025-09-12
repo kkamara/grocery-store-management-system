@@ -2,7 +2,11 @@ const express = require("express");
 const { status, } = require("http-status");
 const authenticate = require("../../../../../middlewares/v1/authenticate");
 const db = require("../../../../../models/v1");
-const { message500, message200, } = require("../../../../../utils/httpResponses");
+const {
+  message500,
+  message200,
+  message404,
+} = require("../../../../../utils/httpResponses");
 
 const router = express.Router();
 
@@ -98,6 +102,44 @@ router.delete(
     }
 
     return res.json({ message: message200 });
+  },
+);
+
+router.get(
+  "/:userAddressId",
+  authenticate,
+  async (req, res) => {
+    const inputError = await db.sequelize.models
+      .userAddress
+      .getReturnUserAddressError(
+        req.params.userAddressId,
+      );
+    if (false !== inputError) {
+      res.status(status.BAD_REQUEST);
+      return res.json({ error: inputError });
+    }
+
+    const cleanData = db.sequelize.models
+      .userAddress
+      .getReturnUserAddressData(
+        req.paramInt("userAddressId"),
+      );
+    
+    const userAddress = await db.sequelize
+      .models
+      .userAddress
+      .getUserAddressById(
+        cleanData.userAddressId
+      );
+    if (
+      false === userAddress ||
+      req.session.userId !== userAddress.usersId
+    ) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: message404 });
+    }
+
+    return res.json({ data: userAddress });
   },
 );
 

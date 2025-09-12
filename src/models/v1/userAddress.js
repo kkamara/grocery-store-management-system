@@ -368,6 +368,33 @@ module.exports = (sequelize, DataTypes) => {
         return false;
       }
     }
+
+    /**
+     * @param {number|undefined} userAddressId
+     * @return {string|false}
+     */
+    static async getReturnUserAddressError(userAddressId) {
+      if (!userAddressId) {
+        return "The user address id parameter is missing.";
+      } else if (
+        null === `${userAddressId}`.match(integerNumberRegex)
+      ) {
+        return "The user address id parameter must be of type number.";
+      }
+
+      return false;
+    }
+
+    /**
+     * @param {number} userAddressId 
+     */
+    static getReturnUserAddressData(userAddressId) {
+      const result = {};
+      if (userAddressId) {
+        result.userAddressId = userAddressId;
+      }
+      return result;
+    }
   }
   userAddress.init({
     id: {
