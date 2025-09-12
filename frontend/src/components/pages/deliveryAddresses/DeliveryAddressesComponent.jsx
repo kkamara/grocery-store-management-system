@@ -5,22 +5,30 @@ import { getUserAddresses } from "../../../redux/actions/userAddressesActions"
 import DeleteDeliveryAddressModal from "./DeleteDeliveryAddressModal"
 
 import "./DeliveryAddressesComponent.scss"
+import { deleteUserAddressFunc } from "../../../redux/actions/deleteUserAddressesActions"
 
 export default function DeliveryAddressesComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     userAddresses: state.userAddresses,
+    deleteUserAddress: state.deleteUserAddress,
   }))
 
   useEffect(() => {
     dispatch(getUserAddresses())
   }, [])
 
-  const handleDeleteAddress = () => {
-
+  const handleDeleteAddress = userAddressId => {
+    dispatch(deleteUserAddressFunc(userAddressId))
+      .then(() => {
+        dispatch(getUserAddresses())
+      })
   }
 
-  if (state.userAddresses.loading) {
+  if (
+    state.userAddresses.loading ||
+    state.deleteUserAddress.loading
+  ) {
     return (
       <div className="container delivery-addresses-container text-center">
         <Helmet>
@@ -54,7 +62,7 @@ export default function DeliveryAddressesComponent() {
         </div>
       </div>
       {state.userAddresses.data.map((address, index) => (
-        <div className="col-md-10 offset-md-1 user-address-card-container">
+        <div key={index} className="col-md-10 offset-md-1 user-address-card-container">
           <div className="card">
             <div className="card-body">
               {address.addressLine1}, {address.zipCode}

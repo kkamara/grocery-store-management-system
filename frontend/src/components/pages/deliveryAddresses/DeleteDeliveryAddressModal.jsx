@@ -14,6 +14,8 @@ const customStyles = {
   },
 }
 
+Modal.setAppElement(document.getElementById("app"))
+
 const defaultModalIsOpenValue = false
 const defaultChoiceValue = "0"
 
@@ -33,12 +35,12 @@ export default function DeleteDeliveryAddressModal({
 
   function handleSubmit(e) {
     e.preventDefault()
-    setChoice(defaultChoiceValue)
+    closeModal()
     if ("0" === choice) {
-      setModalIsOpen(false)
-    } else {
-      onSuccess()
+      return
     }
+    
+    onSuccess(data.id)
   }
 
   function handleChoiceChange(e) {
