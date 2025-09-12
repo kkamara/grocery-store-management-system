@@ -2,11 +2,7 @@ const express = require("express");
 const { status, } = require("http-status");
 const authenticate = require("../../../../../middlewares/v1/authenticate");
 const db = require("../../../../../models/v1");
-const {
-  message500,
-  message200,
-  message400,
-} = require("../../../../../utils/httpResponses");
+const { message500, message200, } = require("../../../../../utils/httpResponses");
 
 const router = express.Router();
 
@@ -66,6 +62,41 @@ router.post(
       return res.json({ error: message500 });
     }
     
+    return res.json({ message: message200 });
+  },
+);
+
+router.delete(
+  "/:userAddressId",
+  authenticate,
+  async (req, res) => {
+    const inputError = await db.sequelize.models
+      .userAddress
+      .getDeleteUserAddressError(
+        req.params.userAddressId,
+      );
+    if (false !== inputError) {
+      res.status(status.BAD_REQUEST);
+      return res.json({ error: inputError });
+    }
+
+    const cleanData = db.sequelize.models
+      .userAddress
+      .getDeleteUserAddressData(
+        req.paramString("userAddressId"),
+      );
+    
+    const deleteUserAddress = await db.sequelize
+      .models
+      .userAddress
+      .deleteUserAddress(
+        cleanData.userAddressId
+      );
+    if (false === deleteUserAddress) {
+      res.status(status.INTERNAL_SERVER_ERROR);
+      return res.json({ error: message500 });
+    }
+
     return res.json({ message: message200 });
   },
 );

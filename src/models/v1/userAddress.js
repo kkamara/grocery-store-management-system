@@ -5,6 +5,7 @@ const {
 const moment = require("moment-timezone");
 const { nodeEnv, appTimezone, } = require("../../config");
 const { mysqlTimeFormat, } = require("../../utils/time");
+const { integerNumberRegex, } = require("../../utils/regexes");
 module.exports = (sequelize, DataTypes) => {
   class userAddress extends Model {
     /**
@@ -290,6 +291,75 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         
+        return true;
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
+
+    /**
+     * @param {number|undefined} userAddressId
+     * @return {string|false}
+     */
+    static async getDeleteUserAddressError(userAddressId) {
+      if (!userAddressId) {
+        return "The user address id parameter is missing.";
+      } else if (
+        null === `${userAddressId}`.match(integerNumberRegex)
+      ) {
+        return "The user address id parameter must be of type number.";
+      } else {
+        const foundAddress = await this.
+          getUserAddressById(userAddressId);
+        if (false === foundAddress) {
+          return "The user address was not found.";
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * @param {number} userAddressId 
+     */
+    static getDeleteUserAddressData(userAddressId) {
+      const result = {};
+      if (userAddressId) {
+        result.userAddressId = userAddressId;
+      }
+      return result;
+    }
+
+    /**
+     * @param {number} userAddressId
+     * @returns {boolean}
+     */
+    static async deleteUserAddress(userAddressId) {
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET updatedAt = :updatedAt, deletedAt = :deletedAt
+            WHERE id = :userAddressId AND deletedAt IS NULL`,
+          {
+            replacements: {
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat), 
+              deletedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              userAddressId,
+            },
+            type: sequelize.QueryTypes.UPDATE,
+          },
+        );
+        const rowsUpdated = result[1];
+        if (0 === rowsUpdated) {
+          return false;
+        }
         return true;
       } catch(err) {
         if ("production" !== nodeEnv) {
