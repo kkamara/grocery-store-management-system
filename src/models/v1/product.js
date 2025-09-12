@@ -1002,17 +1002,17 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `UPDATE ${this.getTableName()}
-            SET name = :name,
-              slug = :slug,
-              units = :units,
-              weight = :weight,
-              categoriesId = :categoriesId,
-              price = :price,
-              description = :description,
-              manufacturersId = :manufacturersId,
-              isLive = :isLive,
-              stripeProductId = :stripeProductId,
-              stripePriceId = :stripePriceId,
+            SET name = COALESCE(:name, name),
+              slug = COALESCE(:slug, slug),
+              units = COALESCE(:units, units),
+              weight = COALESCE(:weight, weight),
+              categoriesId = COALESCE(:categoriesId, categoriesId),
+              price = COALESCE(:price, price),
+              description = COALESCE(:description, description),
+              manufacturersId = COALESCE(:manufacturersId, manufacturersId),
+              isLive = COALESCE(:isLive, isLive),
+              stripeProductId = COALESCE(:stripeProductId, stripeProductId),
+              stripePriceId = COALESCE(:stripePriceId, stripePriceId),
               updatedAt = :updatedAt
             WHERE id = :id`,
           {
