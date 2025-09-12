@@ -71,7 +71,7 @@ export default function DeliveryAddressesComponent() {
               <div className="float-end">
                 <a
                   className="btn btn-info edit-link-button"
-                  href={`/user-addresses/${address.id}/edit`}
+                  href={`/user/addresses/${address.id}/edit`}
                 >
                   Edit
                 </a>
