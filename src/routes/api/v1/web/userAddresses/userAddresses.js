@@ -143,4 +143,63 @@ router.get(
   },
 );
 
+router.put(
+  "/:userAddressId",
+  authenticate,
+  async (req, res) => {
+    const inputError = await db.sequelize.models
+      .userAddress
+      .getUpdateUserAddressError(
+        req.params.userAddressId,
+        req.body,
+      );
+    if (false !== inputError) {
+      res.status(status.BAD_REQUEST);
+      return res.json({ error: inputError });
+    }
+
+    const cleanData = db.sequelize.models
+      .userAddress
+      .getUpdateUserAddressData({
+        addressLine1: req.bodyString("addressLine1"),
+        addressLine2: req.bodyString("addressLine2"),
+        zipCode: req.bodyString("zipCode"),
+        city: req.bodyString("city"),
+        state: req.bodyString("state"),
+        telephoneAreaCode: req.bodyString("telephoneAreaCode"),
+        telephone: req.bodyString("telephone"),
+        userAddressId: req.paramInt("userAddressId"),
+        usersId: req.session.userId,
+      });
+    
+    const userAddress = await db.sequelize
+      .models
+      .userAddress
+      .getUserAddressById(
+        cleanData.userAddressId,
+      );
+    if (
+      false === userAddress ||
+      req.session.userId !== userAddress.usersId
+    ) {
+      res.status(status.NOT_FOUND);
+      return res.json({ error: message404 });
+    }
+
+    const updateUserAddress = await db.sequelize
+      .models
+      .userAddress
+      .updateUserAddress(
+        cleanData.userAddressId,
+        cleanData,
+      );
+    if (false === updateUserAddress) {
+      res.status(status.INTERNAL_SERVER_ERROR);
+      return res.json({ error: message500 });
+    }
+
+    return res.json({ message: message200 });
+  },
+);
+
 module.exports = router;

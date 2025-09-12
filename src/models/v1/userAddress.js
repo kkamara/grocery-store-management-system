@@ -395,6 +395,174 @@ module.exports = (sequelize, DataTypes) => {
       }
       return result;
     }
+
+    /**
+     * @param {number} userAddressId
+     * @param {Object} payload
+     * @return {string|false}
+     */
+    static async getUpdateUserAddressError(userAddressId, payload) {
+      if (!userAddressId) {
+        return "The user address id parameter is missing.";
+      } else if (
+        null === `${userAddressId}`.match(integerNumberRegex)
+      ) {
+        return "The user address id parameter must be of type number.";
+      }
+
+      if (!payload.addressLine1) {
+        return "The address line 1 field is required.";
+      } else if ("string" !== typeof payload.addressLine1) {
+        return "The address line 1 field must be of type string.";
+      } else if (50 < payload.addressLine1.trim().length) {
+        return "The address line 1 field must not exceed 50 characters";
+      }
+
+      if (payload.addressLine2) {
+        if ("string" !== typeof payload.addressLine2) {
+          return "The address line 2 field must be of type string.";
+        }
+      } else if (50 < payload.addressLine2.trim().length) {
+        return "The address line 2 field must not exceed 50 characters";
+      }
+
+      if (!payload.zipCode) {
+        return "The zip code field is required.";
+      } else if ("string" !== typeof payload.zipCode) {
+        return "The zip code field must be of type string.";
+      } else if (10 < payload.zipCode.trim().length) {
+        return "The zip code field must not exceed 10 characters";
+      }
+
+      if (!payload.city) {
+        return "The city field is required.";
+      } else if ("string" !== typeof payload.city) {
+        return "The city field must be of type string.";
+      } else if (20 < payload.city.trim().length) {
+        return "The city field must not exceed 20 characters";
+      }
+
+      if (!payload.state) {
+        return "The state field is required.";
+      } else if ("string" !== typeof payload.state) {
+        return "The state field must be of type string.";
+      } else if (20 < payload.state.trim().length) {
+        return "The address line 1 field must not exceed 20 characters";
+      }
+
+      if (payload.telephoneAreaCode) {
+        if ("string" !== typeof payload.telephoneAreaCode) {
+          return "The telephone area code field must be of type string.";
+        } else if (6 < payload.telephoneAreaCode.trim().length) {
+          return "The telephone area code field must not be greater than 6 characters.";
+        }
+      }
+
+      if (!payload.telephone) {
+        return "The telephone field is required.";
+      } else if ("string" !== typeof payload.telephone) {
+        return "The telephone field must be of type string.";
+      } else if (30 < payload.telephone.trim().length) {
+        return "The telephone field must not be greater than 30 characters.";
+      }
+
+      return false;
+    }
+
+    /**
+     * @param {Object} payload
+     * @return {Object}
+     */
+    static getUpdateUserAddressData(payload) {
+      const result = {};
+
+      if (payload.addressLine1) {
+        result.addressLine1 = payload.addressLine1.trim();
+      }
+
+      if (payload.addressLine2) {
+        result.addressLine2 = payload.addressLine2.trim();
+      }
+
+      if (payload.zipCode) {
+        result.zipCode = payload.zipCode.trim();
+      }
+
+      if (payload.city) {
+        result.city = payload.city.trim();
+      }
+
+      if (payload.state) {
+        result.state = payload.state.trim();
+      }
+
+      if (payload.telephoneAreaCode) {
+        result.telephoneAreaCode = payload.telephoneAreaCode.trim();
+      }
+
+      if (payload.telephone) {
+        result.telephone = payload.telephone.trim();
+      }
+
+      if (payload.userAddressId) {
+        result.userAddressId = payload.userAddressId;
+      }
+
+      if (payload.usersId) {
+        result.usersId = payload.usersId;
+      }
+
+      return result;
+    }
+
+    /**
+     * @param {number} id
+     * @param {Object} data
+     * @returns {object|false}
+     */
+    static async updateUserAddress(id, data) {
+      console.log("id", id);
+      console.log("data", data);
+      try {
+        const result = await sequelize.query(
+          `UPDATE ${this.getTableName()}
+            SET usersId = COALESCE(:usersId, usersId),
+              addressLine1 = COALESCE(:addressLine1, addressLine1),
+              addressLine2 = COALESCE(:addressLine2, addressLine2),
+              zipCode = COALESCE(:zipCode, zipCode),
+              city = COALESCE(:city, city),
+              state = COALESCE(:state, state),
+              telephoneAreaCode = COALESCE(:telephoneAreaCode, telephoneAreaCode),
+              telephone = COALESCE(:telephone, telephone),
+              updatedAt = :updatedAt
+            WHERE id = :id`,
+          {
+            type: sequelize.QueryTypes.UPDATE,
+            replacements: {
+              usersId: data.usersId,
+              addressLine1: data.addressLine1,
+              addressLine2: data.addressLine2 || null,
+              zipCode: data.zipCode,
+              city: data.city,
+              state: data.state,
+              telephoneAreaCode: data.telephoneAreaCode || null,
+              telephone: data.telephone,
+              updatedAt: moment()
+                .utc()
+                .format(mysqlTimeFormat),
+              id,
+            },
+          },
+        );
+
+        return { productId: result[0] };
+      } catch(err) {
+        if ("production" !== nodeEnv) {
+          console.log(err);
+        }
+        return false;
+      }
+    }
   }
   userAddress.init({
     id: {

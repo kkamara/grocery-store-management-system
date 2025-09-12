@@ -4,6 +4,7 @@ import { Helmet, } from "react-helmet"
 import { useNavigate, useParams, } from "react-router"
 import Error from "../../layouts/Error"
 import { getUserAddress } from "../../../redux/actions/userAddressActions"
+import { updateUserAddressFunc } from "../../../redux/actions/updateUserAddressesActions"
 
 import "./EditDeliveryAddressComponent.scss"
 
@@ -27,6 +28,7 @@ export default function NewDeliveryAddressComponent() {
   const dispatch = useDispatch()
   const state = useSelector(state => ({
     userAddress: state.userAddress,
+    updateUserAddress: state.updateUserAddress,
   }))
 
   const [error, setError] = useState("")
@@ -40,7 +42,7 @@ export default function NewDeliveryAddressComponent() {
   useEffect(() => {
     if (false === state.userAddress.loading) {
       if (null !== state.userAddress.error) {
-        setError(state.userAddress.error)
+        navigate("/user/addresses")
       }
       if (null !== state.userAddress.data) {
         setAddressLine1(state.userAddress.data.addressLine1)
@@ -57,6 +59,15 @@ export default function NewDeliveryAddressComponent() {
       }
     }
   }, [state.userAddress])
+
+  useEffect(() => {
+    console.log(state.updateUserAddress)
+    if (false === state.updateUserAddress.loading) {
+      if (null !== state.updateUserAddress.error) {
+        setError(state.updateUserAddress.error)
+      }
+    }
+  }, [state.updateUserAddress])
 
   const handleAddressLine1Change = e => {
     setAddressLine1(e.target.value)
@@ -88,15 +99,19 @@ export default function NewDeliveryAddressComponent() {
 
   const handleFormSubmit = e => {
     e.preventDefault()
-    dispatch(editUserAddress({
-      addressLine1,
-      addressLine2,
-      zipCode,
-      city,
-      telephoneAreaCode,
-      telephone,
-      state: stateState,
-    }))
+    setError("")
+    dispatch(updateUserAddressFunc(
+      userAddressId,
+      {
+        addressLine1,
+        addressLine2,
+        zipCode,
+        city,
+        telephoneAreaCode,
+        telephone,
+        state: stateState,
+      },
+    ))
   }
 
   if (state.userAddress.loading) {
