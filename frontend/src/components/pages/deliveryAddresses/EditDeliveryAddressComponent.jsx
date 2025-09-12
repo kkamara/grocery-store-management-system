@@ -1,9 +1,9 @@
 import React, { useState, useEffect, } from "react"
 import { useDispatch, useSelector, } from "react-redux"
 import { Helmet, } from "react-helmet"
-import { useNavigate } from "react-router"
-import { newUserAddress } from "../../../redux/actions/createUserAddressesActions"
+import { useNavigate, useParams, } from "react-router"
 import Error from "../../layouts/Error"
+import { getUserAddress } from "../../../redux/actions/userAddressActions"
 
 import "./EditDeliveryAddressComponent.scss"
 
@@ -26,22 +26,37 @@ export default function NewDeliveryAddressComponent() {
 
   const dispatch = useDispatch()
   const state = useSelector(state => ({
-    createUserAddress: state.createUserAddress,
+    userAddress: state.userAddress,
   }))
 
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const { userAddressId } = useParams()
 
   useEffect(() => {
-    if (false === state.createUserAddress.loading) {
-      if (null !== state.createUserAddress.error) {
-        setError(state.createUserAddress.error)
+    dispatch(getUserAddress(userAddressId))
+  }, [])
+
+  useEffect(() => {
+    if (false === state.userAddress.loading) {
+      if (null !== state.userAddress.error) {
+        setError(state.userAddress.error)
       }
-      if (null !== state.createUserAddress.data) {
-        navigate("/user/addresses")
+      if (null !== state.userAddress.data) {
+        setAddressLine1(state.userAddress.data.addressLine1)
+        if (state.userAddress.data.addressLine2) {
+          setAddressLine2(state.userAddress.data.addressLine2)
+        }
+        setZipCode(state.userAddress.data.zipCode)
+        setCity(state.userAddress.data.city)
+        setState(state.userAddress.data.state)
+        if (state.userAddress.data.telephoneAreaCode) {
+          setTelephoneAreaCode(state.userAddress.data.telephoneAreaCode)
+        }
+        setTelephone(state.userAddress.data.telephone)
       }
     }
-  }, [state.createUserAddress])
+  }, [state.userAddress])
 
   const handleAddressLine1Change = e => {
     setAddressLine1(e.target.value)
@@ -73,7 +88,7 @@ export default function NewDeliveryAddressComponent() {
 
   const handleFormSubmit = e => {
     e.preventDefault()
-    dispatch(newUserAddress({
+    dispatch(editUserAddress({
       addressLine1,
       addressLine2,
       zipCode,
@@ -84,7 +99,7 @@ export default function NewDeliveryAddressComponent() {
     }))
   }
 
-  if (state.createUserAddress.loading) {
+  if (state.userAddress.loading) {
     return (
       <div className="container product-container text-center">
         <Helmet>
