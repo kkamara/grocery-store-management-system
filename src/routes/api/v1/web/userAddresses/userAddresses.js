@@ -83,7 +83,7 @@ router.delete(
     const cleanData = db.sequelize.models
       .userAddress
       .getDeleteUserAddressData(
-        req.paramString("userAddressId"),
+        req.paramInt("userAddressId"),
       );
     
     const deleteUserAddress = await db.sequelize
