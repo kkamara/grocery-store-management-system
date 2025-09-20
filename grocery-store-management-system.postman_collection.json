@@ -1354,6 +1354,43 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Update User Address",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{web}}/user-addresses/1",
+											"host": [
+												"{{web}}"
+											],
+											"path": [
+												"user-addresses",
+												"1"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
