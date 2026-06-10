@@ -18,7 +18,7 @@ const { roundTo2DecimalNumbers } = require("../../../../../utils/numbers");
 const { mysqlTimeFormat, } = require("../../../../../utils/time");
 
 let stripe;
-if ("test" !== nodeEnv) {
+if ("test" !== nodeEnv && stripeSecretKey) {
   stripe = require("stripe")(stripeSecretKey);
 }
 
@@ -164,18 +164,45 @@ router.post(
       successURL = "http://localhost:3000/checkout/"+billingReference;
       cancelledURL = "http://localhost:3000/checkout/"+billingReference+"/cancelled";
     }
-    const session = await stripe.checkout.sessions.create({
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: successURL,
-      cancel_url: cancelledURL,
-      automatic_tax: { enabled: true },
-      payment_intent_data: {
-        metadata: { billingReference, }
-      },
-    });
 
-    return res.json({ redirectURL: session.url });
+    let redirectURL;
+    
+    if (stripe) {
+      const session = await stripe.checkout.sessions.create({
+        line_items: lineItems,
+        mode: 'payment',
+        success_url: successURL,
+        cancel_url: cancelledURL,
+        automatic_tax: { enabled: true },
+        payment_intent_data: {
+          metadata: { billingReference, }
+        },
+      });
+      redirectURL = session.url;
+    } else {
+      const orderData = await db.sequelize.models
+        .order
+        .getOrderByBillingReference(
+          billingReference
+        );
+      const updateShipping = await db.sequelize.models
+        .shipping
+        .updateShipping(
+          orderData.shippingsId,
+          {
+            status: "paid",
+          },
+        )
+      if (false === updateShipping) {
+        res.status(status.INTERNAL_SERVER_ERROR);
+        return res.json({
+          error: "Unable to update shipping status."
+        });
+      }
+      redirectURL = successURL;
+    }
+
+    return res.json({ redirectURL });
   },
 );
 
