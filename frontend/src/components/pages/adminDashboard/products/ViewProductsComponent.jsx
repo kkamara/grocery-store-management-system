@@ -92,24 +92,56 @@ export default function ViewProductsComponent() {
     return (
       <>
         {paginationDetail()}
-        <ul className="list-group">
-          {state.adminSearchProducts.data.data.map((product, index) => (
-            <li key={index} className="list-group-item home-item">
-              <a
-                href={`/admin/products/${product.slug}`}
-                className="product-page-link"
-              >
-                <strong>Name:</strong> ({product.name}),&nbsp;
-                <strong>Price:</strong> ({product.price}),&nbsp;
-                <strong>Units:</strong> ({product.units}),&nbsp;
-                <strong>Weight:</strong> ({product.weight}),&nbsp;
-                <strong>Is Live:</strong> ({product.isLive ? "Yes" : "No"}),&nbsp;
-                <strong>Created At:</strong> ({parseDate(product.createdAt)}),&nbsp;
-                <strong>Updated At:</strong> ({parseDate(product.updatedAt)})
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="table-responsive mt-3 mb-2">
+          <table className="table table-striped table-hover align-middle mb-0">
+            <thead className="table-light">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Units</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Is Live</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Updated At</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {state.adminSearchProducts.data.data.map((product) => (
+                <tr key={product.slug}>
+                  <td>
+                    <a
+                      href={`/admin/products/${product.slug}`}
+                      className="product-page-link"
+                    >
+                      {product.name}
+                    </a>
+                  </td>
+                  <td>{product.price}</td>
+                  <td>{product.units}</td>
+                  <td>{product.weight}</td>
+                  <td>{product.isLive ? "Yes" : "No"}</td>
+                  <td>{parseDate(product.createdAt)}</td>
+                  <td>{parseDate(product.updatedAt)}</td>
+                  <td>
+                    <a
+                      href={`/admin/products/${product.slug}`}
+                      className="btn btn-sm btn-primary"
+                    >
+                      View
+                    </a>
+                    <a
+                      href={`/admin/products/${product.slug}/edit`}
+                      className="btn btn-sm btn-info ms-2"
+                    >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {paginationDetail()}
       </>
     )
